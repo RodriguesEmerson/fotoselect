@@ -9,6 +9,9 @@ use App\Config\EnvLoader;
 use App\Core\Core;
 use App\Http\Route;
 
+use App\Middleware\AuthMiddleware;
+AuthMiddleware::verify();
+
 //Enable environment variables
 EnvLoader::load();
 

@@ -4,12 +4,11 @@ namespace App\Core;
 Use App\Http\Request;
 Use App\Http\Response;
 use App\Middleware\AuthMiddleware;
+use App\Utils\Url;
 
 class Core{
-
    public static function dispatch(array $routes){
-      $urlParam = filter_input(INPUT_GET, 'url', FILTER_SANITIZE_URL);  
-      $url = self::sanitizeRouteUrl($urlParam);
+      $url = Url::sanitizeRouteUrl();
 
       $prefixController = 'App\\Controllers\\';
       $routeFound = false;
@@ -29,17 +28,12 @@ class Core{
             [$controller, $action] = explode('@', $route['action']); 
             $controller = $prefixController . $controller; 
             
-            //Verify is the Controller and the Method called really exists.
+            //Verify if the Controller and the Method called really exists.
             if(!class_exists($controller) || !method_exists($controller, $action)){
                Response::json(['message' => 'Invalid controller or method.'], 403, 'error');
                return;
             }
             
-            if(!AuthMiddleware::verify($url)){
-               Response::json(['message' => 'Please login to continue.'], 401, 'error');
-               return;
-            }
-
             $extendController = new $controller();
             try{
                $extendController->$action(new Request, new Response, $matches);
@@ -54,22 +48,5 @@ class Core{
          $extendController = new $controller();
          $extendController->index(new Response);
       }
-   }
-   private static function sanitizeRouteUrl(?string $url): string {
-      if (!$url) return '/';
-
-      // Remove all characters except letters, numbers, slashes, hyphens, and underscores
-      $url = preg_replace('/[^a-zA-Z0-9\/_-]/', '', $url);
-
-      // Replace multiple slashes with a single slash
-      $url = preg_replace('/\/+/', '/', $url);
-
-      // Remove trailing slash (unless it's the root '/')
-      if ($url !== '/') {
-         $url = rtrim($url, '/');
-      }
-
-      // Ensure the URL always starts with a slash
-      return '/' . ltrim($url, '/');
    }
 }
