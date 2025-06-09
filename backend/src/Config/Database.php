@@ -4,10 +4,10 @@ namespace App\Config;
 use PDO;
 use PDOException;
 
-class Database{
-   private static $pdo;
+abstract class Database{
+   protected static $pdo;
 
-   private static function getConection(){
+   protected static function getConection(){
       if(self::$pdo) return self::$pdo;
 
       return 'Conneted';

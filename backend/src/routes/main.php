@@ -1,0 +1,16 @@
+<?php
+
+use App\Http\Route;
+
+/**
+ * Availables Routes;
+ * The first parameter is the Route
+ * The second paramenter is the Controller and Method to be called in the Route.
+ * Route::method('route', 'Controller@function)
+ */
+
+Route::post('/user/register', 'UserController@register');
+Route::post('/user/login', 'UserController@login');
+Route::get('/user/fetch', 'UserController@fetch');
+Route::put('/user/update', 'UserController@update');
+Route::delete('/user/delete', 'UserController@delete'); 

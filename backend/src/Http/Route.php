@@ -51,7 +51,7 @@ class Route{
       ];
    }
 
-   public function routes(){
+   public static function routes(){
       return self::$routes;
    }
 }

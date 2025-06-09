@@ -3,6 +3,7 @@
 namespace App\Core;
 Use App\Http\Request;
 Use App\Http\Response;
+use App\Middleware\AuthMiddleware;
 
 class Core{
 
@@ -18,18 +19,24 @@ class Core{
 
          if(preg_match($pattern, $url, $matches)){
             array_shift($matches);
-            
+
             $routeFound = true;
             if($route['method'] !== Request::method()){
-               Response::json(['message' => 'Method not allowed.'], 500, 'error');
+               Response::json(['message' => 'Method not allowed.'], 405, 'error');
                return;
             }
 
             [$controller, $action] = explode('@', $route['action']); 
             $controller = $prefixController . $controller; 
             
+            //Verify is the Controller and the Method called really exists.
             if(!class_exists($controller) || !method_exists($controller, $action)){
-               Response::json(['message' => 'Invalid controller or method.'], 405, 'error');
+               Response::json(['message' => 'Invalid controller or method.'], 403, 'error');
+               return;
+            }
+            
+            if(!AuthMiddleware::verify($url)){
+               Response::json(['message' => 'Please login to continue.'], 401, 'error');
                return;
             }
 
@@ -45,10 +52,10 @@ class Core{
       if(!$routeFound){
          $controller = $prefixController . 'NotFoundController';
          $extendController = new $controller();
-         $extendController->index(new Request, new Response);
+         $extendController->index(new Response);
       }
    }
-   function sanitizeRouteUrl(?string $url): string {
+   private static function sanitizeRouteUrl(?string $url): string {
       if (!$url) return '/';
 
       // Remove all characters except letters, numbers, slashes, hyphens, and underscores
