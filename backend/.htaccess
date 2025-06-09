@@ -1,0 +1,8 @@
+RewriteEngine On
+
+# Redireciona tudo para index.php, exceto arquivos ou diretórios existentes
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# Envia a URL reescrita como $_GET['url'] para o PHP.
+RewriteRule ^(.*)$ index.php?url=$1 [QSl]
