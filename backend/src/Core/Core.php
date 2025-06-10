@@ -3,7 +3,6 @@
 namespace App\Core;
 Use App\Http\Request;
 Use App\Http\Response;
-use App\Middleware\AuthMiddleware;
 use App\Utils\Url;
 
 class Core{
@@ -38,7 +37,7 @@ class Core{
             try{
                $extendController->$action(new Request, new Response, $matches);
             }catch(\Throwable $e){
-               Response::json(['message' => 'Internal server error.'], 500, 'error');
+               Response::json(['message' => 'Internal server error. | Core'], 500, 'error');
             }
          }
       }

@@ -10,7 +10,7 @@ namespace App\Http;
  * @param int $status -> Status code da resposta
  */
 class Response{
-   public static function json(array $content = ['message' => 'Internal server error.'], int $status = 500, string $type = 'error'){
+   public static function json(array $content, int $status, string $type){
 
       $error = $type == 'error' ? true : false;
       $success = $type == 'success' ? true : false;

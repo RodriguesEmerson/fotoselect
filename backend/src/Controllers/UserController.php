@@ -1,23 +1,23 @@
 <?php 
 namespace App\Controllers;
-use App\Config\Database;
 use App\Http\Request;
 use App\Http\Response;
+use App\Services\UserServices;
 use Exception;
 
-class UserController extends Database{
-
-   public function __construct(){
-      self::$pdo = self::getConection();
-   }
+class UserController{
 
    public static function fetch(Request $request, Response $response){
       try{
-         $response::json(['pdo' => self::$pdo], 200, 'success');
+         $userData = UserServices::fetch();
 
-         
+         if(isset($userData['error'])){
+            return $response::json(['message' => $userData['error']], $userData['status'], 'error');
+         }
+
+         $response::json($userData, 200, 'success');       
       }catch(Exception $e){
-         $response::json(['message' => 'Internal server error'], 500, 'error');
+         $response::json(['message' => 'Internal server error | Controller fetch-user'], 500, 'error');
       }
    }
 }
