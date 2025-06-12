@@ -6,12 +6,11 @@ use App\Http\Request;
 use App\Http\Response;
 use App\JWT\JWT;
 use App\Utils\Url;
-use Exception;
 
  /**
- * Check the JWT token and returns the user (payload)
- * @return object JWT token payload
- * @throws Exception Se token inválido ou ausente
+ * Check the JWT token and returns the user (payload).
+ * @return object JWT token payload.
+ * @return array If the token is invalid.
  */
 
 class AuthMiddleware{
@@ -21,21 +20,23 @@ class AuthMiddleware{
    ];
    public static function verify(){
       $route = Url::sanitizeRouteUrl();
-      // $tokenData = Request::authorization();
+      $tokenData = Request::authorization();
+      $token = $tokenData['token'] ?? null;
 
-      // if (isset($tokenData['error'])) {
-      //    throw new Exception('Authorization error: ' . $tokenData['error']);
-      // }
+      if (!isset($tokenData['error'])) {
+         return Response::json(['message' => 'Authorization error: ' . $tokenData['error']], 401, 'error');
+         die();
+      }
 
-      // $userPayload = JWT::verify($tokenData['token']);
+      //If the route is a public route, doesn't need to ferify.
       if(in_array($route, self::$publicRoutes)) return true;
 
-      
-      $user = ['user_id' => 123, 'name' => 'User name'];
-      if(!$user){
-         return Response::json(['message' => 'Please login to continue.'], 401, 'error');die();
+      $userPayload = JWT::verify($token);
+      if(!$userPayload){
+         return Response::json(['message' => 'Please login to continue.'], 401, 'error');
+         die();
       }
       
-      return $user;
+      return $userPayload;
    }
 }

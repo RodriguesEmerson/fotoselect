@@ -22,7 +22,6 @@ class Response{
       ];
 
       header('Content-Type: application/json');
-      
       $json = json_encode($response);
       if($json === false){
          http_response_code(500);

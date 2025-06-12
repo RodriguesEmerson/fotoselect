@@ -19,6 +19,7 @@ abstract class Database{
 
          self::$pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8mb4", "$user", "$password");
          self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+         return self::$pdo;
       }catch(PDOException $e){
          return null;
       }

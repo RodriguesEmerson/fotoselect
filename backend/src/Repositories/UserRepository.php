@@ -15,4 +15,13 @@ class UserRepository extends Database{
 
       return null;
    }
+
+   public static function login(array $data){
+      
+      return null;
+      $pdo = self::getConection();
+      $stmt = $pdo->prepare(
+         ''
+      );
+   }
 }

@@ -9,8 +9,8 @@ use App\Http\Route;
  * Route::method('route', 'Controller@function)
  */
 
-Route::post('/user/register', 'UserController@register');
 Route::post('/user/login', 'UserController@login');
+Route::post('/user/register', 'UserController@register');
 Route::get('/user/fetch', 'UserController@fetch');
 Route::put('/user/update', 'UserController@update');
 Route::delete('/user/delete', 'UserController@delete'); 

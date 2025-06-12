@@ -28,7 +28,7 @@ class JWT{
       }
    }
 
-   public static function verify(string $token):?object{
+   public static function verify(?string $token):?object{
       if(!$token) return null;
       try{
          return JWTHandler::decode($token, new Key(self::getSecretKey(), 'HS256'));
@@ -38,8 +38,6 @@ class JWT{
    }
 
    public static function getUserId(): ?array{
-
-      return ['user_id' => '123'];
 
       $token = Request::authorization()['token'] ?? null;
       $decoded = self::verify($token);
