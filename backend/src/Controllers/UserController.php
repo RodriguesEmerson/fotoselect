@@ -66,12 +66,18 @@ class UserController{
          $body = $request::body();
          UserValidators::checkEmptyField($body);
 
+         $serviceResponse = UserServices::register($body);
+
+         if(isset($serviceResponse['error'])){
+            return $response::json(['message' => $serviceResponse['error']], $serviceResponse['status'], 'error');
+         }
+
+         return $response::json($serviceResponse, 200, 'success');
 
       }catch(InvalidArgumentException $e){
-
-      }
-      catch (Exception $e) {
-
+          $response::json(['message' => $e->getMessage()], 400, 'error');
+      }catch (Exception $e) {
+          $response::json(['message' => 'Internal server error | Controller login-user'], 500, 'error');
       }
    }
 }

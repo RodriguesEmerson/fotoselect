@@ -37,7 +37,7 @@ class Core{
             try{
                $extendController->$action(new Request, new Response, $matches);
             }catch(\Throwable $e){
-               Response::json(['message' => 'Internal server error. | Core'], 500, 'error');
+               Response::json(['message' => $e->getMessage() . ' Internal server error. | Core'], 500, 'error');
             }
          }
       }

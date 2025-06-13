@@ -10,7 +10,6 @@ abstract class Database{
    protected static function getConection(){
       if(self::$pdo) return self::$pdo;
 
-      return 'Conneted';
       try{
          $db = $_ENV['DB_NAME'] ?? '';
          $host = $_ENV['DB_HOST'] ?? '';

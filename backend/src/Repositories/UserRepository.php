@@ -16,12 +16,27 @@ class UserRepository extends Database{
       return null;
    }
 
-   public static function login(array $data){
+   public static function login(array $credentials){
       
       return null;
       $pdo = self::getConection();
       $stmt = $pdo->prepare(
          ''
       );
+   }
+
+   public static function register(array $data):bool{
+      $pdo = self::getConection();
+      $stmt = $pdo->prepare(
+         'INSERT INTO `users` (`name`, `lastname`, `email`, `password`, `start_date`)
+                       VALUES (:name, :lastname, :email, :password, :start_date)'
+      );
+      $stmt->bindValue(':name', $data['name']);
+      $stmt->bindValue(':lastname', $data['lastname']);
+      $stmt->bindValue(':email', $data['email']);
+      $stmt->bindValue(':password', $data['password']);
+      $stmt->bindValue(':start_date', $data['start_date']);
+
+      return $stmt->execute();
    }
 }
