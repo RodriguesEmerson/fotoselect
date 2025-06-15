@@ -35,11 +35,11 @@ class UserRegisterModel{
       Validators::validateDateYMD($data['start_date']);
       Validators::validatePasswordFormat($data['password']);
       
-      $this->name = $data['name'];
-      $this->lastname = $data['lastname'];
-      $this->email = strtolower($data['email']);
-      $this->password = password_hash($data['password'], PASSWORD_DEFAULT);
-      $this->start_date = $data['start_date'];
+      $this->name = trim($data['name']);
+      $this->lastname = trim($data['lastname']);
+      $this->email = strtolower(trim($data['email']));
+      $this->password = password_hash(trim($data['password']), PASSWORD_DEFAULT);
+      $this->start_date = trim($data['start_date']);
    }
 
    public static function create(array $data):array{

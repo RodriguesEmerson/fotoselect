@@ -13,8 +13,8 @@ class UserLoginModel{
          throw new InvalidArgumentException("Please, enter a valid email.");
       }
 
-      $this->credentials['email'] = strtolower($data['email']);
-      $this->credentials['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+      $this->credentials['email'] = strtolower(trim($data['email']));
+      $this->credentials['password'] = trim($data['password']);
    }
 
    public static function create(array $data):array{

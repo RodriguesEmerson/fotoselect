@@ -20,16 +20,17 @@ class AuthMiddleware{
    ];
    public static function verify(){
       $route = Url::sanitizeRouteUrl();
+
+      //If the route is a public route, doesn't need to ferify.
+      if(in_array($route, self::$publicRoutes)) return true;
+
       $tokenData = Request::authorization();
       $token = $tokenData['token'] ?? null;
-
-      if (!isset($tokenData['error'])) {
+      if (isset($tokenData['error'])) {
          return Response::json(['message' => 'Authorization error: ' . $tokenData['error']], 401, 'error');
          die();
       }
 
-      //If the route is a public route, doesn't need to ferify.
-      if(in_array($route, self::$publicRoutes)) return true;
 
       $userPayload = JWT::verify($token);
       if(!$userPayload){

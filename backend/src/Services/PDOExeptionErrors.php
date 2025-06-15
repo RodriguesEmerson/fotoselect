@@ -9,7 +9,7 @@ abstract class PDOExeptionErrors{
       foreach(self::$errosCodes AS $code){
          switch ($code) {
             case '23000':
-               return ['error' => "This email already exists.", 'status' => 401];
+               return ['error' => "This email already exists.", 'status' => 400];
                break;
             
             default:
