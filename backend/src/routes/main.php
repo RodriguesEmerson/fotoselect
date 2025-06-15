@@ -10,6 +10,7 @@ use App\Http\Route;
  */
 
 Route::post('/user/login', 'UserController@login');
+Route::post('/user/logout', 'UserController@logout');
 Route::post('/user/register', 'UserController@register');
 Route::get('/user/fetch', 'UserController@fetch');
 Route::put('/user/update', 'UserController@update');

@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 use App\Config\Database;
+use PDO;
 
 class UserRepository extends Database{
    
@@ -18,11 +19,23 @@ class UserRepository extends Database{
 
    public static function login(array $credentials){
       
-      return null;
       $pdo = self::getConection();
       $stmt = $pdo->prepare(
-         ''
+         'SELECT * FROM `users` WHERE `email` = :email'
       );
+      $stmt->bindValue(':email', $credentials['email']);
+      $stmt->execute();
+      $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+      if(!$user) return false;
+      if(!password_verify($credentials['password'], $user['password'])) return false;
+
+      return [
+         'user_id' => $user['id'],
+         'name' => $user['name'],
+         'email' => $user['email']
+      ];
+
    }
 
    public static function register(array $data):bool{

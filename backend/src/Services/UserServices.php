@@ -5,7 +5,6 @@ use App\JWT\JWT;
 use App\Models\UserModels\UserLoginModel;
 use App\Models\UserModels\UserRegisterModel;
 use App\Repositories\UserRepository;
-use Exception;
 use InvalidArgumentException;
 use PDOException;
 use Throwable;
@@ -32,11 +31,15 @@ class UserServices extends PDOExeptionErrors{
    public static function login(array $data){
       try{
          $credentials = UserLoginModel::create($data);
-         $isUserLoged = UserRepository::login($credentials);
+         $userData = UserRepository::login($credentials);
+         
+         if(!$userData) return ['error' => 'Email or password is incorrect.', 'status' => 400];
 
-         if(!$isUserLoged) return ['error' => 'It was not possible to log, try again.', 'status' => 500];
+         $token = JWT::generate($userData, 3600);
 
-         return ['message' => 'User created successfuly.'];
+         if(!$token) return ['error' => 'It was not passoble complete login, try again.', 'status' => 500];
+
+         return ['token' => $token];
       
       }catch(InvalidArgumentException $e){
          
@@ -46,17 +49,16 @@ class UserServices extends PDOExeptionErrors{
          //Build a class with ERROR MESSAGE based on PDO code error;
          return ['error' => 'Internal server error | Serverce login-user PDO', 'status' => 500];
       }catch(Throwable $e){
-         return ['error' => 'Internal server error | Servirce fetch-user SERVER', 'status' => 500];
+         return ['error' => 'It was not passoble complete login, try again. | Servirce fetch-user SERVER', 'status' => 500];
       }
    }
 
    public static function register(array $data){
       try{
          $sentData = UserRegisterModel::create($data);
-         // echo json_encode($sentData);exit;
-         $isUserCreated = UserRepository::register($sentData);
+         $wasUserCreated = UserRepository::register($sentData);
 
-         if(!$isUserCreated) return ['error' => 'It was not possible to create your account, try again.', 'status' => 500];
+         if(!$wasUserCreated) return ['error' => 'It was not possible to create your account, try again.', 'status' => 500];
 
          return ['message' => 'User created successfuly.'];
       
