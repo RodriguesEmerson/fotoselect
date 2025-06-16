@@ -13,7 +13,7 @@ class UserRegisterModel{
    private string $password;
    private string $start_date;
 
-   private array $requiredField = ['name', 'lastname', 'email', 'password', 'start_date'];
+   private array $requiredField = ['name', 'lastname', 'email', 'password'];
 
    private function __construct(array $data){
 
@@ -32,14 +32,12 @@ class UserRegisterModel{
       };
      
       Validators::validateEmail(strtolower($data['email']));
-      Validators::validateDateYMD($data['start_date']);
       Validators::validatePasswordFormat($data['password']);
       
       $this->name = trim($data['name']);
       $this->lastname = trim($data['lastname']);
       $this->email = strtolower(trim($data['email']));
       $this->password = password_hash(trim($data['password']), PASSWORD_DEFAULT);
-      $this->start_date = trim($data['start_date']);
    }
 
    public static function create(array $data):array{

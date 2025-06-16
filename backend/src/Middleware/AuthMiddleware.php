@@ -9,7 +9,7 @@ use App\Utils\Url;
 class AuthMiddleware{
    private static array $publicRoutes = [
       '/user/login',
-      '/user/register',
+      '/user/register'
    ];
 
    /**
