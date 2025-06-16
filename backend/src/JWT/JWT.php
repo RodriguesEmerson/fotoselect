@@ -14,6 +14,12 @@ class JWT{
       return self::$secret_key ?? getenv('JWT_SECRET_KEY');
    }
 
+   /**
+    * Generate a JWT token.
+    * @param array $userData The token's payload.
+    * @param int $tokenExpiresTime The time the token will be expired/invalid.
+    * @return null|string The generated JWT Token.
+    */
    public static function generate(array $userData, int $tokenExpiresTime): ?string{
       try{
          $payload = [
@@ -28,6 +34,11 @@ class JWT{
       }
    }
 
+   /**
+    * Verify wheather the token sent in the headers is valid.
+    * @param null|string $token Token to verify.
+    * @return null|object containing the user data.
+    */
    public static function verify(?string $token):?object{
       if(!$token) return null;
       try{
@@ -37,13 +48,16 @@ class JWT{
       }
    }
 
+   /**
+    * Gets the loged user ID if the token is valid.
+    * @return null|array{userId: string}
+    */
    public static function getUserId(): ?array{
-
       $token = Request::authorization()['token'] ?? null;
       $decoded = self::verify($token);
 
       if (!$decoded) return null;
 
-      return ['userId' => $decoded->sub ?? $decoded->user_id ?? null];
+      return ['user_id' => $decoded->sub ?? $decoded->user_id ?? null];
    }
 }

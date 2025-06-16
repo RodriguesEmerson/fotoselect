@@ -1,27 +1,26 @@
 <?php 
 
 namespace App\Middleware;
-
 use App\Http\Request;
 use App\Http\Response;
 use App\JWT\JWT;
 use App\Utils\Url;
-
- /**
- * Check the JWT token and returns the user (payload).
- * @return object JWT token payload.
- * @return array If the token is invalid.
- */
 
 class AuthMiddleware{
    private static array $publicRoutes = [
       '/user/login',
       '/user/register',
    ];
-   public static function verify(){
+
+   /**
+    * Checks wheather the acessed route is public, case not, verify if the user is authenticated.
+    * - If the user is acessing a strict route and doesn't send a valid token, returns a response and stops the code execution.
+    * @return array{message: string, int: status, responseType: string} on failure.
+    */
+   public static function verify():mixed{
       $route = Url::sanitizeRouteUrl();
 
-      //If the route is a public route, doesn't need to ferify.
+      //If is a public route, doesn't need to ferify it.
       if(in_array($route, self::$publicRoutes)) return true;
 
       $tokenData = Request::authorization();
@@ -30,7 +29,6 @@ class AuthMiddleware{
          return Response::json(['message' => 'Authorization error: ' . $tokenData['error']], 401, 'error');
          die();
       }
-
 
       $userPayload = JWT::verify($token);
       if(!$userPayload){

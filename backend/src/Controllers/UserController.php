@@ -13,7 +13,6 @@ use Throwable;
 class UserController{
 
    /**
-    *
     * @param Request $request Object representing the HTTP request.
     * @param Response $response Object used to return the HTTP response.
     *
@@ -40,15 +39,22 @@ class UserController{
       }
    }
 
-   public static function fetch(Request $request, Response $response){
+   /**
+    * @param Request $request Object representing the HTTP request.
+    * @param Response $response Object used to return the HTTP response.
+    *
+    * @return array Returns a array containing the user data on success,
+    *               or an error message on failure with the appropriate HTTP status code.
+    */
+   public static function fetch(Request $request, Response $response):array{
       try{
-         $serviceResponse = UserServices::fetch();
+         $userData = UserServices::fetch();
 
-         if(isset($serviceResponse['error'])){
-            return $response::json(['message' => $serviceResponse['error']], $serviceResponse['status'], 'error');
+         if(isset($userData['error'])){
+            return $response::json(['message' => $userData['error']], $userData['status'], 'error');
          }
 
-         return $response::json($serviceResponse, 200, 'success');       
+         return $response::json($userData, 200, 'success');       
       }catch(Exception $e){
          $response::json(['message' => 'Internal server error | Controller fetch-user'], 500, 'error');
       }
@@ -56,14 +62,13 @@ class UserController{
    
 
    /**
-    *
     * @param Request $request Object representing the HTTP request.
     * @param Response $response Object used to return the HTTP response.
     *
-    * @return mixed Returns a JSON response containing login data on success,
-    *               or an error message with the appropriate HTTP status code on failure.
+    * @return array Returns a array containing success message on success,
+    *               or an error message on failure with the appropriate HTTP status code.
     */
-   public static function login(Request $request, Response $response){
+   public static function login(Request $request, Response $response):array{
       try{
          $body = $request::body();
          UserValidators::checkEmptyField($body);
@@ -74,6 +79,7 @@ class UserController{
             return $response::json(['message' => $serviceResponse['error']], $serviceResponse['status'], 'error');
          }
 
+         //Set the token
          if(!Cookies::set('JWTToken', $serviceResponse['token'])){
             return $response::json(['message' => 'Internal server error'], 500, 'error');
          }
@@ -94,10 +100,10 @@ class UserController{
     * @param Request $request Object representing the HTTP request.
     * @param Response $response Object used to return the HTTP response.
     *
-    * @return mixed Returns a JSON response containing login data on success,
-    *               or an error message with the appropriate HTTP status code on failure.
+    * @return array Returns a array containing success message on success,
+    *               or an error message on failure with the appropriate HTTP status code.
     */
-   public static function logout(Request $request, Response $response){
+   public static function logout(Request $request, Response $response):array{
       try{
 
          $wasCookieDeleted = Cookies::delete('JWTToken');

@@ -3,6 +3,11 @@
 namespace App\Utils;
 
 class Url{
+
+   /**
+    * Gets the acessed URL sucurely, removing not allowed characters. Regex: ('/[^a-zA-Z0-9\/_-]/).
+    * @return string The sinitized url route.
+    */
    public static function sanitizeRouteUrl(): string {
       $url = filter_input(INPUT_GET, 'url', FILTER_SANITIZE_URL);  
       if (!$url) return '/';

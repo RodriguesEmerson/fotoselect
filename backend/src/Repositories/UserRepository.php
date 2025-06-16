@@ -6,18 +6,17 @@ use PDO;
 
 class UserRepository extends Database{
    
-   public static function fetch(string $userId){
-      $connection = self::getConection();
-      $user = ['user_id' => '123', 'name' => 'Emerson', 'email' => 'emerson@teste.com'];
-
-      if($userId == $user['user_id']){
-         return ['user_id' => '123', 'name' => 'Emerson', 'email' => 'emerson@teste.com'];
-      }
-
-      return null;
+   public static function fetch(string $userId):bool|array{
+      $pdo = self::getConection();
+      $stmt = $pdo->prepare(
+         'SELECT `name`, `lastname`, `email` FROM `users` WHERE `id` = :id'
+      );
+      $stmt->bindValue(':id', $userId);
+      $stmt->execute();
+      return $stmt->fetch(PDO::FETCH_ASSOC);
    }
 
-   public static function login(array $credentials){
+   public static function login(array $credentials):bool|array{
       
       $pdo = self::getConection();
       $stmt = $pdo->prepare(
