@@ -5,7 +5,7 @@ use App\Cookies\Cookies;
 use App\Http\Request;
 use App\Http\Response;
 use App\Services\UserServices;
-use App\Utils\UserValidators;
+use App\Utils\Validators;
 use Exception;
 use InvalidArgumentException;
 use Throwable;
@@ -22,7 +22,7 @@ class UserController{
    public static function register(Request $request, Response $response){
       try{
          $body = $request::body();
-         UserValidators::checkEmptyField($body);
+         Validators::checkEmptyField($body);
 
          $serviceResponse = UserServices::register($body);
 
@@ -71,7 +71,7 @@ class UserController{
    public static function login(Request $request, Response $response):array{
       try{
          $body = $request::body();
-         UserValidators::checkEmptyField($body);
+         Validators::checkEmptyField($body);
 
          $serviceResponse = UserServices::login($body);
 

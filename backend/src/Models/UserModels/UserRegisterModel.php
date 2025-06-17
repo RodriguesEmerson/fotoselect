@@ -2,35 +2,28 @@
 
 namespace App\Models\UserModels;
 
+use App\Models\ModelInterface;
 use App\Utils\Validators;
 use InvalidArgumentException;
 
-class UserRegisterModel{
+class UserRegisterModel implements ModelInterface{
 
    private string $name;
    private string $lastname;
    private string $email;
    private string $password;
-   private string $start_date;
 
-   private array $requiredField = ['name', 'lastname', 'email', 'password'];
+   private array $requiredFields = ['name', 'lastname', 'email', 'password'];
 
    private function __construct(array $data){
-
-      foreach ($this->requiredField AS $field) {
+      foreach ($this->requiredFields AS $field) {
          if(!isset($data[$field])){
             throw new InvalidArgumentException("The field ($field) was not sent.");
          };
       }
 
-      if(!Validators::validateString($data['name'], 2, 100)){
-         throw new InvalidArgumentException("The field (name) sent doesn't meets the requirements.");
-      };
-
-      if(!Validators::validateString($data['lastname'], 2, 100)){
-         throw new InvalidArgumentException("The field (lastname) sent doesn't meets the requirements.");         
-      };
-     
+      Validators::validateString('name', $data['name'], 2, 100);
+      Validators::validateString('lastname', $data['lastname'], 2, 100);
       Validators::validateEmail(strtolower($data['email']));
       Validators::validatePasswordFormat($data['password']);
       
@@ -48,7 +41,6 @@ class UserRegisterModel{
          'lastname' => $instace->lastname,
          'email' => $instace->email,
          'password' => $instace->password,
-         'start_date' => $instace->start_date
       ];
    }
 }

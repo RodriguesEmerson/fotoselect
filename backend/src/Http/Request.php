@@ -21,10 +21,16 @@ class Request{
       if ($method === 'GET') return $_GET;
 
       $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+
       if(str_contains($contentType, 'application/json')){
          $body = json_decode(file_get_contents('php://input'), true) ?? [];
          return is_array($body) ? $body : [];
       }
+
+      if (str_contains($contentType, 'multipart/form-data')) {
+        //Put together the form data into an array.
+        return array_merge($_POST, ['files' => $_FILES]);
+    }
 
       return [];
    }

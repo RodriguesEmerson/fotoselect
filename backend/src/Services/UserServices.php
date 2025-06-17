@@ -27,10 +27,8 @@ class UserServices extends PDOExeptionErrors{
          return ['message' => 'User created successfuly.'];
       
       }catch(InvalidArgumentException $e){
-         
          return ['error' => $e->getMessage() . 'Serverce register-user InvalidArgumentExeption', 'status' => 400];
       }catch(PDOException $e){
-   
          return self::getErrorBasedOnCode($e->getCode());
       }catch(Throwable $e){
          return ['error' => $e->getMessage() .  'Internal server error | Servirce register-user SERVER', 'status' => 500];

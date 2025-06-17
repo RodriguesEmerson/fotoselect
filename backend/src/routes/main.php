@@ -15,3 +15,5 @@ Route::post('/user/register', 'UserController@register');
 Route::get('/user/fetch', 'UserController@fetch');
 Route::put('/user/update', 'UserController@update');
 Route::delete('/user/delete', 'UserController@delete'); 
+
+Route::post('/galery/create', 'GaleryController@create');
