@@ -16,6 +16,7 @@ class GaleryCreateModel implements ModelInterface{
    private bool $watermark;
    private string $status;
    private string $password;
+   private string $tmp_cover;
 
    private array $requiredFields = [
       'user_foreign_key', 'galery_name', 'galery_cover', 'deadline', 'private','watermark', 'status', 'password'
@@ -28,6 +29,7 @@ class GaleryCreateModel implements ModelInterface{
       if(isset($data['files']['galery_cover'])){
          Validators::validateImage($this->allowedGaleryCoverExtention, $data['files']['galery_cover']);
          $data['galery_cover'] = $data['files']['galery_cover']['name'];
+         $this->tmp_cover = $data['files']['galery_cover']['tmp_name'];
       }
 
       //Verify if all required fields was sent.
@@ -65,6 +67,7 @@ class GaleryCreateModel implements ModelInterface{
          'user_foreign_key' => $instance->user_foreign_key, 
          'galery_name' => $instance->galery_name, 
          'galery_cover' => $instance->galery_cover, 
+         'tmp_cover' => $instance->tmp_cover, 
          'deadline' => $instance->deadline, 
          'private' => $instance->private,
          'watermark' => $instance-> watermark, 

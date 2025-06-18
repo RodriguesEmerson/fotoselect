@@ -15,7 +15,6 @@ EnvLoader::load();
 
 AuthMiddleware::verify();
 
-
 //Enable Routes
 Core::dispatch(Route::routes());
 

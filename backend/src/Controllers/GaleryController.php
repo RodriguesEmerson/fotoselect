@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\CloudinaryHandle\UploadImage;
 use App\Http\Request;
 use App\Http\Response;
 use App\Services\GaleryServices;
