@@ -5,7 +5,7 @@ namespace App\Services;
 abstract class PDOExeptionErrors{
    private static array $errosCodes = [
       '23000' => ['error' => "This email already exists.", 'status' => 400],
-      '23000GALERYCREATE' => ['error' => "The galery name already exists.", 'status' => 400],
+      '23000GALERYCREATE' => ['error' => "This galery name already exists.", 'status' => 400],
    ];
 
    protected static function getErrorBasedOnCode(string $sentCode){

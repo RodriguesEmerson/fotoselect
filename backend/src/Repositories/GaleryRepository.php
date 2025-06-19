@@ -9,7 +9,7 @@ use PDO;
 
 class GaleryRepository extends Database{
 
-   public static function create(array $data):bool{
+   public static function create(array $data){
       $pdo = self::getConection();
       $stmt = $pdo->prepare(
          'INSERT INTO 
@@ -31,8 +31,9 @@ class GaleryRepository extends Database{
          $pdo->beginTransaction();
 
          //Try to save the galery_cover on Cloudinary
-         $wasImageUploaded = UploadImage::upload($data['galery_cover'], $data['tmp_cover']);
-         if(!$wasImageUploaded){
+         $wasImageUploaded = UploadImage::upload($data['tmp_cover'], $data['galery_cover']);
+         if(isset($wasImageUploaded['error'])){
+            // throw new Exception($wasImageUploaded['error']);
             throw new Exception('Error trying to save the image on Cloudinary.');
          }
 
@@ -40,15 +41,21 @@ class GaleryRepository extends Database{
 
          $pdo->commit();
          return true;
-
+       
       }catch(Exception $e){
          // Rollback at Database.
          $pdo->rollBack();
 
          //Delete image from Cloudinary.
-         $wasImageDeleted = UploadImage::delete($data['galery_cover']);
-         
-         return false;
+         UploadImage::delete($data['galery_cover']);
+
+         //Throws PDO errors.
+         if(str_contains($e->getMessage(), 'SQL')){
+            throw new \PDOException($e->getMessage(), $e->getCode());
+         }
+
+         //Throws Cloudinary errors.
+         throw new Exception($e->getMessage());
       }
 
    }

@@ -15,21 +15,20 @@ class UploadImage{
 
       try{
          $result = $cloudinary->uploadApi()->upload($imagePath, ['public_id' => 'fotoselect/' .$imageId]);
-         return true;
-
+         return $result;
       }catch (\Exception $e) {
-         return false;
+         return ['error' => $e->getMessage()];
       }
    }
 
    public static function delete(string $imageId){
       $config = new Configuration($_ENV['CLOUDINARY_URL']);
       $cloudinary = new Cloudinary($config);
-        try {
-            $cloudinary->uploadApi()->destroy($imageId);
-            return true;
-        } catch (Exception $e) {
-            return false;
-        }
+         try {
+            $result = $cloudinary->uploadApi()->destroy('fotoselect/' . $imageId);
+            return $result;
+         } catch (Exception $e) {
+            return $e->getMessage();
+         }
    }
 }
