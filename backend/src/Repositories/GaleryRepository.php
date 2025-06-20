@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\CloudinaryHandle\UploadImage;
+use App\CloudinaryHandle\CloudinaryHandleImage;
 use App\Config\Database;
 use Exception;
 use PDO;
@@ -31,7 +31,7 @@ class GaleryRepository extends Database{
          $pdo->beginTransaction();
 
          //Try to save the galery_cover on Cloudinary
-         $wasImageUploaded = UploadImage::upload($data['tmp_cover'], $data['galery_cover']);
+         $wasImageUploaded = CloudinaryHandleImage::upload($data['tmp_cover'], $data['galery_cover']);
          if(isset($wasImageUploaded['error'])){
             // throw new Exception($wasImageUploaded['error']);
             throw new Exception('Error trying to save the image on Cloudinary.');
@@ -47,7 +47,7 @@ class GaleryRepository extends Database{
          $pdo->rollBack();
 
          //Delete image from Cloudinary.
-         UploadImage::delete($data['galery_cover']);
+         CloudinaryHandleImage::delete($data['galery_cover']);
 
          //Throws PDO errors.
          if(str_contains($e->getMessage(), 'SQL')){

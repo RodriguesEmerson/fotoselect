@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\CloudinaryHandle\UploadImage;
 use App\JWT\JWT;
 use App\Models\GaleryModels\GaleryCreateModel;
 use App\Repositories\GaleryRepository;
@@ -19,17 +18,14 @@ class GaleryServices extends PDOExeptionErrors{
          $data['user_foreign_key'] = (int)$userId;
          $data = GaleryCreateModel::create($data);
 
-         $wasGaleryCreated = GaleryRepository::create($data);
-         if(isset($wasGaleryCreated['error'])) return['error' => $wasGaleryCreated['error'], 'status' => 500];
-         if(!$wasGaleryCreated) return ['error' => 'Somethig went wrong, try again', 'status' => 500];
+         GaleryRepository::create($data);
 
          return ['message' => 'Galery has been created successfuly.'];
-
       } catch (InvalidArgumentException $e) {
 
          return ['error' => $e->getMessage(), 'status' => 400]; 
       }catch (\PDOException $e) {
-         
+
          return PDOExeptionErrors::getErrorBasedOnCode($e->getCode() . 'GALERYCREATE');
       }catch(Exception $e){
 

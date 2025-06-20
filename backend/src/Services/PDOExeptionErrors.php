@@ -8,6 +8,11 @@ abstract class PDOExeptionErrors{
       '23000GALERYCREATE' => ['error' => "This galery name already exists.", 'status' => 400],
    ];
 
+   /**
+    * Based on a list of codes, returns the apropriate error message and code.
+    * @param string $sentCode The error code.
+    * @return array{message: string, status: int}
+    */
    protected static function getErrorBasedOnCode(string $sentCode){
       switch ($sentCode) {
          case '23000':
