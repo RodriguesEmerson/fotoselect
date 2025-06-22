@@ -4,6 +4,12 @@ namespace App\Utils;
 
 class ImagesHandle{
 
+   /**
+    * Separate the valid and invalid images by validating each image.
+    * @param array $folder Array with images to verify.
+    * @param string $folderName Name of the index where are the images.
+    * @return array{validImages: array, invalidImages: array}
+    */
    public static function getValidAndInvalidImages(array $folder, string $folderName):array{
       $validImages = [];
       $invalidImages = [];

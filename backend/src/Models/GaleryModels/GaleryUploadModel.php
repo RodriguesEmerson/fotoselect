@@ -21,11 +21,11 @@ class GaleryUploadModel implements ModelInterface{
       //Verify if all required fields was sent.
       foreach ($this->requiredFields AS $field) {
          if(!isset($data[$field])){
-            throw new InvalidArgumentException("The field ($field) was not sent.");
+            throw new InvalidArgumentException("The field ($field) was not sent.", 400);
          };
       }
 
-      Validators::validateNumeric('galery id', $data['galery_id']);
+      Validators::validateNumeric('galery id', $data['galery_id'], 11);
 
       $this->user_id = trim($data['user_id']);
       $this->galery_id = trim($data['galery_id']);

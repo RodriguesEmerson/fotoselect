@@ -8,7 +8,7 @@ use InvalidArgumentException;
 
 class GaleryCreateModel implements ModelInterface{
 
-   private int $user_foreign_key;
+   private int $user_id;
    private string $galery_name;
    private string $galery_cover;
    private string $deadline;
@@ -19,7 +19,7 @@ class GaleryCreateModel implements ModelInterface{
    private string $tmp_cover;
 
    private array $requiredFields = [
-      'user_foreign_key', 'galery_name', 'galery_cover', 'deadline', 'private','watermark', 'status', 'password'
+      'user_id', 'galery_name', 'galery_cover', 'deadline', 'private','watermark', 'status', 'password'
    ];
    private array $allowedGaleryCoverExtention = ['png', 'jpg', 'jpeg'];
    private array $validsStatus = ['pending'];
@@ -34,7 +34,7 @@ class GaleryCreateModel implements ModelInterface{
 
       //Verify if all required fields was sent.
       foreach ($this->requiredFields AS $field) {
-         if($field === 'user_foreign_key') continue;
+         if($field === 'user_id') continue;
          if(!isset($data[$field])){
             throw new InvalidArgumentException("The field ($field) was not sent.");
          };
@@ -49,9 +49,9 @@ class GaleryCreateModel implements ModelInterface{
          throw new InvalidArgumentException("The field status does not meets the requirements.");
       }
 
-      $this->user_foreign_key = trim($data['user_foreign_key']);
-      $this->galery_name = trim($data['galery_name']);
-      $this->galery_cover = trim($data['galery_cover']. '-' . time() . '-' . rand(1000000, 12340563934));
+      $this->user_id = trim($data['user_id']);
+      $this->galery_name = strip_tags(trim($data['galery_name']));
+      $this->galery_cover = uniqid(trim($data['galery_cover']));
       $this->deadline = $data['deadline'];
       $this->private = $data['private'];
       $this->watermark = $data['watermark'];
@@ -64,7 +64,7 @@ class GaleryCreateModel implements ModelInterface{
       $instance = new self($data);
 
       return [
-         'user_foreign_key' => $instance->user_foreign_key, 
+         'user_id' => $instance->user_id, 
          'galery_name' => $instance->galery_name, 
          'galery_cover' => $instance->galery_cover, 
          'tmp_cover' => $instance->tmp_cover, 

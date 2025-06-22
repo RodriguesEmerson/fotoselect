@@ -42,31 +42,39 @@ class CloudinaryHandleImage{
       $cloudinary = new Cloudinary($config);
       try {
          $result = $cloudinary->uploadApi()->destroy('fotoselect/' . $imageId);
+         
          return $result;
       } catch (Exception $e) {
          return ['error' => $e->getMessage()];
       }
    }
 
-
+   /**
+    * Upload an array of images.
+    * @param array $images Containing the images.
+    * @return array{seccesfulyUpdloadedImages: array, failedUploadImages: array}
+    */
    public static function updloadLots(array $images):array{
       $failedUploadImages = [];
       $seccesfulyUpdloadedImages = [];
 
-      foreach ($images as $image) {
-         $wasImageUploaded = self::upload($image['tmp_name'], $image['src']);
+      if(count($images) > 0){
+         foreach ($images as $image) {
+            $wasImageUploaded = self::upload($image['tmp_name'], $image['src']);
 
-         if(!isset($wasImageUploaded['error'])){
-            $seccesfulyUpdloadedImages[] = $image;
-            continue;
+            if(!isset($wasImageUploaded['error'])){
+               $image['src'] = $wasImageUploaded['url']; //Set the Cloudinary url into the image.
+               $seccesfulyUpdloadedImages[] = $image;
+               continue;
+            }
+
+            $imagesFailedUpload[] = $image;
          }
-
-         $imagesFailedUpload[] = $image;
       }
 
       return [
          'seccesfulyUpdloadedImages' => $seccesfulyUpdloadedImages,
-         'FailedUploadImages' => $failedUploadImages
+         'failedUploadImages' => $failedUploadImages
       ];
    }
 }

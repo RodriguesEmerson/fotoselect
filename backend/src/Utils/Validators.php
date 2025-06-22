@@ -16,7 +16,7 @@ class Validators{
    public static function checkEmptyField(array $data){
       foreach($data AS $field => $value){
          if(!isset($value) || empty($value)){
-            throw new InvalidArgumentException("The field ($field) is required.");
+            throw new InvalidArgumentException("The field ($field) is required.", 400);
          }
       }
    }
@@ -40,7 +40,7 @@ class Validators{
     */
    public static function validateEmail(string $email):bool{
       if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-         throw new InvalidArgumentException("Invalid email");
+         throw new InvalidArgumentException("Invalid email", 400);
       }
       return true;
    }
@@ -53,10 +53,10 @@ class Validators{
     */
    public static function validatePasswordFormat($password):bool{
       if(!is_string($password)){
-         throw new InvalidArgumentException("Invalid password format.");
+         throw new InvalidArgumentException("Invalid password format.", 400);
       }
       if(strlen($password) < 8){
-         throw new InvalidArgumentException("Password must be at least 8 characters long.");
+         throw new InvalidArgumentException("Password must be at least 8 characters long.", 400);
       }
 
       return true;
@@ -75,7 +75,7 @@ class Validators{
 
       if(!is_string($string) || strlen($string) < $min || strlen($string) > $max){
          if($returnBool) return false;
-         throw new InvalidArgumentException("The field ($fieldName) sent doesn't meets the requirements.");
+         throw new InvalidArgumentException("The field ($fieldName) sent doesn't meets the requirements.", 400);
       };
 
       return true;
@@ -97,14 +97,28 @@ class Validators{
       if(in_array($value, ['true', '1', 1])) return true;
       if(in_array($value, ['false', '0', 0])) return false;
 
-      throw new InvalidArgumentException("The field ($fieldName) is invalid. Expected a boolean value");
+      throw new InvalidArgumentException("The field ($fieldName) is invalid. Expected a boolean value", 400);
    }
    
-   
-   public static function validateNumeric(string $fieldName,$value){
+   /**
+    * Validate numerics
+    * Checks if the value is a number, whether it is int|float or string.
+    * @param string $fieldName The name of the field being validated (used for exception messages).
+    * @param mixed $value The value that will be validated.
+    * @param int $max The maximum length the number can be.
+    * @return bool True if the value is valid.
+    * @throws InvalidArgumentException If the value does not meets the expected.
+    */
+   public static function validateNumeric(string $fieldName,$value, int $max){
       if(!is_numeric($value)){
-         throw new InvalidArgumentException("The field ($fieldName) is invalid. Expected a numeric value");
+         throw new InvalidArgumentException("The field ($fieldName) is invalid. Expected a numeric value", 400);
       }
+      
+      if(strlen($value) > $max){
+         throw new InvalidArgumentException("The field ($fieldName) is invalid. Expected a number with maximum 11 characters", 400);
+      }
+
+      return true;
    }
 
    /**
@@ -157,7 +171,7 @@ class Validators{
       
       
       if($errorMessage){
-         throw new InvalidArgumentException($errorMessage);
+         throw new InvalidArgumentException($errorMessage, 400);
       }
 
       return true;
