@@ -12,7 +12,6 @@ class GaleryUploadModel implements ModelInterface{
    private int $galery_id;
    private array $images;
 
-
    private array $requiredFields = [
       'galery_id', 'images'
    ];

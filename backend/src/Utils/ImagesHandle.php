@@ -25,7 +25,7 @@ class ImagesHandle{
             'tmp_name'  => $folder[$folderName]['tmp_name'][$i],      
             'error'     => $folder[$folderName]['error'][$i],
             'size'      => $folder[$folderName]['size'][$i],
-            'src'    => str_replace(' ', '', uniqid(pathinfo($folder[$folderName]['name'][$i], PATHINFO_FILENAME) . "_"))
+            'cdl_id'    => str_replace(' ', '', uniqid(pathinfo($folder[$folderName]['name'][$i], PATHINFO_FILENAME) . "_"))
          ];
       };
       

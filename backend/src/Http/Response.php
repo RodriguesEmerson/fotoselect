@@ -21,6 +21,8 @@ class Response{
          'content'    => $content
       ];
 
+      // echo json_encode($_ENV['APP_ENV']);exit;
+
       header('Content-Type: application/json');
       $json = json_encode($response);
       if($json === false){

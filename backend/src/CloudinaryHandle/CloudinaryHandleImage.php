@@ -24,7 +24,7 @@ class CloudinaryHandleImage{
       }
 
       try{
-         $result = $cloudinary->uploadApi()->upload($imagePath, ['public_id' => 'fotoselect/' .$imageId]);
+         $result = $cloudinary->uploadApi()->upload($imagePath, ['public_id' => 'fotoselect/' . $imageId]);
          return $result;
       }catch (\Exception $e) {
          return ['error' => $e->getMessage()];
@@ -60,7 +60,7 @@ class CloudinaryHandleImage{
 
       if(count($images) > 0){
          foreach ($images as $image) {
-            $wasImageUploaded = self::upload($image['tmp_name'], $image['src']);
+            $wasImageUploaded = self::upload($image['tmp_name'], $image['cdl_id']);
 
             if(!isset($wasImageUploaded['error'])){
                $image['src'] = $wasImageUploaded['url']; //Set the Cloudinary url into the image.

@@ -10,7 +10,7 @@ class GaleryCreateModel implements ModelInterface{
 
    private int $user_id;
    private string $galery_name;
-   private string $galery_cover;
+   private string $cdl_id;
    private string $deadline;
    private bool $private;
    private bool $watermark;
@@ -19,7 +19,7 @@ class GaleryCreateModel implements ModelInterface{
    private string $tmp_cover;
 
    private array $requiredFields = [
-      'user_id', 'galery_name', 'galery_cover', 'deadline', 'private','watermark', 'status', 'password'
+      'user_id', 'galery_name', 'deadline', 'private','watermark', 'status', 'password'
    ];
    private array $allowedGaleryCoverExtention = ['png', 'jpg', 'jpeg'];
    private array $validsStatus = ['pending'];
@@ -28,8 +28,8 @@ class GaleryCreateModel implements ModelInterface{
 
       if(isset($data['files']['galery_cover'])){
          Validators::validateImage($this->allowedGaleryCoverExtention, $data['files']['galery_cover']);
-         $data['galery_cover'] = $data['files']['galery_cover']['name'];
          $this->tmp_cover = $data['files']['galery_cover']['tmp_name'];
+         $this->cdl_id = uniqid(str_replace(' ', '', trim($data['files']['galery_cover']['name'])));
       }
 
       //Verify if all required fields was sent.
@@ -41,6 +41,7 @@ class GaleryCreateModel implements ModelInterface{
       }
 
       Validators::validateString('galery_name' ,$data['galery_name'], 1, 100);
+      Validators::validateString('cdl_id' ,$this->cdl_id, 1, 50);
       Validators::validateDateYMD('deadline',$data['deadline']);
       $data['private'] = Validators::validateAndConvertToBool('private', $data['private']);
       $data['watermark'] = Validators::validateAndConvertToBool('watermark', $data['watermark']);
@@ -51,7 +52,6 @@ class GaleryCreateModel implements ModelInterface{
 
       $this->user_id = trim($data['user_id']);
       $this->galery_name = strip_tags(trim($data['galery_name']));
-      $this->galery_cover = uniqid(trim($data['galery_cover']));
       $this->deadline = $data['deadline'];
       $this->private = $data['private'];
       $this->watermark = $data['watermark'];
@@ -66,7 +66,7 @@ class GaleryCreateModel implements ModelInterface{
       return [
          'user_id' => $instance->user_id, 
          'galery_name' => $instance->galery_name, 
-         'galery_cover' => $instance->galery_cover, 
+         'cdl_id' => $instance->cdl_id, 
          'tmp_cover' => $instance->tmp_cover, 
          'deadline' => $instance->deadline, 
          'private' => $instance->private,
