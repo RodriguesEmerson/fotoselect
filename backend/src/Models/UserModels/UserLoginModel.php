@@ -2,9 +2,10 @@
 
 namespace App\Models\UserModels;
 
+use App\Models\ModelInterface;
 use InvalidArgumentException;
 
-class UserLoginModel{
+class UserLoginModel implements ModelInterface{
    
    private array $credentials = [];
 
@@ -17,7 +18,7 @@ class UserLoginModel{
       $this->credentials['password'] = trim($data['password']);
    }
 
-   public static function create(array $data):array{
+   public static function toArray(array $data):array{
       $instace = new self($data);
       return $instace->credentials;
    }

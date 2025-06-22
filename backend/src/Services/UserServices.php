@@ -19,7 +19,7 @@ class UserServices extends PDOExeptionErrors{
    */
    public static function register(array $data){
       try{
-         $sentData = UserRegisterModel::create($data);
+         $sentData = UserRegisterModel::toArray($data);
          $wasUserCreated = UserRepository::register($sentData);
 
          if(!$wasUserCreated) return ['error' => 'It was not possible to create your account, try again.', 'status' => 500];
@@ -70,7 +70,7 @@ class UserServices extends PDOExeptionErrors{
    */
    public static function login(array $data){
       try{
-         $credentials = UserLoginModel::create($data);
+         $credentials = UserLoginModel::toArray($data);
          $userData = UserRepository::login($credentials);
          
          if(!$userData) return ['error' => 'Email or password is incorrect.', 'status' => 400];

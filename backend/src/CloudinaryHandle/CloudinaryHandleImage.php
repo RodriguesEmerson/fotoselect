@@ -1,6 +1,8 @@
 <?php 
 
 namespace App\CloudinaryHandle;
+
+use App\Utils\Validators;
 use Cloudinary\Configuration\Configuration;
 use Cloudinary\Cloudinary;
 use Exception;
@@ -16,6 +18,10 @@ class CloudinaryHandleImage{
    public static function upload(string $imagePath, string $imageId){
       $config = new Configuration($_ENV['CLOUDINARY_URL']);
       $cloudinary = new Cloudinary($config);
+
+      if(!Validators::validateString('Image name', $imageId, 1, 100, true)){
+         return ['error' => 'The image name does not meets the requirements.'];
+      }
 
       try{
          $result = $cloudinary->uploadApi()->upload($imagePath, ['public_id' => 'fotoselect/' .$imageId]);
@@ -40,5 +46,27 @@ class CloudinaryHandleImage{
       } catch (Exception $e) {
          return ['error' => $e->getMessage()];
       }
+   }
+
+
+   public static function updloadLots(array $images):array{
+      $failedUploadImages = [];
+      $seccesfulyUpdloadedImages = [];
+
+      foreach ($images as $image) {
+         $wasImageUploaded = self::upload($image['tmp_name'], $image['src']);
+
+         if(!isset($wasImageUploaded['error'])){
+            $seccesfulyUpdloadedImages[] = $image;
+            continue;
+         }
+
+         $imagesFailedUpload[] = $image;
+      }
+
+      return [
+         'seccesfulyUpdloadedImages' => $seccesfulyUpdloadedImages,
+         'FailedUploadImages' => $failedUploadImages
+      ];
    }
 }

@@ -17,3 +17,4 @@ Route::put('/user/update', 'UserController@update');
 Route::delete('/user/delete', 'UserController@delete'); 
 
 Route::post('/galery/create', 'GaleryController@create');
+Route::post('/galery/upload', 'GaleryController@upload');

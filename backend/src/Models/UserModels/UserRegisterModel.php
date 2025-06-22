@@ -33,7 +33,7 @@ class UserRegisterModel implements ModelInterface{
       $this->password = password_hash(trim($data['password']), PASSWORD_DEFAULT);
    }
 
-   public static function create(array $data):array{
+   public static function toArray(array $data):array{
       $instace = new self($data);
       
       return [

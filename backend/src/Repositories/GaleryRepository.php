@@ -9,7 +9,7 @@ use PDO;
 
 class GaleryRepository extends Database{
 
-   public static function create(array $data){
+   public function create(array $data){
       $pdo = self::getConection();
       $stmt = $pdo->prepare(
          'INSERT INTO 
@@ -57,6 +57,51 @@ class GaleryRepository extends Database{
          //Throws Cloudinary errors.
          throw new Exception($e->getMessage());
       }
-
    }
+
+   public function upload(array $data){
+      //Create querie
+      $colunms = [
+         '`user_foreign_key`', '`galery_foreign_key`', '`name`', '`src`', '`extention`'
+      ];
+      $placeholders = [];
+      $params = [];
+
+      for($i = 0; $i < count($data['images']); $i++){
+
+         $currentPlaceholders = [
+            ':user_foreign_key_' . $i,
+            ':galery_foreign_key_' . $i,
+            ':name_' . $i,
+            ':src_' . $i,
+            ':extention_' . $i
+         ];
+
+         $params[":user_foreign_key_" . $i] = $data['user_id']; 
+         $params[":galery_foreign_key_" . $i] = $data['galery_id']; 
+         $params[":name_" . $i] = $data['images'][$i]['name']; 
+         $params[":src_" . $i] = $data['images'][$i]['src']; 
+         $params[":extention_" . $i] = 'png'; 
+
+         $placeholders[] = '(' . implode(',', $currentPlaceholders) . ')';
+      };
+
+
+      $query = (
+         "INSERT INTO `images` (" . 
+          implode(',', $colunms) . 
+         ") VALUES " . implode(',', $placeholders)
+      );
+      // echo json_encode([$params, implode(',', $placeholders)]);exit;
+      // echo json_encode(implode(',', $placeholders));exit;
+      try{
+         $pdo = self::getConection();
+         $stmt = $pdo->prepare($query);
+         echo json_encode($stmt->execute($params));
+      }catch(Exception $e){
+         echo json_encode($e->getMessage());
+      }
+   }
+
+
 }

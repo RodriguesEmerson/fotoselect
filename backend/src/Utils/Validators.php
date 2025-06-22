@@ -68,10 +68,13 @@ class Validators{
     * @param mixed $string The string to be cheked.
     * @param int $min The min length the string must to be.
     * @param int $max The max length the string must to be.
+    * @param bool $returnBool Return only a boolean value. True case the string does not meets the requirements.
     * @return bool True wheather it meets the requirements or False if not.
     */
-   public static function validateString(string $fieldName, $string, int $min, int $max):bool{
+   public static function validateString(string $fieldName, $string, int $min, int $max, bool $returnBool = false):bool{
+
       if(!is_string($string) || strlen($string) < $min || strlen($string) > $max){
+         if($returnBool) return false;
          throw new InvalidArgumentException("The field ($fieldName) sent doesn't meets the requirements.");
       };
 
@@ -96,42 +99,65 @@ class Validators{
 
       throw new InvalidArgumentException("The field ($fieldName) is invalid. Expected a boolean value");
    }
+   
+   
+   public static function validateNumeric(string $fieldName,$value){
+      if(!is_numeric($value)){
+         throw new InvalidArgumentException("The field ($fieldName) is invalid. Expected a numeric value");
+      }
+   }
 
    /**
     * Checks if the image has a valid format.
     * @param array $allowedExtensions Allowed extensions (e.g., ['jpg', 'jpeg', 'png']).
     * @param array $imageFile The complete image file.
-    * @throws InvalidArgumentException Informing the image extension is invalid.
+    * @param bool $returnBool Return only a boolean value. True case the image is valid and False case not.
     * @return bool True if it is a valid image.
+    * @throws InvalidArgumentException Throws an error informing the image extension is invalid. $returnBool must be False.
     */
-   public static function validateImage(array $allowedExtensions, array $imageFile):bool{
+   public static function validateImage(array $allowedExtensions, array $imageFile, $returnBool = false):bool{
+
+      $errorMessage = null;
+
       if(!isset($imageFile['tmp_name']) || $imageFile['error'] !== 0){ 
-         throw new InvalidArgumentException("Upload failed or image not provided.");
+         $errorMessage = 'Upload failed or image not provided.';
       }
       
-      if(!getimagesize($imageFile['tmp_name'])){
-         throw new InvalidArgumentException( $imageFile['name']. ": Is not a valid image.");
+      if(!getimagesize($imageFile['tmp_name']) && !$errorMessage){
+         $errorMessage = $imageFile['name']. ": Is not a valid image.";
       }
       
-      // Gets the real MIME
-      $mime = mime_content_type($imageFile['tmp_name']);
-
-      // Map MIME to real extension
-      $mimeToExt = [
-         'image/jpeg' => 'jpg',
-         'image/png' => 'png',
-         'image/jpg' => 'jpg'
-      ];
-
-      if (!isset($mimeToExt[$mime])) {
-         throw new InvalidArgumentException("Unsupported image type: $mime");
+      if(!$errorMessage){
+         // Gets the real MIME
+         $mime = mime_content_type($imageFile['tmp_name']);
+   
+         // Map MIME to real extension
+         $mimeToExt = [
+            'image/jpeg' => 'jpg',
+            'image/png' => 'png',
+            'image/jpg' => 'jpg'
+         ];
+   
+         if (!isset($mimeToExt[$mime])) {
+            $errorMessage = "Unsupported image type: $mime";
+         }
+   
+         $realExtension = $mimeToExt[$mime];
+   
+         // Verifica se a extensão real está na lista permitida
+         if (!in_array($realExtension, $allowedExtensions) && !$errorMessage) {
+            $errorMessage = "Invalid image extension: .$realExtension";
+         }
       }
-
-      $realExtension = $mimeToExt[$mime];
-
-      // Verifica se a extensão real está na lista permitida
-      if (!in_array($realExtension, $allowedExtensions)) {
-         throw new InvalidArgumentException("Invalid image extension: .$realExtension");
+      
+      if($returnBool){
+         if($errorMessage) return false;
+         return true;
+      }
+      
+      
+      if($errorMessage){
+         throw new InvalidArgumentException($errorMessage);
       }
 
       return true;

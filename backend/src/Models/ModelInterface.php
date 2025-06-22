@@ -7,5 +7,5 @@ namespace App\Models;
  */
 interface ModelInterface{
    //
-   public static function create(array $data):array;
+   public static function toArray(array $data):array;
 }

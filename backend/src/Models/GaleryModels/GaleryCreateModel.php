@@ -40,7 +40,7 @@ class GaleryCreateModel implements ModelInterface{
          };
       }
 
-      Validators::validateString('albun_name' ,$data['galery_name'], 1, 100);
+      Validators::validateString('galery_name' ,$data['galery_name'], 1, 100);
       Validators::validateDateYMD('deadline',$data['deadline']);
       $data['private'] = Validators::validateAndConvertToBool('private', $data['private']);
       $data['watermark'] = Validators::validateAndConvertToBool('watermark', $data['watermark']);
@@ -60,7 +60,7 @@ class GaleryCreateModel implements ModelInterface{
    }
 
    
-   public static function create(array $data):array{
+   public static function toArray(array $data):array{
       $instance = new self($data);
 
       return [
