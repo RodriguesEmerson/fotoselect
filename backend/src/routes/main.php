@@ -8,7 +8,6 @@ use App\Http\Route;
  * The second paramenter is the Controller and Method to be called in the Route.
  * Route::method('route', 'Controller@function)
  */
-
 Route::post('/user/login', 'UserController@login');
 Route::post('/user/logout', 'UserController@logout');
 Route::post('/user/register', 'UserController@register');

@@ -1,9 +1,7 @@
 <?php 
-
 namespace App\Utils;
 
 class ImagesHandle{
-
    /**
     * Separate the valid and invalid images by validating each image.
     * @param array $folder Array with images to verify.
@@ -34,7 +32,6 @@ class ImagesHandle{
             $validImages[] = $image; 
             continue;
          };
-
          $invalidImages[] = $image;
       }
 
@@ -42,7 +39,5 @@ class ImagesHandle{
          'validImages' => $validImages,
          'invalidImages' => $invalidImages
       ];
-
    }
-
 }

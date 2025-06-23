@@ -127,7 +127,7 @@ class Validators{
     * @param array $imageFile The complete image file.
     * @param bool $returnBool Return only a boolean value. True case the image is valid and False case not.
     * @return bool True if it is a valid image.
-    * @throws InvalidArgumentException Throws an error informing the image extension is invalid. $returnBool must be False.
+    * @throws InvalidArgumentException Throws an error informing why the image is invalid. $returnBool must be False.
     */
    public static function validateImage(array $allowedExtensions, array $imageFile, $returnBool = false):bool{
 
@@ -138,42 +138,33 @@ class Validators{
       }
       
       if(!getimagesize($imageFile['tmp_name']) && !$errorMessage){
-         $errorMessage = $imageFile['name']. ": Is not a valid image.";
+         $errorMessage = $imageFile['name'] . ": Is not a valid image.";
       }
       
       if(!$errorMessage){
-         // Gets the real MIME
+         // Gets the real MIME: image/realExtension
          $mime = mime_content_type($imageFile['tmp_name']);
    
          // Map MIME to real extension
-         $mimeToExt = [
-            'image/jpeg' => 'jpg',
-            'image/png' => 'png',
-            'image/jpg' => 'jpg'
-         ];
+         foreach($allowedExtensions AS $extension){
+            $mimeToExt['image/'. $extension] = $extension;
+         }
    
          if (!isset($mimeToExt[$mime])) {
             $errorMessage = "Unsupported image type: $mime";
          }
-   
+         
+         // Verify if the real extension is in the allowed extensions list.
          $realExtension = $mimeToExt[$mime];
-   
-         // Verifica se a extensão real está na lista permitida
          if (!in_array($realExtension, $allowedExtensions) && !$errorMessage) {
             $errorMessage = "Invalid image extension: .$realExtension";
          }
       }
       
-      if($returnBool){
-         if($errorMessage) return false;
-         return true;
-      }
-      
-      
       if($errorMessage){
+         if($returnBool) return false;
          throw new InvalidArgumentException($errorMessage, 400);
       }
-
       return true;
    }
 }
