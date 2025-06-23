@@ -3,18 +3,28 @@
 namespace App\Repositories;
 
 use App\Config\Database;
+use App\Models\GaleryModels\FetchGaleryDataModel;
+use App\Models\GaleryModels\FetchGaleryImagesModel;
 use PDO;
+use PDOException;
 
 class GaleryRepository extends Database{
 
+   /**
+    * Create a new Galery in the Database
+    * @param array $data Containing the new galery information
+    * @return bool True on success and False on failure.
+    * @throws PDOException If somethig goes wrong.
+    */
    public function create(array $data):bool{
       $pdo = self::getConection();
+
       $stmt = $pdo->prepare(
          'INSERT INTO 
          `galeries` 
-         (`user_foreign_key`, `galery_name`, `galery_cover`, `cdl_id, `deadline`, `private`,`watermark`, `status`, `password`)
+         (`user_foreign_key`, `galery_name`, `galery_cover`, `cdl_id`, `deadline`, `private`,`watermark`, `status`, `password`)
          VALUES 
-         (:user_foreign_key, :galery_name, :galery_cover, :deadline, :private, :watermark, :status, :password)'
+         (:user_foreign_key, :galery_name, :galery_cover, :cdl_id, :deadline, :private, :watermark, :status, :password)'
       );
       $stmt->bindValue(':user_foreign_key', $data['user_id'], PDO::PARAM_INT);
       $stmt->bindValue(':galery_name', $data['galery_name'], PDO::PARAM_STR);
@@ -28,6 +38,7 @@ class GaleryRepository extends Database{
 
       return $stmt->execute();
    }
+
 
    public function upload(array $data):bool{
       $colunms = [
@@ -63,13 +74,34 @@ class GaleryRepository extends Database{
       return $stmt->execute($params);
    }
 
-   public function getGaleryImages(int $user_id, int $galery_id){
+   public function getGaleryData(array $data){
       $pdo = self::getConection();
       $stmt = $pdo->prepare(
-         'SELECT'
+         'SELECT * FROM `galeries`
+         WHERE `user_foreign_key` = :user_id
+         AND `id` = :id'
       );
+      
+      $stmt->bindValue(':user_id', $data['user_id']);
+      $stmt->bindValue(':id', $data['galery_id']);
+      $stmt->execute();
+      return $stmt->fetchAll(PDO::FETCH_CLASS, FetchGaleryDataModel::class);
    }
 
+   public function getGaleryImages(array $data){
+      $pdo = self::getConection();
+      $stmt = $pdo->prepare(
+         'SELECT * FROM `images`
+         WHERE `user_foreign_key` = :user_id
+         AND `galery_foreign_key` = :galery_id'
+      );
+      
+      $stmt->bindValue(':user_id', $data['user_id']);
+      $stmt->bindValue(':galery_id', $data['galery_id']);
+      $stmt->execute();
+      return $stmt->fetchAll(PDO::FETCH_CLASS, FetchGaleryImagesModel::class);
+      
+   }
 
    public function getImageUrlAndCdlIdById(array $data):bool|array{
       $pdo = self::getConection();
@@ -88,7 +120,39 @@ class GaleryRepository extends Database{
       return $stmt->fetch(PDO::FETCH_ASSOC);
    }
 
-   public function deleteImage(array $data):bool{
+   public function deleteGalery(array $data){
+      $pdo = self::getConection();
+     
+      $stmt = $pdo->prepare(
+         'DELETE FROM `galeries`
+         WHERE `user_foreign_key` = :user_id
+         AND `id` = :galery_id'
+      );
+      $stmt->bindValue(':user_id', $data['user_id'], PDO::PARAM_INT);
+      $stmt->bindValue(':galery_id', $data['galery_id'], PDO::PARAM_INT);
+     
+      return $stmt->execute();
+   }
+
+   public function deleteImagesFromGalery(array $data):bool{
+      $pdo = self::getConection();
+
+      $params = [':user_id' => $data['user_id'], ':galery_id' => $data['galery_id']];
+      foreach($data['imagesId'] AS $imageId){
+         $imagesPlaceholders[] = ":image" . $imageId;
+         $params[':image' . $imageId] = (int) $imageId;
+      }
+
+      $query = 'DELETE FROM `images` 
+         WHERE `user_foreign_key` = :user_id 
+         AND `galery_foreign_key` = :galery_id
+         AND `id` IN (' . implode(',', $imagesPlaceholders) . ')';
+
+      $stmt = $pdo->prepare($query);
+      return $stmt->execute($params);
+   }
+
+   public function deleteOneImageFromGalery(array $data):bool{
       $pdo = self::getConection();
       $stmt = $pdo->prepare(
          'DELETE FROM `images`
@@ -103,5 +167,12 @@ class GaleryRepository extends Database{
 
       return $stmt->execute();
    }
+
+   /**
+    * return $stmt->fetchAll(\PDO::FETCH_CLASS, PageModel::class) ?: null;
+    *
+    * $stmt->setFetchMode(\PDO::FETCH_CLASS, PageModel::class);
+    * return $stmt->fetch() ?: null;
+    */
 
 }

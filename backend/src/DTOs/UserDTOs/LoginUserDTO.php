@@ -1,6 +1,6 @@
 <?php 
 
-namespace App\DTOs\GaleryDTOs;
+namespace App\DTOs\UserDTOs;
 
 use App\DTOs\DTOsInterface;
 use InvalidArgumentException;

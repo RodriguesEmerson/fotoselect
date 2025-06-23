@@ -5,10 +5,10 @@ namespace App\Services;
 use App\CloudinaryHandle\CloudinaryHandleImage;
 use App\DTOs\GaleryDTOs\CreateGaleryDTO;
 use App\DTOs\GaleryDTOs\DeleteImageGaleryDTO;
+use App\DTOs\GaleryDTOs\FetchImagesGaleryDTO;
 use App\DTOs\GaleryDTOs\UploadGaleryDTO;
 use App\Exceptions\UnauthorizedException;
 use App\JWT\JWT;
-use App\Models\GaleryModels\GaleryDeleteImageModel;
 use App\Repositories\GaleryRepository;
 use Exception;
 use InvalidArgumentException;
@@ -57,8 +57,8 @@ class GaleryServices extends PDOExeptionErrors{
 
          return ['error' => $e->getMessage(), 'status' => 400]; 
       }catch (\PDOException $e) {
-
-         return PDOExeptionErrors::getErrorBasedOnCode($e->getCode() . 'GALERYCREATE');
+         
+         return ['error' => $e->getMessage(), 'status' => 400]; 
       }catch(Exception $e){
 
          return ['error' => $e->getMessage(), 'status' => $e->getCode()];
@@ -115,37 +115,44 @@ class GaleryServices extends PDOExeptionErrors{
    public function delete(array $data){
       try{
          $data['user_id'] =$this->userId;
+         $data = FetchImagesGaleryDTO::toArray($data);
+         $galery = $this->galeryRepository->getGaleryData($data);
 
-         $galeryImages = '';
+         if(!$galery) throw new Exception('Galery not found.', 400);
 
-         //Delete images from Cloudinary
-         $deleteResults = CloudinaryHandleImage::deleteLots($data['images']);
+         $galeryImages = $this->galeryRepository->getGaleryImages($data);
 
-         //Remove all images from $data
-         unset($data['images']);
-         if(!count($deleteResults['seccesfulyUpdloadedImages']) > 0){
-            throw new Exception('The images upload failed, try again', 500);
-         };
+         if(count($galeryImages) > 0){
+            //Delete images from Cloudinary
+            $deleteResults = CloudinaryHandleImage::deleteLots($galeryImages);
+            if(count($deleteResults['deletedImagesId']) === 0){
+               throw new Exception('It was not possible delte images in Cloudinary.', 500);
+            }
+            //Set only the successfuly deleted images id into $data.
+            $data['imagesId'] = $deleteResults['deletedImagesId'];
 
-         //Set only the successfuly uploaded images into $data.
-         $data['images'] = $deleteResults['realyFailedDeleteImages'];
-
-         $wasDataSaved = $this->galeryRepository->upload($data);
- 
-         if(!$wasDataSaved){
-            throw new Exception('It was not possible complete the upload.', 500);
+            $wasImagesDeleted = $this->galeryRepository->deleteImagesFromGalery($data);
+            if(!$wasImagesDeleted){
+               throw new Exception('It was not possible complete the galery exclusion.', 500);
+            }
+         }
+         
+         //Delete galery cover from Cloudinary
+         $wasGaleryCoverDeleted = CloudinaryHandleImage::delete($galery[0]->cdl_id);
+         $wasGaleryDeleted = $this->galeryRepository->deleteGalery($data);
+         if(isset($wasGaleryCoverDeleted['error']) || !$wasGaleryDeleted){
+            throw new Exception('It was not possible complete the galery exclusion.', 500);
          }
 
-         return ['message' => 'Images successfuly uploaded.', 'failedUploadImages' => $deleteResults['failedUploadImages']];
+         return ['message' => 'Galery successfuly deleted.'];
       
       }catch(PDOException $e){
-
          return ['error' => $e->getMessage(), 'status' => 500];
       }catch(Exception $e){
          
          return ['error' => $e->getMessage(), 'status' => $e->getCode()];
       }catch(Throwable $e){
-         return ['error' => 'Internal server error' . $e->getMessage(), 'status' => 500];
+         return ['error' => 'Internal server error: ' . $e->getMessage(), 'status' => 500];
       }
    }
 
@@ -172,7 +179,7 @@ class GaleryServices extends PDOExeptionErrors{
             throw new Exception($wasImageDeleted['error'], 500);
          }
 
-         $wasDataDelete = $this->galeryRepository->deleteImage($data);
+         $wasDataDelete = $this->galeryRepository->deleteOneImageFromGalery($data);
          if(!$wasDataDelete) throw new Exception('Something went wrong.', 500);
 
          return ['message' => 'Image delete successfuly'];

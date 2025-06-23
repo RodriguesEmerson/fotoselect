@@ -86,22 +86,34 @@ class CloudinaryHandleImage{
    public static function deleteLots(array $images):array{
       $failedDeleteImages = [];
       $RealyFailedDeleteImages = [];
+      $deletedImagesId = [];
 
       foreach($images AS $image){
-         $wasImageDeleted = self::delete($image['cld_id']);
-         if(isset($wasImageDeleted['error'])) $failedDeleteImages[] = $image;
+         $wasImageDeleted = self::delete($image->cdl_id);
+
+         if(!isset($wasImageDeleted['error'])){
+            $deletedImagesId[] = $image->id;
+            continue;
+         } 
+         $failedDeleteImages[] = $image;
       }
       
       //Retry to delete
       if(count($failedDeleteImages) > 0){
          foreach($failedDeleteImages AS $image){
-            $wasImageDeleted = self::delete($image['cld_id']);
-            if(isset($wasImageDeleted['error'])) $RealyFailedDeleteImages[] = $image;
+            $wasImageDeleted = self::delete($image->cdl_id);
+
+            if(!isset($wasImageDeleted['error'])){
+               $deletedImagesId[] = $image->id;
+               continue;
+            } 
+            $RealyFailedDeleteImages[] = $image;
          }
       }
 
       return[
-         'realyFailedDeleteImages' => $RealyFailedDeleteImages
+         'realyFailedDeleteImages' => $RealyFailedDeleteImages,
+         'deletedImagesId' => $deletedImagesId
       ];
    }
 }

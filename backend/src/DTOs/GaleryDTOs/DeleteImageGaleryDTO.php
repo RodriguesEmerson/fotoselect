@@ -12,7 +12,7 @@ class DeleteImageGaleryDTO implements DTOsInterface{
    private int $galery_id;
    private int $image_id;
 
-   public function __construct(array $data){
+   private function __construct(array $data){
       if(!isset($data['galery_id']) || !isset($data['image_id'])){
          throw new InvalidArgumentException('The galery id or image id was not sent.');
       }

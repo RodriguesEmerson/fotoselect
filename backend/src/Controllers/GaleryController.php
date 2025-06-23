@@ -83,13 +83,13 @@ class GaleryController{
          $body = $request::body();
          Validators::checkEmptyField($body);
 
-         echo json_encode($body);exit;
          $galeryServices = new GaleryServices();
-         $serviceResponse = $galeryServices->upload($body);
+         $serviceResponse = $galeryServices->delete($body);
 
          if(isset($serviceResponse['error'])){
             return $response::json(['message' => $serviceResponse['error']], $serviceResponse['status'], 'error');
          }
+         
          $response::json($serviceResponse, 200, 'success');
       } catch (InvalidArgumentException $e) {
          return $response::json(['message' => $e->getMessage()], 400, 'error');

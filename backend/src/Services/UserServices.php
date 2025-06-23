@@ -1,8 +1,8 @@
 <?php 
 namespace App\Services;
 
-use App\DTOs\GaleryDTOs\LoginUserDTO;
-use App\DTOs\GaleryDTOs\RegisterUserDTO;
+use App\DTOs\UserDTOs\LoginUserDTO;
+use App\DTOs\UserDTOs\RegisterUserDTO;
 use App\JWT\JWT;
 use App\Repositories\UserRepository;
 use InvalidArgumentException;
@@ -46,8 +46,6 @@ class UserServices extends PDOExeptionErrors{
          $userId = JWT::getUserId();
          $user = UserRepository::fetch($userId['user_id']);
 
-         echo json_encode($user);exit;
-
          if(!$user) return ['error' => 'User not found.', 'status' => 404];
 
          return $user;
@@ -72,7 +70,7 @@ class UserServices extends PDOExeptionErrors{
       try{
          $credentials = LoginUserDTO::toArray($data);
          $userData = UserRepository::login($credentials);
-         
+
          if(!$userData) return ['error' => 'Email or password is incorrect.', 'status' => 400];
 
          $token = JWT::generate($userData, 3600);
@@ -89,7 +87,7 @@ class UserServices extends PDOExeptionErrors{
          //Build a class with ERROR MESSAGE based on PDO code error;
          return ['error' => 'Internal server error | Serverce login-user PDO', 'status' => 500];
       }catch(Throwable $e){
-         return ['error' => 'It was not passoble complete login, try again. | Servirce fetch-user SERVER', 'status' => 500];
+         return ['error' => 'It was not passoble complete login, try again. | Servirce login-user SERVER' . $e->getMessage(), 'status' => 500];
       }
    }
 }
