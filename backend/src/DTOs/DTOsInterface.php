@@ -1,11 +1,11 @@
 <?php 
 
-namespace App\Models;
+namespace App\DTOs;
 
 /**
  * This class is necessary to maintain the models patterns.
  */
-interface ModelInterface{
+interface DTOsInterface{
    //
    public static function toArray(array $data):array;
 }

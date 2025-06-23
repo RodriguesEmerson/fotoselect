@@ -1,12 +1,12 @@
 <?php 
 
-namespace App\Models\GaleryModels;
+namespace App\DTOs\GaleryDTOs;
 
-use App\Models\ModelInterface;
+use App\DTOs\DTOsInterface;
 use App\Utils\Validators;
 use InvalidArgumentException;
 
-class GaleryUploadModel implements ModelInterface{
+class UploadGaleryDTO implements DTOsInterface{
 
    private int $user_id;
    private int $galery_id;

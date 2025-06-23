@@ -63,6 +63,13 @@ class GaleryRepository extends Database{
       return $stmt->execute($params);
    }
 
+   public function getGaleryImages(int $user_id, int $galery_id){
+      $pdo = self::getConection();
+      $stmt = $pdo->prepare(
+         'SELECT'
+      );
+   }
+
 
    public function getImageUrlAndCdlIdById(array $data):bool|array{
       $pdo = self::getConection();

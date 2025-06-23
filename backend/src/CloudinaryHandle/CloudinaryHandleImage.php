@@ -13,7 +13,7 @@ class CloudinaryHandleImage{
     * Upload image in Cloudinary.
     * @param string $imagePath The temporary image file.
     * @param string $imageId The image id will be used to access the image later.
-    * @return array with the success data information or error.
+    * @return array With the success or failure data.
     */
    public static function upload(string $imagePath, string $imageId){
       $config = new Configuration($_ENV['CLOUDINARY_URL']);
@@ -75,6 +75,33 @@ class CloudinaryHandleImage{
       return [
          'seccesfulyUpdloadedImages' => $seccesfulyUpdloadedImages,
          'failedUploadImages' => $failedUploadImages
+      ];
+   }
+
+   /**
+    * Delete an array of images.
+    * @param array $images Containing the images to be deleted.
+    * @return array{RealyFailedDeleteImages: array}
+    */
+   public static function deleteLots(array $images):array{
+      $failedDeleteImages = [];
+      $RealyFailedDeleteImages = [];
+
+      foreach($images AS $image){
+         $wasImageDeleted = self::delete($image['cld_id']);
+         if(isset($wasImageDeleted['error'])) $failedDeleteImages[] = $image;
+      }
+      
+      //Retry to delete
+      if(count($failedDeleteImages) > 0){
+         foreach($failedDeleteImages AS $image){
+            $wasImageDeleted = self::delete($image['cld_id']);
+            if(isset($wasImageDeleted['error'])) $RealyFailedDeleteImages[] = $image;
+         }
+      }
+
+      return[
+         'realyFailedDeleteImages' => $RealyFailedDeleteImages
       ];
    }
 }

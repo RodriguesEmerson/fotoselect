@@ -1,11 +1,11 @@
 <?php 
 
-namespace App\Models\UserModels;
+namespace App\DTOs\GaleryDTOs;
 
-use App\Models\ModelInterface;
+use App\DTOs\DTOsInterface;
 use InvalidArgumentException;
 
-class UserLoginModel implements ModelInterface{
+class LoginUserDTO implements DTOsInterface{
    
    private array $credentials = [];
 
@@ -22,5 +22,4 @@ class UserLoginModel implements ModelInterface{
       $instace = new self($data);
       return $instace->credentials;
    }
-
 }

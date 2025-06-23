@@ -1,12 +1,12 @@
 <?php 
 
-namespace App\Models\UserModels;
+namespace App\DTOs\GaleryDTOs;
 
-use App\Models\ModelInterface;
+use App\DTOs\DTOsInterface;
 use App\Utils\Validators;
 use InvalidArgumentException;
 
-class UserRegisterModel implements ModelInterface{
+class RegisterUserDTO implements DTOsInterface{
 
    private string $name;
    private string $lastname;
@@ -27,8 +27,8 @@ class UserRegisterModel implements ModelInterface{
       Validators::validateEmail(strtolower($data['email']));
       Validators::validatePasswordFormat($data['password']);
       
-      $this->name = trim($data['name']);
-      $this->lastname = trim($data['lastname']);
+      $this->name = strip_tags(trim($data['name']));
+      $this->lastname = strip_tags(trim($data['lastname']));
       $this->email = strtolower(trim($data['email']));
       $this->password = password_hash(trim($data['password']), PASSWORD_DEFAULT);
    }

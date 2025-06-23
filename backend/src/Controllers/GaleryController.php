@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\CloudinaryHandle\UploadImage;
 use App\Exceptions\UnauthorizedException;
 use App\Http\Request;
 use App\Http\Response;
@@ -71,6 +70,27 @@ class GaleryController{
             return $response::json(['message' => $serviceResponse['error']], $serviceResponse['status'], 'error');
          }
          $response::json([...$serviceResponse, 'invalidImages' => $images['invalidImages']], 201, 'success');
+      } catch (InvalidArgumentException $e) {
+         return $response::json(['message' => $e->getMessage()], 400, 'error');
+      }catch(Exception $e){
+         return $response::json(['message' => 'Internal server error.'], 500, 'error');
+      }
+   }
+
+
+   public static function delete(Request $request, Response $response){
+      try {
+         $body = $request::body();
+         Validators::checkEmptyField($body);
+
+         echo json_encode($body);exit;
+         $galeryServices = new GaleryServices();
+         $serviceResponse = $galeryServices->upload($body);
+
+         if(isset($serviceResponse['error'])){
+            return $response::json(['message' => $serviceResponse['error']], $serviceResponse['status'], 'error');
+         }
+         $response::json($serviceResponse, 200, 'success');
       } catch (InvalidArgumentException $e) {
          return $response::json(['message' => $e->getMessage()], 400, 'error');
       }catch(Exception $e){

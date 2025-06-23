@@ -3,11 +3,12 @@
 namespace App\Services;
 
 use App\CloudinaryHandle\CloudinaryHandleImage;
+use App\DTOs\GaleryDTOs\CreateGaleryDTO;
+use App\DTOs\GaleryDTOs\DeleteImageGaleryDTO;
+use App\DTOs\GaleryDTOs\UploadGaleryDTO;
 use App\Exceptions\UnauthorizedException;
 use App\JWT\JWT;
-use App\Models\GaleryModels\GaleryCreateModel;
 use App\Models\GaleryModels\GaleryDeleteImageModel;
-use App\Models\GaleryModels\GaleryUploadModel;
 use App\Repositories\GaleryRepository;
 use Exception;
 use InvalidArgumentException;
@@ -36,7 +37,7 @@ class GaleryServices extends PDOExeptionErrors{
    public function create(array $data):array{
       try {
          $data['user_id'] =$this->userId;
-         $data = GaleryCreateModel::toArray($data);
+         $data = CreateGaleryDTO::toArray($data);
 
          //Try to save the galery_cover in Cloudinary
          $wasImageUploaded = CloudinaryHandleImage::upload($data['tmp_cover'], $data['cdl_id']);
@@ -76,7 +77,7 @@ class GaleryServices extends PDOExeptionErrors{
       try{
          $data['user_id'] =$this->userId;
 
-         $data = GaleryUploadModel::toArray($data);
+         $data =  UploadGaleryDTO::toArray($data);
          //Upload images in Cloudinary
          $uploadResults = CloudinaryHandleImage::updloadLots($data['images']);
 
@@ -111,16 +112,53 @@ class GaleryServices extends PDOExeptionErrors{
       }
    }
 
+   public function delete(array $data){
+      try{
+         $data['user_id'] =$this->userId;
+
+         $galeryImages = '';
+
+         //Delete images from Cloudinary
+         $deleteResults = CloudinaryHandleImage::deleteLots($data['images']);
+
+         //Remove all images from $data
+         unset($data['images']);
+         if(!count($deleteResults['seccesfulyUpdloadedImages']) > 0){
+            throw new Exception('The images upload failed, try again', 500);
+         };
+
+         //Set only the successfuly uploaded images into $data.
+         $data['images'] = $deleteResults['realyFailedDeleteImages'];
+
+         $wasDataSaved = $this->galeryRepository->upload($data);
+ 
+         if(!$wasDataSaved){
+            throw new Exception('It was not possible complete the upload.', 500);
+         }
+
+         return ['message' => 'Images successfuly uploaded.', 'failedUploadImages' => $deleteResults['failedUploadImages']];
+      
+      }catch(PDOException $e){
+
+         return ['error' => $e->getMessage(), 'status' => 500];
+      }catch(Exception $e){
+         
+         return ['error' => $e->getMessage(), 'status' => $e->getCode()];
+      }catch(Throwable $e){
+         return ['error' => 'Internal server error' . $e->getMessage(), 'status' => 500];
+      }
+   }
+
    /**
     * Delete a single image
     * @param array $data Containing the image data, like id and which galery id it belongs.
     * @return array{error: string, status: int} on Failure.
     * @return array{message: string} on Success. 
     */
-   public function deleteImage(array $data){
+   public function deleteImage(array $data):array{
       try{
          $data['user_id'] =$this->userId;
-         $data = GaleryDeleteImageModel::toArray($data);
+         $data = DeleteImageGaleryDTO::toArray($data);
          
          $image = $this->galeryRepository->getImageUrlAndCdlIdById($data);
 

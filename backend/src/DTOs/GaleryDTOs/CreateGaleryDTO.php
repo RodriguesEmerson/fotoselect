@@ -1,12 +1,12 @@
 <?php 
 
-namespace App\Models\GaleryModels;
+namespace App\DTOs\GaleryDTOs;
 
-use App\Models\ModelInterface;
+use App\DTOs\DTOsInterface;
 use App\Utils\Validators;
 use InvalidArgumentException;
 
-class GaleryCreateModel implements ModelInterface{
+class CreateGaleryDTO implements DTOsInterface{
 
    private int $user_id;
    private string $galery_name;
@@ -29,7 +29,7 @@ class GaleryCreateModel implements ModelInterface{
       if(isset($data['files']['galery_cover'])){
          Validators::validateImage($this->allowedGaleryCoverExtention, $data['files']['galery_cover']);
          $this->tmp_cover = $data['files']['galery_cover']['tmp_name'];
-         $this->cdl_id = uniqid(str_replace(' ', '', trim($data['files']['galery_cover']['name'])));
+         $this->cdl_id = uniqid(str_replace(' ', '', trim($data['files']['galery_cover']['name'])) . '_');
       }
 
       //Verify if all required fields was sent.
