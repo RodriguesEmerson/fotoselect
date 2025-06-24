@@ -1,0 +1,42 @@
+<?php 
+
+namespace App\Controllers;
+
+use App\Exceptions\UnauthorizedException;
+use App\Http\Request;
+use App\Http\Response;
+use App\Services\ClientServices;
+use App\Utils\Validators;
+
+class ClientController{
+   /**
+    * Register a new client.
+    * @param Request $request Object representing the HTTP request.
+    * @param Response $response Object used to return the HTTP response.
+    *
+    * @return mixed Returns a JSON response containing login data on success,
+    *               or an error message with the appropriate HTTP status code on failure.
+    */
+   public static function register(Request $request, Response $response){
+      try {
+         $body = $request::body();
+         Validators::checkEmptyField($body, ['phone', 'profile_image']);
+
+         $clientServices = new ClientServices();
+         $serviceResponse = $clientServices->register($body);
+
+         if(isset($serviceResponse['error'])){
+            return $response::json(['message' => $serviceResponse['error']], $serviceResponse['status'], 'error');
+         }
+
+         $response::json($serviceResponse, 200, 'success');
+      } catch (UnauthorizedException $e) {
+         return $response::json(['message' => $e->getMessage()], 401, 'error');
+
+      } catch (\InvalidArgumentException $e) {
+         return $response::json(['message' => $e->getMessage()], 400, 'error');
+      }catch(\Exception $e){
+         return $response::json(['message' => 'Internal server error.'], 500, 'error');
+      }
+   }
+}

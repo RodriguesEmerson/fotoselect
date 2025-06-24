@@ -10,12 +10,14 @@ class Validators{
    /**
     * Check if the array has some empty field.
     * @param array $data The array with the data to check.
+    * @param array $allowedEmptyFields The fiels that may be empty.
     * @throws InvalidArgumentException if any field is empty.
     * @return void 
     */
-   public static function checkEmptyField(array $data){
+   public static function checkEmptyField(array $data, array $allowedEmptyFields = []){
       foreach($data AS $field => $value){
          if(!isset($value) || empty($value)){
+            if(in_array($field, $allowedEmptyFields)) continue;
             throw new InvalidArgumentException("The field ($field) is required.", 400);
          }
       }
@@ -73,9 +75,24 @@ class Validators{
     */
    public static function validateString(string $fieldName, $string, int $min, int $max, bool $returnBool = false):bool{
 
-      if(!is_string($string) || strlen($string) < $min || strlen($string) > $max){
+      if(!is_string($string) || strlen($string) < $min || strlen($string) > $max || $string !== strip_tags($string)){
          if($returnBool) return false;
          throw new InvalidArgumentException("The field ($fieldName) sent doesn't meets the requirements.", 400);
+      };
+
+      return true;
+   }
+
+
+   /**
+    * Validate a number in the format (00)00000-0000 (no white spaces).
+   *
+   * @param string $phone
+   * @return bool
+   */
+   public static function validatePhone(string $phone):bool {
+      if(!preg_match('/^\(\d{2}\)\d{5}-\d{4}$/', $phone) === 1){
+         throw new InvalidArgumentException('Invalid phone number.', 400);
       };
 
       return true;

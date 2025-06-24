@@ -5,11 +5,12 @@ use App\DTOs\UserDTOs\LoginUserDTO;
 use App\DTOs\UserDTOs\RegisterUserDTO;
 use App\JWT\JWT;
 use App\Repositories\UserRepository;
+use App\Utils\PDOExeptionErrors;
 use InvalidArgumentException;
 use PDOException;
 use Throwable;
 
-class UserServices extends PDOExeptionErrors{
+class UserServices{
 
    /**
     * Resgiter a new user account.
@@ -29,7 +30,7 @@ class UserServices extends PDOExeptionErrors{
       }catch(InvalidArgumentException $e){
          return ['error' => $e->getMessage() . 'Serverce register-user InvalidArgumentExeption', 'status' => 400];
       }catch(PDOException $e){
-         return self::getErrorBasedOnCode($e->getCode());
+         return PDOExeptionErrors::getErrorBasedOnCode($e->getCode());
       }catch(Throwable $e){
          return ['error' => $e->getMessage() .  'Internal server error | Servirce register-user SERVER', 'status' => 500];
       }

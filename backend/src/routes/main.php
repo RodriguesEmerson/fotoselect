@@ -19,3 +19,5 @@ Route::post('/galery/create', 'GaleryController@create');
 Route::post('/galery/upload', 'GaleryController@upload');
 Route::delete('/galery/delete', 'GaleryController@delete');
 Route::delete('/galery/images/delete', 'GaleryController@deleteImage');
+
+Route::post('/client/register', 'ClientController@register');
