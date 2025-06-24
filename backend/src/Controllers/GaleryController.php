@@ -34,6 +34,9 @@ class GaleryController{
          } 
 
          $response::json($serviceResponse, 200, 'success');
+      } catch (UnauthorizedException $e) {
+         return $response::json(['message' => $e->getMessage()], 401, 'error');
+
       } catch (InvalidArgumentException $e) {
          return $response::json(['message' => $e->getMessage()], 400, 'error');
       }catch(Exception $e){
@@ -70,6 +73,8 @@ class GaleryController{
             return $response::json(['message' => $serviceResponse['error']], $serviceResponse['status'], 'error');
          }
          $response::json([...$serviceResponse, 'invalidImages' => $images['invalidImages']], 201, 'success');
+      } catch (UnauthorizedException $e) {
+         return $response::json(['message' => $e->getMessage()], 401, 'error');
       } catch (InvalidArgumentException $e) {
          return $response::json(['message' => $e->getMessage()], 400, 'error');
       }catch(Exception $e){
@@ -91,6 +96,8 @@ class GaleryController{
          }
          
          $response::json($serviceResponse, 200, 'success');
+      } catch (UnauthorizedException $e) {
+         return $response::json(['message' => $e->getMessage()], 401, 'error');
       } catch (InvalidArgumentException $e) {
          return $response::json(['message' => $e->getMessage()], 400, 'error');
       }catch(Exception $e){
@@ -119,9 +126,11 @@ class GaleryController{
 
          $response::json($serviceResponse, 200, 'success');
       } catch (UnauthorizedException $e) {
-         echo json_encode($e->getMessage());
-      } catch (\Throwable $e) {
-         echo json_encode($e->getMessage());
+         return $response::json(['message' => $e->getMessage()], 401, 'error');
+      } catch (InvalidArgumentException $e) {
+         return $response::json(['message' => $e->getMessage()], 400, 'error');
+      }catch(Exception $e){
+         return $response::json(['message' => 'Internal server error.'], 500, 'error');
       }
    }
 }
