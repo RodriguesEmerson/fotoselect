@@ -15,7 +15,7 @@ use InvalidArgumentException;
 use PDOException;
 use Throwable;
 
-class GaleryServices extends PDOExeptionErrors{
+class GaleryServices{
 
    private int $userId;
    private GaleryRepository $galeryRepository;
@@ -36,20 +36,20 @@ class GaleryServices extends PDOExeptionErrors{
     */
    public function create(array $data):array{
       try {
-         $data['user_id'] =$this->userId;
+         $data['user_id'] = $this->userId;
          $data = CreateGaleryDTO::toArray($data);
 
          //Try to save the galery_cover in Cloudinary
          $wasImageUploaded = CloudinaryHandleImage::upload($data['tmp_cover'], $data['cdl_id']);
          if(isset($wasImageUploaded['error'])){
-            throw new Exception('Error uploading the galery cover, try again.', 500);
+            return ['error' => 'Error uploading the galery cover, try again.', 'status' => 500];
          }
 
          $data['galery_cover'] = $wasImageUploaded['url'];
 
          $wasDataSaved = $this->galeryRepository->create($data);
          if(!$wasDataSaved){
-            throw new Exception("Error trying to create the galery.", 500);
+           return ['error' => "Error trying to create the galery.", 'status' => 500];
          }
 
          return ['message' => 'Galery has been created successfuly.'];
@@ -84,7 +84,7 @@ class GaleryServices extends PDOExeptionErrors{
          //Remove all images from $data
          unset($data['images']);
          if(!count($uploadResults['seccesfulyUpdloadedImages']) > 0){
-            throw new Exception('The images upload failed, try again', 500);
+            return ['error' => 'The images upload failed, try again', 'status' => 500];
          };
 
          //Set only the successfuly uploaded images into $data.
@@ -93,7 +93,7 @@ class GaleryServices extends PDOExeptionErrors{
          $wasDataSaved = $this->galeryRepository->upload($data);
  
          if(!$wasDataSaved){
-            throw new Exception('It was not possible complete the upload.', 500);
+            return ['error' => 'It was not possible complete the upload.', 'status' =>500];
          }
 
          return ['message' => 'Images successfuly uploaded.', 'failedUploadImages' => $uploadResults['failedUploadImages']];
@@ -112,7 +112,13 @@ class GaleryServices extends PDOExeptionErrors{
       }
    }
 
-   public function delete(array $data){
+   /**
+    * Delete a galery with its all images.
+    * @param array $data With the galery information.
+    * @return array{error: string, status: int} on Failure.
+    * @return array{message: string} on Success. 
+    */
+   public function delete(array $data):array{
       try{
          $data['user_id'] =$this->userId;
          $data = FetchImagesGaleryDTO::toArray($data);
@@ -126,22 +132,22 @@ class GaleryServices extends PDOExeptionErrors{
             //Delete images from Cloudinary
             $deleteResults = CloudinaryHandleImage::deleteLots($galeryImages);
             if(count($deleteResults['deletedImagesId']) === 0){
-               throw new Exception('It was not possible delte images in Cloudinary.', 500);
+               return ['error' => 'It was not possible delte images in Cloudinary.', 'status' => 500];
             }
             //Set only the successfuly deleted images id into $data.
             $data['imagesId'] = $deleteResults['deletedImagesId'];
 
             $wasImagesDeleted = $this->galeryRepository->deleteImagesFromGalery($data);
             if(!$wasImagesDeleted){
-               throw new Exception('It was not possible complete the galery exclusion.', 500);
+               return ['error' => 'It was not possible complete the galery exclusion.', 'status' => 500];
             }
          }
          
-         //Delete galery cover from Cloudinary
+         //Delete galery cover from Cloudinary and Database.
          $wasGaleryCoverDeleted = CloudinaryHandleImage::delete($galery[0]->cdl_id);
          $wasGaleryDeleted = $this->galeryRepository->deleteGalery($data);
          if(isset($wasGaleryCoverDeleted['error']) || !$wasGaleryDeleted){
-            throw new Exception('It was not possible complete the galery exclusion.', 500);
+            return ['error' => 'It was not possible complete the galery exclusion.', 'status' => 500];
          }
 
          return ['message' => 'Galery successfuly deleted.'];
@@ -169,18 +175,18 @@ class GaleryServices extends PDOExeptionErrors{
          
          $image = $this->galeryRepository->getImageUrlAndCdlIdById($data);
 
-         if(!$image) throw new Exception('Image not found.', 400);
+         if(!$image) return ['error' => 'Image not found.', 'status' => 400];
 
          //Cheking if the image realy exists, if not, delete data from database.
 
          //Try to delete the image in Cloudinary
          $wasImageDeleted = CloudinaryHandleImage::delete($image['cdl_id']);
          if(isset($wasImageDeleted['error'])){
-            throw new Exception($wasImageDeleted['error'], 500);
+            return ['error' => $wasImageDeleted['error'], 'status' => 500];
          }
 
          $wasDataDelete = $this->galeryRepository->deleteOneImageFromGalery($data);
-         if(!$wasDataDelete) throw new Exception('Something went wrong.', 500);
+         if(!$wasDataDelete) return ['error' => 'Something went wrong.', 'status' => 500];
 
          return ['message' => 'Image delete successfuly'];
       }catch(InvalidArgumentException $e){
