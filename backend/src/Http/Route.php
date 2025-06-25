@@ -26,6 +26,9 @@ class Route{
    public static function put(string $path, string $action):void{
       self::registerRoute('PUT', $path, $action);
    }
+   public static function patch(string $path, string $action):void{
+      self::registerRoute('PATCH', $path, $action);
+   }
    public static function delete(string $path, string $action):void{
       self::registerRoute('DELETE', $path, $action);
    }

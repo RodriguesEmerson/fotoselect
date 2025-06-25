@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\CloudinaryHandle\CloudinaryHandleImage;
-use App\DTOs\ClientsDTOs\RegisterClientDTO;
+use App\DTOs\ClientsDTOs\ClientDTO;
 use App\Exceptions\UnauthorizedException;
 use App\JWT\JWT;
 use App\Repositories\ClientRepository;
@@ -20,11 +20,17 @@ class ClientServices{
       } 
       $this->clientRepository = new ClientRepository();
    }
-  
+   
+   /**
+    * Register a new client.
+    * @param array $data Containing the galery data.
+    * @return array{error: string, status: int} on Failure.
+    * @return array{message: string} on Success.
+    */
    public function register(array $data){
       try{
          $data['user_id'] = $this->userId;
-         $data = RegisterClientDTO::toArray($data);
+         $data = ClientDTO::toArray($data);
 
          if($data['profile_image']){
             $wasImageUploaded = CloudinaryHandleImage::upload($data['tmp_profile_image'], $data['profile_image']);
@@ -50,5 +56,12 @@ class ClientServices{
 
          return ['error' => $e->getMessage(), 'status' => 500];
       }
+   }
+
+   public function update(array $data){
+      $data['user_id'] = $this->userId;
+      $data = ClientDTO::toArray($data);
+
+      echo json_encode($data);exit;
    }
 }

@@ -6,7 +6,7 @@ use App\DTOs\DTOsInterface;
 use App\Utils\Validators;
 use InvalidArgumentException;
 
-class RegisterClientDTO implements DTOsInterface{
+class ClientDTO implements DTOsInterface{
 
    private int $user_id;
    private string $name;

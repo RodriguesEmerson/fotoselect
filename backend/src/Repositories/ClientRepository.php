@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 use App\Config\Database;
+use App\Models\ClientsModels\FetchClindModel;
 
 class ClientRepository extends Database{
 
@@ -25,5 +26,18 @@ class ClientRepository extends Database{
       $stmt->bindValue(':profile_image', $data['profile_image']);
 
       return $stmt->execute();
+   }
+
+   public function getClientById(array $data){
+
+      $stmt = self::$pdo->prepare(
+         'SELECT * FROM `clients
+         WHERE `user_foreign_key` = :user_foreign_key 
+         AND `email` = :email'
+      );
+
+      $stmt->execute();
+      $stmt->setFetchMode(\PDO::FETCH_CLASS, FetchClindModel::class);
+      return $stmt->fetch() ?: null;
    }
 }
