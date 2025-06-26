@@ -41,7 +41,7 @@ class ClientController{
    }
 
    /**
-    * Update client data using PATCH HTTP method.
+    * Update client data.
     * @param Request $request Object representing the HTTP request.
     * @param Response $response Object used to return the HTTP response.
     *
@@ -53,6 +53,35 @@ class ClientController{
          $body = $request::body();
          $clientServices = new ClientServices();
          $serviceResponse = $clientServices->update($body);
+
+         if(isset($serviceResponse['error'])){
+            return $response::json(['message' => $serviceResponse['error']], $serviceResponse['status'], 'error');
+         }
+
+         $response::json($serviceResponse, 200, 'success');
+      } catch (UnauthorizedException $e) {
+         return $response::json(['message' => $e->getMessage()], 401, 'error');
+
+      } catch (\InvalidArgumentException $e) {
+         return $response::json(['message' => $e->getMessage()], 400, 'error');
+      }catch(\Exception $e){
+         return $response::json(['message' => 'Internal server error.'], 500, 'error');
+      }
+   }
+
+   /**
+    * Update client image.
+    * @param Request $request Object representing the HTTP request.
+    * @param Response $response Object used to return the HTTP response.
+    *
+    * @return mixed Returns a JSON response containing login data on success,
+    *               or an error message with the appropriate HTTP status code on failure.
+    */
+   public function changeImage(Request $request, Response $response){
+      try {
+         $body = $request::body();
+         $clientServices = new ClientServices();
+         $serviceResponse = $clientServices->changeimage($body);
 
          if(isset($serviceResponse['error'])){
             return $response::json(['message' => $serviceResponse['error']], $serviceResponse['status'], 'error');

@@ -51,7 +51,7 @@ class ClientDTO implements DTOsInterface{
 
       $instace = new self($data);
       return [
-         'user_foreign_key' => $instace->user_id,
+         'user_id' => $instace->user_id,
          'name' => $instace->name,
          'email' => $instace->email,
          'phone' => $instace->phone,
