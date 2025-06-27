@@ -5,6 +5,7 @@ namespace App\Services;
 use App\CloudinaryHandle\CloudinaryHandleImage;
 use App\DTOs\GaleryDTOs\CreateGaleryDTO;
 use App\DTOs\GaleryDTOs\DeleteImageGaleryDTO;
+use App\DTOs\GaleryDTOs\FetchGaleryDTO;
 use App\DTOs\GaleryDTOs\FetchImagesGaleryDTO;
 use App\DTOs\GaleryDTOs\UploadGaleryDTO;
 use App\Exceptions\UnauthorizedException;
@@ -53,6 +54,36 @@ class GaleryServices{
          }
 
          return ['message' => 'Galery has been created successfuly.'];
+      } catch (InvalidArgumentException $e) {
+
+         return ['error' => $e->getMessage(), 'status' => 400]; 
+      }catch (\PDOException $e) {
+         
+         return ['error' => $e->getMessage(), 'status' => 400]; 
+      }catch(Exception $e){
+
+         return ['error' => $e->getMessage(), 'status' => $e->getCode()];
+      }
+   }
+
+   /**
+    * Fetch the galery data with its all images.
+    * @param array $data Containing the galery data.
+    * @return array{error: string, status: int} on Failure.
+    * @return array{galery: array, images: array} on Success.
+    */
+   public function fetch(array $data):array{
+      try {
+         $data['user_id'] = $this->userId;
+         $data = FetchGaleryDTO::toArray($data);
+
+         $galery = $this->galeryRepository->getGaleryData($data);
+         if(!$galery) return ['error' => 'Galery not found.', 'status' => 400];
+         
+         $galeryImages = $this->galeryRepository->getGaleryImages($data);
+         if(!$galeryImages) return['error' => 'Error trying to get galery images.', 'status' => 400];
+
+         return ['galery' =>$galery, 'images' => $galeryImages];
       } catch (InvalidArgumentException $e) {
 
          return ['error' => $e->getMessage(), 'status' => 400]; 

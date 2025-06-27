@@ -11,12 +11,12 @@ class FetchImagesGaleryDTO implements DTOsInterface{
    private int $user_id;
    private int $galery_id;
 
-   private function __construct(array $data){
-      if(!isset($data['user_id']) || !isset($data['galery_id'])){
-         throw new InvalidArgumentException("Missing required fields");
-      }
+    private function __construct(array $data){
+      if(!isset($data['galery_id'])){
+         throw new InvalidArgumentException('Galery information was not sent.', 400);
+      } 
 
-      Validators::validateNumeric('galery_id' ,$data['galery_id'], 11);
+      Validators::validateNumeric('galery_id', $data['galery_id'], 11);
 
       $this->user_id = $data['user_id'];
       $this->galery_id = $data['galery_id'];
