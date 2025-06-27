@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\CloudinaryHandle\CloudinaryHandleImage;
 use App\DTOs\ClientsDTOs\ClientDTO;
+use App\DTOs\ClientsDTOs\DelteClientDTO;
 use App\DTOs\ClientsDTOs\UpdateClientImageDTO;
 use App\Exceptions\UnauthorizedException;
 use App\JWT\JWT;
@@ -103,8 +104,6 @@ class ClientServices{
       try{
          $data['user_id'] = $this->userId;
          $data = UpdateClientImageDTO::toArray($data);
-
-
          
          $client = $this->clientRepository->getClientByEmail($data);
          if(!$client) return ['error' => 'Does not exists a client with this email.', 'status' => 400];
@@ -130,6 +129,45 @@ class ClientServices{
          }
 
          return ['message' => 'The client image has been updated.'];
+      } catch (\InvalidArgumentException $e) {
+
+         return ['error' => $e->getMessage(), 'status' => 400]; 
+      }catch (\PDOException $e) {
+         
+         return ['error' => $e->getMessage(), 'status' => 500]; 
+      }catch(\Exception $e){
+
+         return ['error' => $e->getMessage(), 'status' => 500];
+      }
+   }
+
+   /**
+    * Delete client data.
+    * @param array $data with client id.
+    * @return array{error: string, status: int} on Failure.
+    * @return array{message: string} on Success.
+    */
+   public function delete(array $data){
+      try{
+         $data['user_id'] = $this->userId;
+         $data = DelteClientDTO::toArray($data);
+
+         $client = $this->clientRepository->getClientById($data);
+         if(!$client) return ['error' => 'Client not found.', 'status' => 400];
+
+         //Try to delete the old client image.
+         $wasImageDeleted = CloudinaryHandleImage::delete($client->cdl_id);
+         if(isset($wasImageDeleted['error'])){
+            return ['error' => 'It was not possible delete the client image.', 'status' => 500];
+         }
+
+         $wasClinetDeleted = $this->clientRepository->delete($data);
+         if(!$wasClinetDeleted){
+            return ['error' => 'Error trying to delete client in bd.', 'status' => 500];
+         }
+
+         return ['message' => 'Client deleted successfuly'];
+
       } catch (\InvalidArgumentException $e) {
 
          return ['error' => $e->getMessage(), 'status' => 400]; 

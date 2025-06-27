@@ -3,6 +3,7 @@
 namespace App\Repositories;
 use App\Config\Database;
 use App\Models\ClientsModels\FetchClindModel;
+use PDO;
 
 class ClientRepository extends Database{
 
@@ -18,25 +19,25 @@ class ClientRepository extends Database{
          (:user_foreign_key, :name, :email, :phone, :password, :profile_image, :cdl_id)'
       );
 
-      $stmt->bindValue(':user_foreign_key', $data['user_id']);
-      $stmt->bindValue(':name', $data['name']);
-      $stmt->bindValue(':email', $data['email']);
-      $stmt->bindValue(':phone', $data['phone']);
-      $stmt->bindValue(':password', $data['password']);
-      $stmt->bindValue(':profile_image', $data['profile_image']);
-      $stmt->bindValue(':cdl_id', $data['cdl_id']);
+      $stmt->bindValue(':user_foreign_key', $data['user_id'], PDO::PARAM_INT);
+      $stmt->bindValue(':name', $data['name'], PDO::PARAM_STR);
+      $stmt->bindValue(':email', $data['email'], PDO::PARAM_STR);
+      $stmt->bindValue(':phone', $data['phone'], PDO::PARAM_STR);
+      $stmt->bindValue(':password', $data['password'], PDO::PARAM_STR);
+      $stmt->bindValue(':profile_image', $data['profile_image'], PDO::PARAM_STR);
+      $stmt->bindValue(':cdl_id', $data['cdl_id'], PDO::PARAM_STR);
 
       return $stmt->execute();
    }
 
-   public function getClientById(array $data):bool|array{
-
+   public function getClientById(array $data):object|bool{
       $stmt = self::$pdo->prepare(
          'SELECT * FROM `clients`
          WHERE `user_foreign_key` = :user_id 
-         AND `id` = :id'
+         AND `id` = :client_id'
       );
-      //BindValues
+      $stmt->bindValue(':user_id', $data['user_id'], PDO::PARAM_INT);
+      $stmt->bindValue(':client_id', $data['client_id'], PDO::PARAM_INT);
       $stmt->execute();
       $stmt->setFetchMode(\PDO::FETCH_CLASS, FetchClindModel::class);
       return $stmt->fetch();
@@ -48,8 +49,8 @@ class ClientRepository extends Database{
          WHERE `user_foreign_key` = :user_id 
          AND `email` = :email'
       );
-      $stmt->bindValue(':user_id', $data['user_id']);
-      $stmt->bindValue(':email', $data['email']);
+      $stmt->bindValue(':user_id', $data['user_id'], PDO::PARAM_INT);
+      $stmt->bindValue(':email', $data['email'], PDO::PARAM_STR);
       $stmt->execute();
       $stmt->setFetchMode(\PDO::FETCH_CLASS, FetchClindModel::class);
       return $stmt->fetch();
@@ -64,11 +65,11 @@ class ClientRepository extends Database{
          AND `email` = :email'
       );
 
-      $stmt->bindValue(':user_id', $data['user_id']);
-      $stmt->bindValue(':email', $data['email']);
-      $stmt->bindValue(':name', $data['name']);
-      $stmt->bindValue(':phone', $data['phone']);
-      $stmt->bindValue(':password', $data['password']);
+      $stmt->bindValue(':user_id', $data['user_id'], PDO::PARAM_INT);
+      $stmt->bindValue(':email', $data['email'], PDO::PARAM_STR);
+      $stmt->bindValue(':name', $data['name'], PDO::PARAM_STR);
+      $stmt->bindValue(':phone', $data['phone'], PDO::PARAM_STR);
+      $stmt->bindValue(':password', $data['password'], PDO::PARAM_STR);
 
       return $stmt->execute();
    }
@@ -81,10 +82,23 @@ class ClientRepository extends Database{
          AND `email` = :email'
       );
 
-      $stmt->bindValue(':user_id', $data['user_id']);
-      $stmt->bindValue(':email', $data['email']);
-      $stmt->bindValue(':profile_image', $data['profile_image']);
-      $stmt->bindValue(':cdl_id', $data['cdl_id']);
+      $stmt->bindValue(':user_id', $data['user_id'], PDO::PARAM_INT);
+      $stmt->bindValue(':email', $data['email'], PDO::PARAM_STR);
+      $stmt->bindValue(':profile_image', $data['profile_image'], PDO::PARAM_STR);
+      $stmt->bindValue(':cdl_id', $data['cdl_id'], PDO::PARAM_STR);
+
+      return $stmt->execute();
+   }
+
+   public function delete(array $data):bool{
+      $stmt = self::$pdo->prepare(
+         'DELETE FROM `clients`
+         WHERE `user_foreign_key` = :user_id
+         and `id` = :client_id'
+      );
+
+      $stmt->bindValue(':user_id', $data['user_id'], PDO::PARAM_INT);
+      $stmt->bindValue(':client_id', $data['client_id'], PDO::PARAM_INT);
 
       return $stmt->execute();
    }

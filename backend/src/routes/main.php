@@ -23,3 +23,4 @@ Route::delete('/galery/images/delete', 'GaleryController@deleteImage');
 Route::post('/client/register', 'ClientController@register');
 Route::put('/client/update', 'ClientController@update');
 Route::post('/client/changeimage', 'ClientController@changeImage');
+Route::delete('/client/delete', 'ClientController@delete');
