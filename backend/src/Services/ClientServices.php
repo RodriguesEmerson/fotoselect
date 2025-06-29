@@ -62,6 +62,32 @@ class ClientServices{
    }
 
    /**
+    * Gets all clients.
+    * @return array{error: string, status: int} on Failure.
+    * @return array{clients: array} on Success.
+    */
+   public function fetchAll(){
+      try{
+         
+         $clients = $this->clientRepository->getAllClients($this->userId);
+         if(!$clients){
+            return ['error' => 'Somethig went wrong, try again.', 'status' => 500];
+         }
+
+         return ['clients' => $clients];
+      } catch (\InvalidArgumentException $e) {
+
+         return ['error' => $e->getMessage(), 'status' => 400]; 
+      }catch (\PDOException $e) {
+         
+         return ['error' => $e->getMessage(), 'status' => 500]; 
+      }catch(\Exception $e){
+
+         return ['error' => $e->getMessage(), 'status' => 500];
+      }
+   }
+
+   /**
     * Update the client data except the profile_image.
     * @param array $data Wiith the client data.
     * @return array{error: string, status: int} on Failure.
