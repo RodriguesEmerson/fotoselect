@@ -5,8 +5,17 @@ use App\Config\Database;
 use PDO;
 
 class UserRepository extends Database{
-
-    public static function register(array $data):bool{
+   /**
+    * Registers a new user in the database.
+    *
+    * @param array $data Associative array containing:
+    *                    - name (string)
+    *                    - lastname (string)
+    *                    - email (string)
+    *                    - password (string)
+    * @return bool Returns true on successful insertion, false otherwise.
+    */
+   public static function register(array $data):bool{
       $pdo = self::getConection();
       $stmt = $pdo->prepare(
          'INSERT INTO `users` (`name`, `lastname`, `email`, `password`)
@@ -20,6 +29,13 @@ class UserRepository extends Database{
       return $stmt->execute();
    }
    
+   /**
+    * Fetches basic user information by user ID.
+    *
+    * @param string $userId The ID of the user.
+    * @return array|bool Returns an associative array with keys `name`, `lastname`, and `email`,
+    *                    or false if the user is not found.
+    */
    public static function fetch(string $userId):bool|array{
       $pdo = self::getConection();
       $stmt = $pdo->prepare(
@@ -30,8 +46,16 @@ class UserRepository extends Database{
       return $stmt->fetch(PDO::FETCH_ASSOC);
    }
 
+   /**
+    * Authenticates a user using email and password.
+    *
+    * @param array $credentials Associative array containing:
+    *                           - email (string)
+    *                           - password (string)
+    * @return array|bool Returns an associative array with `user_id`, `name`, and `email` if login is successful,
+    *                    or false if authentication fails.
+    */
    public static function login(array $credentials):bool|array{
-      
       $pdo = self::getConection();
       $stmt = $pdo->prepare(
          'SELECT * FROM `users` WHERE `email` = :email'
@@ -48,8 +72,5 @@ class UserRepository extends Database{
          'name' => $user['name'],
          'email' => $user['email']
       ];
-
    }
-
-  
 }

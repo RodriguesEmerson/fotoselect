@@ -11,6 +11,19 @@ class ClientRepository extends Database{
       self::getConection();
    }
 
+   /**
+    * Registers a new client in the database.
+    *
+    * @param array $data Associative array containing:
+    *                    - user_id (int)
+    *                    - name (string)
+    *                    - email (string)
+    *                    - phone (string)
+    *                    - password (string)
+    *                    - profile_image (string)
+    *                    - cdl_id (string)
+    * @return bool Returns true if the registration was successful, false otherwise.
+    */
    public function register(array $data):bool{
       $stmt = self::$pdo->prepare(
          'INSERT INTO `clients`
@@ -30,6 +43,30 @@ class ClientRepository extends Database{
       return $stmt->execute();
    }
 
+   /**
+    * Retrieves all clients associated with a specific user.
+    *
+    * @param int $user_id The ID of the user.
+    * @return array|bool Returns an array of clients (as FetchClindModel objects) or false on failure.
+    */
+   public function getAllClients(int $user_id):array|bool{
+      $stmt = self::$pdo->prepare(
+         'SELECT * FROM `clients`
+         WHERE `user_foreign_key` = :user_id'
+      );
+      $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+      $stmt->execute();
+      return $stmt->fetchAll(\PDO::FETCH_CLASS, FetchClindModel::class);
+   }
+
+   /**
+    * Retrieves a client by their ID.
+    *
+    * @param array $data Associative array containing:
+    *                    - user_id (int)
+    *                    - client_id (int)
+    * @return object|bool Returns the client as a FetchClindModel object or false if not found.
+    */
    public function getClientById(array $data):object|bool{
       $stmt = self::$pdo->prepare(
          'SELECT * FROM `clients`
@@ -43,6 +80,14 @@ class ClientRepository extends Database{
       return $stmt->fetch();
    }
 
+   /**
+    * Retrieves a client by their email.
+    *
+    * @param array $data Associative array containing:
+    *                    - user_id (int)
+    *                    - email (string)
+    * @return object|bool Returns the client as a FetchClindModel object or false if not found.
+    */
    public function getClientByEmail(array $data):object|bool{
       $stmt = self::$pdo->prepare(
          'SELECT * FROM `clients`
@@ -56,7 +101,17 @@ class ClientRepository extends Database{
       return $stmt->fetch();
    }
 
-
+   /**
+    * Updates a client's basic information.
+    *
+    * @param array $data Associative array containing:
+    *                    - user_id (int)
+    *                    - email (string)
+    *                    - name (string)
+    *                    - phone (string)
+    *                    - password (string)
+    * @return bool Returns true if the update was successful, false otherwise.
+    */
    public function update(array $data):bool{
       $stmt = self::$pdo->prepare(
          'UPDATE `clients`
@@ -74,6 +129,16 @@ class ClientRepository extends Database{
       return $stmt->execute();
    }
 
+   /**
+    * Updates a client's profile image and CDL ID.
+    *
+    * @param array $data Associative array containing:
+    *                    - user_id (int)
+    *                    - email (string)
+    *                    - profile_image (string)
+    *                    - cdl_id (string)
+    * @return bool Returns true if the update was successful, false otherwise.
+    */
    public function changeImage(array $data){
       $stmt = self::$pdo->prepare(
          'UPDATE `clients`
@@ -90,6 +155,14 @@ class ClientRepository extends Database{
       return $stmt->execute();
    }
 
+   /**
+    * Deletes a client from the database.
+    *
+    * @param array $data Associative array containing:
+    *                    - user_id (int)
+    *                    - client_id (int)
+    * @return bool Returns true if the deletion was successful, false otherwise.
+    */
    public function delete(array $data):bool{
       $stmt = self::$pdo->prepare(
          'DELETE FROM `clients`

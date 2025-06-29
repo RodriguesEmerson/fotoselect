@@ -11,10 +11,20 @@ use PDOException;
 class GaleryRepository extends Database{
 
    /**
-    * Create a new Galery in the Database
-    * @param array $data Containing the new galery information
-    * @return bool True on success and False on failure.
-    * @throws PDOException If somethig goes wrong.
+    * Creates a new gallery in the database.
+    *
+    * @param array $data Associative array containing:
+    *                    - user_id (int)
+    *                    - galery_name (string)
+    *                    - galery_cover (string)
+    *                    - cdl_id (string)
+    *                    - deadline (string|datetime)
+    *                    - private (bool)
+    *                    - watermark (bool)
+    *                    - status (string)
+    *                    - password (string)
+    * @return bool Returns true on success, false on failure.
+    * @throws PDOException If something goes wrong during the query execution.
     */
    public function create(array $data):bool{
       $pdo = self::getConection();
@@ -40,9 +50,15 @@ class GaleryRepository extends Database{
    }
 
    /**
-    * 
+    * Grants access to a gallery for a specific client.
     *
+    * @param array $data Associative array containing:
+    *                    - user_id (int)
+    *                    - galery_id (int)
+    *                    - client_id (int)
+    * @return bool Returns true on success, false on failure.
     */
+
    public function createAccess(array $data):bool{
       $pdo = self::getConection();
 
@@ -61,9 +77,15 @@ class GaleryRepository extends Database{
       return $stmt->execute();
    }
 
+   
    /**
-    * 
+    * Revokes access to a gallery from a specific client.
     *
+    * @param array $data Associative array containing:
+    *                    - galery_id (int)
+    *                    - client_id (int)
+    *                    - user_id (int)
+    * @return bool Returns true on success, false on failure.
     */
    public function deleteAccess(array $data):bool{
       $pdo = self::getConection();
@@ -82,7 +104,15 @@ class GaleryRepository extends Database{
       return $stmt->execute();
    }
 
-
+   /**
+    * Uploads multiple images to a gallery.
+    *
+    * @param array $data Associative array containing:
+    *                    - user_id (int)
+    *                    - galery_id (int)
+    *                    - images (array of arrays with keys: name, src, cdl_id)
+    * @return bool Returns true on success, false on failure.
+    */
    public function upload(array $data):bool{
       $colunms = [
          '`user_foreign_key`', '`galery_foreign_key`', '`name`', '`src`', '`cdl_id`'
@@ -117,6 +147,14 @@ class GaleryRepository extends Database{
       return $stmt->execute($params);
    }
 
+   /**
+    * Retrieves gallery metadata by its ID and the user who owns it.
+    *
+    * @param array $data Associative array containing:
+    *                    - user_id (int)
+    *                    - galery_id (int)
+    * @return object|false Returns a FetchGaleryDataModel object or false if not found.
+    */
    public function getGaleryData(array $data){
       $pdo = self::getConection();
       $stmt = $pdo->prepare(
@@ -132,6 +170,14 @@ class GaleryRepository extends Database{
       return $stmt->fetch();
    }
 
+   /**
+    * Retrieves all images belonging to a gallery.
+    *
+    * @param array $data Associative array containing:
+    *                    - user_id (int)
+    *                    - galery_id (int)
+    * @return array Returns an array of FetchGaleryImagesModel objects.
+    */
    public function getGaleryImages(array $data){
       $pdo = self::getConection();
       $stmt = $pdo->prepare(
@@ -147,6 +193,15 @@ class GaleryRepository extends Database{
       
    }
 
+   /**
+    * Retrieves image URL and CDL ID by image ID and gallery.
+    *
+    * @param array $data Associative array containing:
+    *                    - user_id (int)
+    *                    - galery_id (int)
+    *                    - image_id (int)
+    * @return array|bool Returns an associative array with keys `src` and `cdl_id`, or false if not found.
+    */
    public function getImageUrlAndCdlIdById(array $data):bool|array{
       $pdo = self::getConection();
       $stmt = $pdo->prepare(
@@ -164,6 +219,14 @@ class GaleryRepository extends Database{
       return $stmt->fetch(PDO::FETCH_ASSOC);
    }
 
+   /**
+    * Deletes a gallery based on its ID and the user who owns it.
+    *
+    * @param array $data Associative array containing:
+    *                    - user_id (int)
+    *                    - galery_id (int)
+    * @return bool Returns true on success, false on failure.
+    */
    public function deleteGalery(array $data){
       $pdo = self::getConection();
      
@@ -178,6 +241,15 @@ class GaleryRepository extends Database{
       return $stmt->execute();
    }
 
+   /**
+    * Deletes multiple images from a gallery.
+    *
+    * @param array $data Associative array containing:
+    *                    - user_id (int)
+    *                    - galery_id (int)
+    *                    - imagesId (int[]) Array of image IDs to be deleted.
+    * @return bool Returns true on success, false on failure.
+    */
    public function deleteImagesFromGalery(array $data):bool{
       $pdo = self::getConection();
 
@@ -194,8 +266,17 @@ class GaleryRepository extends Database{
 
       $stmt = $pdo->prepare($query);
       return $stmt->execute($params);
-   }
+   }  
 
+   /**
+    * Deletes a single image from a gallery.
+    *
+    * @param array $data Associative array containing:
+    *                    - user_id (int)
+    *                    - galery_id (int)
+    *                    - image_id (int)
+    * @return bool Returns true on success, false on failure.
+    */
    public function deleteOneImageFromGalery(array $data):bool{
       $pdo = self::getConection();
       $stmt = $pdo->prepare(
@@ -211,12 +292,4 @@ class GaleryRepository extends Database{
 
       return $stmt->execute();
    }
-
-   /**
-    * return $stmt->fetchAll(\PDO::FETCH_CLASS, PageModel::class) ?: null;
-    *
-    * $stmt->setFetchMode(\PDO::FETCH_CLASS, PageModel::class);
-    * return $stmt->fetch() ?: null;
-    */
-
 }
