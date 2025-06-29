@@ -39,6 +39,27 @@ class GaleryRepository extends Database{
       return $stmt->execute();
    }
 
+   /**
+    * 
+    *
+    */
+   public function createAccess(array $data):bool{
+      $pdo = self::getConection();
+
+      //This function access another TABLE: galery_access
+      $stmt = $pdo->prepare(
+         'INSERT INTO 
+         `galery_access` 
+         (`galery_foreign_key`, `client_foreign_key`)
+         VALUES 
+         (:galery_id, :client_id)'
+      );
+      $stmt->bindValue(':galery_id', $data['galery_id'], PDO::PARAM_INT);
+      $stmt->bindValue(':client_id', $data['client_id'], PDO::PARAM_INT);
+      
+      return $stmt->execute();
+   }
+
 
    public function upload(array $data):bool{
       $colunms = [
@@ -85,7 +106,8 @@ class GaleryRepository extends Database{
       $stmt->bindValue(':user_id', $data['user_id']);
       $stmt->bindValue(':id', $data['galery_id']);
       $stmt->execute();
-      return $stmt->fetchAll(PDO::FETCH_CLASS, FetchGaleryDataModel::class);
+      $stmt->setFetchMode(\PDO::FETCH_CLASS, FetchGaleryDataModel::class);
+      return $stmt->fetch();
    }
 
    public function getGaleryImages(array $data){

@@ -12,5 +12,6 @@ class FetchGaleryDataModel{
    public string $status;
    public string $cdl_id;
    private int $user_foreign_key;
+   private string $password;
    private string $created_at;
 }

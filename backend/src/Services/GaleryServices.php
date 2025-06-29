@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\CloudinaryHandle\CloudinaryHandleImage;
+use App\DTOs\GaleryDTOs\CreateGaleryAccessDTO;
 use App\DTOs\GaleryDTOs\CreateGaleryDTO;
 use App\DTOs\GaleryDTOs\DeleteImageGaleryDTO;
 use App\DTOs\GaleryDTOs\FetchGaleryDTO;
@@ -10,6 +11,7 @@ use App\DTOs\GaleryDTOs\FetchImagesGaleryDTO;
 use App\DTOs\GaleryDTOs\UploadGaleryDTO;
 use App\Exceptions\UnauthorizedException;
 use App\JWT\JWT;
+use App\Repositories\ClientRepository;
 use App\Repositories\GaleryRepository;
 use Exception;
 use InvalidArgumentException;
@@ -84,6 +86,47 @@ class GaleryServices{
          if(!$galeryImages) return['error' => 'Error trying to get galery images.', 'status' => 400];
 
          return ['galery' =>$galery, 'images' => $galeryImages];
+      } catch (InvalidArgumentException $e) {
+
+         return ['error' => $e->getMessage(), 'status' => 400]; 
+      }catch (\PDOException $e) {
+         
+         return ['error' => $e->getMessage(), 'status' => 400]; 
+      }catch(Exception $e){
+
+         return ['error' => $e->getMessage(), 'status' => $e->getCode()];
+      }
+   }
+
+   /**
+    * Create the gallery access, specify which client can access it.
+    * @param array $data Containing the galery data.
+    * @return array{error: string, status: int} on Failure.
+    * @return array{message: string} on Success.
+    */
+   public function createAccess(array $data):array{
+      try {
+         $data['user_id'] = $this->userId;
+         $data = CreateGaleryAccessDTO::toArray($data);
+
+
+         $galery = $this->galeryRepository->getGaleryData($data);
+         if(!$galery) return ['error' => 'Galery not found.', 'status' => 400];
+         
+         //Verify if exists an user with the email sent.
+         $clientRepository = new ClientRepository();
+         $client = $clientRepository->getClientByEmail($data);
+         if(!$client) return ['error' => 'Client not found.', 'status' => 400];
+
+         $data = [
+            'galery_id' => $galery->id,
+            'client_id' => $client->id,
+         ];
+
+         $wasAccessCreated = $this->galeryRepository->createAccess($data);
+         if(!$wasAccessCreated) return ['error' => 'Error trying to create the client gallery access.', 'status' => 400];
+
+         return ['message' => 'The client gallery access has been created.'];
       } catch (InvalidArgumentException $e) {
 
          return ['error' => $e->getMessage(), 'status' => 400]; 
