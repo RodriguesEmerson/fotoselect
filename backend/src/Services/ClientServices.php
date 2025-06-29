@@ -5,6 +5,7 @@ namespace App\Services;
 use App\CloudinaryHandle\CloudinaryHandleImage;
 use App\DTOs\ClientsDTOs\ClientDTO;
 use App\DTOs\ClientsDTOs\DelteClientDTO;
+use App\DTOs\ClientsDTOs\FetchClientDTO;
 use App\DTOs\ClientsDTOs\UpdateClientImageDTO;
 use App\Exceptions\UnauthorizedException;
 use App\JWT\JWT;
@@ -49,6 +50,34 @@ class ClientServices{
          }
 
          return ['message' => 'New client resgistered successfuly.'];
+      } catch (\InvalidArgumentException $e) {
+
+         return ['error' => $e->getMessage(), 'status' => 400]; 
+      }catch (\PDOException $e) {
+         
+         return ['error' => $e->getMessage(), 'status' => 500]; 
+      }catch(\Exception $e){
+
+         return ['error' => $e->getMessage(), 'status' => 500];
+      }
+   }
+
+   /**
+    * Gets all clients.
+    * @return array{error: string, status: int} on Failure.
+    * @return array{clients: array} on Success.
+    */
+   public function fetch(array $data){
+      try{
+         $data['user_id'] = $this->userId;
+         $data = FetchClientDTO::toArray($data);
+
+         $client = $this->clientRepository->getClientById($data);
+         if(!$client){
+            return ['error' => 'Client not found.', 'status' => 500];
+         }
+
+         return ['client' => $client];
       } catch (\InvalidArgumentException $e) {
 
          return ['error' => $e->getMessage(), 'status' => 400]; 
