@@ -109,6 +109,44 @@ class GaleryServices{
          $data['user_id'] = $this->userId;
          $data = CreateGaleryAccessDTO::toArray($data);
 
+         $galery = $this->galeryRepository->getGaleryData($data);
+         if(!$galery) return ['error' => 'Galery not found.', 'status' => 400];
+         
+         //Verify if exists an user with the email sent.
+         $clientRepository = new ClientRepository();
+         $client = $clientRepository->getClientByEmail($data);
+         if(!$client) return ['error' => 'Client not found.', 'status' => 400];
+
+         $data['galery_id'] = $galery->id;
+         $data['client_id'] = $client->id;
+
+         $wasAccessCreated = $this->galeryRepository->createAccess($data);
+         if(!$wasAccessCreated) return ['error' => 'Error trying to create the client gallery access.', 'status' => 400];
+
+         return ['message' => 'The client gallery access has been created.'];
+      } catch (InvalidArgumentException $e) {
+
+         return ['error' => $e->getMessage(), 'status' => 400]; 
+      }catch (\PDOException $e) {
+         
+         return ['error' => $e->getMessage(), 'status' => 400]; 
+      }catch(Exception $e){
+
+         return ['error' => $e->getMessage(), 'status' => $e->getCode()];
+      }
+   }
+
+   /**
+    * Delete the client gallery access.
+    * @param array $data Containing the galery data.
+    * @return array{error: string, status: int} on Failure.
+    * @return array{message: string} on Success.
+    */
+   public function deleteAccess(array $data):array{
+      try {
+         $data['user_id'] = $this->userId;
+         $data = CreateGaleryAccessDTO::toArray($data);
+
 
          $galery = $this->galeryRepository->getGaleryData($data);
          if(!$galery) return ['error' => 'Galery not found.', 'status' => 400];
@@ -118,15 +156,13 @@ class GaleryServices{
          $client = $clientRepository->getClientByEmail($data);
          if(!$client) return ['error' => 'Client not found.', 'status' => 400];
 
-         $data = [
-            'galery_id' => $galery->id,
-            'client_id' => $client->id,
-         ];
+         $data['galery_id'] = $galery->id;
+         $data['client_id'] = $client->id;
 
-         $wasAccessCreated = $this->galeryRepository->createAccess($data);
-         if(!$wasAccessCreated) return ['error' => 'Error trying to create the client gallery access.', 'status' => 400];
+         $wasAccessDeleted = $this->galeryRepository->deleteAccess($data);
+         if(!$wasAccessDeleted) return ['error' => 'Error trying to delete the client gallery access.', 'status' => 400];
 
-         return ['message' => 'The client gallery access has been created.'];
+         return ['message' => 'The client gallery access has been deleted.'];
       } catch (InvalidArgumentException $e) {
 
          return ['error' => $e->getMessage(), 'status' => 400]; 

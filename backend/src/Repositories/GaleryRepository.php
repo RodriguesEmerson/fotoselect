@@ -50,12 +50,34 @@ class GaleryRepository extends Database{
       $stmt = $pdo->prepare(
          'INSERT INTO 
          `galery_access` 
-         (`galery_foreign_key`, `client_foreign_key`)
+         (`user_foreign_key`, `galery_foreign_key`, `client_foreign_key`)
          VALUES 
-         (:galery_id, :client_id)'
+         (:user_id, :galery_id, :client_id)'
+      );
+      $stmt->bindValue(':user_id', $data['user_id'], PDO::PARAM_INT);
+      $stmt->bindValue(':galery_id', $data['galery_id'], PDO::PARAM_INT);
+      $stmt->bindValue(':client_id', $data['client_id'], PDO::PARAM_INT);
+      
+      return $stmt->execute();
+   }
+
+   /**
+    * 
+    *
+    */
+   public function deleteAccess(array $data):bool{
+      $pdo = self::getConection();
+
+      //This function access another TABLE: galery_access
+      $stmt = $pdo->prepare(
+         'DELETE FROM `galery_access` 
+         WHERE `galery_foreign_key` = :galery_id
+         AND `client_foreign_key` = :client_id
+         AND `user_foreign_key` = :user_id'
       );
       $stmt->bindValue(':galery_id', $data['galery_id'], PDO::PARAM_INT);
       $stmt->bindValue(':client_id', $data['client_id'], PDO::PARAM_INT);
+      $stmt->bindValue(':user_id', $data['user_id'], PDO::PARAM_INT);
       
       return $stmt->execute();
    }

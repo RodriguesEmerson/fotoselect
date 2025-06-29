@@ -19,6 +19,7 @@ Route::post('/galery/create', 'GaleryController@create');
 Route::get('/galery/fetch/{id}', 'GaleryController@fetch');
 Route::post('/galery/upload', 'GaleryController@upload');
 Route::post('/galery/createaccess', 'GaleryController@createAccess');
+Route::delete('/galery/deleteaccess', 'GaleryController@deleteAccess');
 Route::delete('/galery/delete', 'GaleryController@delete');
 Route::delete('/galery/images/delete', 'GaleryController@deleteImage');
 
