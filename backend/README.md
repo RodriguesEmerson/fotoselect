@@ -1,5 +1,15 @@
 # FotoSelect Backend
+FotoSelect is an application designed for photographers who want to share photo albums with their clients in an organized and secure way. This repository contains the **backend API**, built with **pure PHP**, responsible for managing users, JWT-based authentication, galleries, images, access permissions, subscription plans, and credit transactions.
 
+The backend follows the **MVP** and **DDD** architecture, with clean and modular code to facilitate maintenance, scalability, and seamless integration with the frontend developed in Next.js.
+
+## Main Features
+- User registration and login (JWT)
+- Creation and management of photo galleries
+- Upload, listing, and deletion of images
+- Access control (photographers, clients, and administrators)
+- Credit system for photo selection and purchases `to do`
+- Subscription plan management `to do`
 
 
 # How to Run
