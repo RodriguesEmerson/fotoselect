@@ -97,7 +97,6 @@ class ClientServices{
     */
    public function fetchAll(){
       try{
-         
          $clients = $this->clientRepository->getAllClients($this->userId);
          if(!$clients){
             return ['error' => 'Somethig went wrong, try again.', 'status' => 500];

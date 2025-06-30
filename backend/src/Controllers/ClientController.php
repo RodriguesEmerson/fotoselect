@@ -81,7 +81,6 @@ class ClientController{
     */
    public function fetchAll(Request $request, Response $response){
       try {
-
          $clientServices = new ClientServices();
          $serviceResponse = $clientServices->fetchAll();
 
