@@ -19,7 +19,7 @@ class UserRepository extends Database{
       $pdo = self::getConection();
       $stmt = $pdo->prepare(
          'INSERT INTO `users` (`name`, `lastname`, `email`, `password`)
-                       VALUES (:name, :lastname, :email, :password, :start_date)'
+                       VALUES (:name, :lastname, :email, :password)'
       );
       $stmt->bindValue(':name', $data['name']);
       $stmt->bindValue(':lastname', $data['lastname']);
