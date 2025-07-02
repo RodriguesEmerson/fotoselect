@@ -4,9 +4,10 @@ import { useForm } from "react-hook-form"
 import { DefaultInputText } from "@/components/UI/DefaultInputText";
 import { PurpleSubmitButton } from "@/components/UI/PurpleSumitButton";
 import { WhiteLinkButton } from "@/components/UI/WhiteLinkButton";
+import { useState } from "react";
 
 export function RegisterForm() {
-
+   const [isRegistering, setIsRegistering] = useState(false);
    const {
       register,
       handleSubmit,
@@ -16,9 +17,26 @@ export function RegisterForm() {
 
    const onSubmit = (data) => handleRegister(data);
 
-   const handleRegister = (data) => {
-      console.log(data);
-      //CRIAR CONEXÃO COM A APIGIT 
+   const handleRegister = async (data) => {
+      try{
+         setIsRegistering(true);
+         const req = await fetch(`http://localhost/fotoselect/backend/user/register`, 
+            {
+               method: 'POST',
+               headers: {'Content-Type': 'application/json'},
+               credentials: 'include',
+               body: JSON.stringify(data)
+            }
+         );
+         const res = await req.json();
+         if(res.error){
+            console.log(res.content.message);
+         }
+         setIsRegistering(false);
+
+      }catch(e){
+         console.log("Erro: " + e);
+      }
    }
 
    return (
@@ -49,7 +67,7 @@ export function RegisterForm() {
          />
          <div></div>
          <PurpleSubmitButton
-            text={'Cadastrar'}
+            text={'Cadastrar'} isLoading={isRegistering}
          />
          <div className="flex flex-row gap-0.5 items-center">
             <span className="h-[1px] bg-gray-400 flex-1"></span>
