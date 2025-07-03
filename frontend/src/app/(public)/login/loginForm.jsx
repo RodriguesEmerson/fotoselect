@@ -7,8 +7,8 @@ import { WhiteLinkButton } from "@/components/UI/WhiteLinkButton";
 import { useState } from "react";
 import { toast } from 'react-toastify';
 
-export function RegisterForm() {
-   const [isRegistering, setIsRegistering] = useState(false);
+export function LoginForm() {
+   const [isLoging, setIsLoging] = useState(false);
 
    const {
       register,
@@ -22,8 +22,8 @@ export function RegisterForm() {
 
    const handleRegister = async (data) => {
       try{
-         setIsRegistering(true);
-         const req = await fetch(`http://localhost/fotoselect/backend/user/register`, 
+         setIsLoging(true);
+         const req = await fetch(`http://localhost/fotoselect/backend/user/login`, 
             {
                method: 'POST',
                headers: {'Content-Type': 'application/json'},
@@ -32,63 +32,55 @@ export function RegisterForm() {
             }
          );
          const res = await req.json();
-         setIsRegistering(false);
+         setIsLoging(false);
 
          if(res.error){
-            if(res.content.message == 'This email already exists.'){
-               setError('email', {
-                  type: 'manual',
-                  message: "Já existe uma cadastrada com este email."
-               })
-               return;
-            }
-            return toast.error('Ocorreu algo inesperado, tente novamente.');
+            return toast.error('Email ou senha inválidos.');
          }
          //CRIAR REDIRECT
+         return toast.success('Logado.');
 
       }catch(e){
-         toast.error('Ocorreu algo inesperado.')
+         toast.error('Ocorreu algo inesperado, tente novamente.')
       }
    }
 
    return (
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 mt-2">
          <DefaultInputText 
-            {...register('name', {required: 'O Nome é obrigatório.',  maxLength: 50, pattern: /^[A-Za-z]+$/i})} 
-            label={'Nome'} 
-            id={'register-form-name'} 
-            errorMessage={errors?.name?.message}
-         />
-         <DefaultInputText 
-            {...register('lastname', {required: 'O Sobrenome é obrigatório.',  maxLength: 50, pattern: /^[A-Za-z]+$/i})} 
-            label={'Sobrenome'}
-            id={'register-form-lastname'}
-            errorMessage={errors?.lastname?.message}
-         />
-         <DefaultInputText 
-            {...register('email', {required: 'O Email é obrigatório.',  maxLength: 100})} 
+            {...register('email', {required: 'Insira seu email.',  maxLength: 100})} 
             label={'Email'} 
             id={'register-form-email'} 
-            type="email" 
+            type="email"
             errorMessage={errors?.email?.message}
          />
+        
          <DefaultInputText 
-            {...register('password', {required: 'A Senha é obrigatória.', minLength: 8,  maxLength: 100})} 
+            {...register('password', {required: 'Insira sua senha.',  maxLength: 100})} 
             label={'Senha'} 
             id={'register-form-password'} 
             type="password" 
             errorMessage={errors?.password?.message}
          />
+
+         <div className="flex items-center justify-end pr-1 gap-1 -mt-3">
+            <input type="checkbox" id="checkbox-keeploged"/>
+            <label htmlFor="checkbox-keeploged" className="text-xs">Permanecer conectado</label>
+         </div>
+
          <div></div>
+
          <PurpleSubmitButton
-            text={'Cadastrar'} isLoading={isRegistering}
+            text={'Acessar'} isLoading={isLoging}
          />
+
          <div className="flex flex-row gap-0.5 items-center">
             <span className="h-[1px] bg-gray-400 flex-1"></span>
-            <span className="flex-1.5 px-2 text-sm text-gray-600">Já tem uma conta?</span>
+            <span className="flex-2 text-sm text-center text-gray-600">Ainda não tem uma conta?</span>
             <span className="h-[1px] bg-gray-400 flex-1"></span>
          </div>
-         <WhiteLinkButton href={'/login'} text={'Acessar conta'} />
+
+         <WhiteLinkButton href={'/register'} text={'Cadastre-se'} />
       </form>
    )
 }
