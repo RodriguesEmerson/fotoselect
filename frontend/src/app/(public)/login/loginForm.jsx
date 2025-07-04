@@ -6,21 +6,29 @@ import { PurpleSubmitButton } from "@/components/UI/PurpleSumitButton";
 import { WhiteLinkButton } from "@/components/UI/WhiteLinkButton";
 import { useState } from "react";
 import { toast } from 'react-toastify';
+import { zodResolver } from "@hookform/resolvers/zod";
+import z from "zod";
 
 export function LoginForm() {
    const [isLoging, setIsLoging] = useState(false);
+   
+   const registerSchema = z.object({
+      email: z.string().email('Insira um email válido.'),
+      password: z.string(),
+   });
 
-   const {
-      register,
-      handleSubmit,
-      setError,
-      watch,
+   const { 
+      register, 
+      handleSubmit, 
+      setError, watch, 
       formState: { errors },
-   } = useForm();
+   } = useForm({
+      resolver: zodResolver(registerSchema)
+   });
 
-   const onSubmit = (data) => handleRegister(data);
+   const onSubmit = (data) => handleLogin(data);
 
-   const handleRegister = async (data) => {
+   const handleLogin = async (data) => {
       try{
          setIsLoging(true);
          const req = await fetch(`http://localhost/fotoselect/backend/user/login`, 
@@ -33,14 +41,16 @@ export function LoginForm() {
          );
          const res = await req.json();
          setIsLoging(false);
-
+         
          if(res.error){
             return toast.error('Email ou senha inválidos.');
          }
          //CRIAR REDIRECT
          return toast.success('Logado.');
-
+         
       }catch(e){
+         setIsLoging(false);
+         console.log(e)
          toast.error('Ocorreu algo inesperado, tente novamente.')
       }
    }
@@ -51,7 +61,7 @@ export function LoginForm() {
             {...register('email', {required: 'Insira seu email.',  maxLength: 100})} 
             label={'Email'} 
             id={'register-form-email'} 
-            type="email"
+            type="text"
             errorMessage={errors?.email?.message}
          />
         
@@ -60,7 +70,6 @@ export function LoginForm() {
             label={'Senha'} 
             id={'register-form-password'} 
             type="password" 
-            errorMessage={errors?.password?.message}
          />
 
          <div className="flex items-center justify-end pr-1 gap-1 -mt-3">

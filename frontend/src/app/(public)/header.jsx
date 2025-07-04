@@ -11,7 +11,7 @@ export default function Header(){
 
    return(
       <header className="flex flex-row items-center justify-around h-16 border-b border-b-gray-200">
-         <div className="w-52 opacity-85">
+         <div className="w-40 opacity-85">
             <Image src={'/images/logo.png'} width={500} height={120} blurDataURL="/images/logo.png" alt="logo"/>
          </div>
          <nav>

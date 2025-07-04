@@ -1,6 +1,9 @@
 'use client';
 
 import { useForm } from "react-hook-form"
+import { zodResolver } from '@hookform/resolvers/zod';
+import z from "zod";
+
 import { DefaultInputText } from "@/components/UI/DefaultInputText";
 import { PurpleSubmitButton } from "@/components/UI/PurpleSumitButton";
 import { WhiteLinkButton } from "@/components/UI/WhiteLinkButton";
@@ -9,14 +12,29 @@ import { toast } from 'react-toastify';
 
 export function RegisterForm() {
    const [isRegistering, setIsRegistering] = useState(false);
+   const noTags = (val) => /^[A-Za-zÀ-ÿ\s]+$/.test(val);
 
-   const {
-      register,
-      handleSubmit,
-      setError,
-      watch,
+   const registerSchema = z.object({
+        name: z.string()
+         .min(3, 'O nome deve ter no mínimo 3 caracteres.')
+         .max(50, 'O nome deve ter no máximo 50 caracteres.')
+         .refine(noTags, { message: 'Insira apenas letras enter A e Z.' }),
+      lastname: z.string()
+         .min(3, 'O sobrenome deve ter no mínimo 3 caracteres.')
+         .max(50, 'O sobrenome deve ter no máximo 50 caracteres.')
+         .refine(noTags, { message: 'Insira apenas letras enter A e Z.' }),
+      email: z.string().email('Insira um email válido.'),
+      password: z.string().min(8, 'A senha deve ter pelo menos 8 caracteres.'),
+   });
+
+   const { 
+      register, 
+      handleSubmit, 
+      setError, watch, 
       formState: { errors },
-   } = useForm();
+   } = useForm({
+      resolver: zodResolver(registerSchema)
+   });
 
    const onSubmit = (data) => handleRegister(data);
 
@@ -38,7 +56,7 @@ export function RegisterForm() {
             if(res.content.message == 'This email already exists.'){
                setError('email', {
                   type: 'manual',
-                  message: "Já existe uma cadastrada com este email."
+                  message: "Já existe uma conta cadastrada com este email."
                })
                return;
             }
@@ -69,7 +87,7 @@ export function RegisterForm() {
             {...register('email', {required: 'O Email é obrigatório.',  maxLength: 100})} 
             label={'Email'} 
             id={'register-form-email'} 
-            type="email" 
+            type="text" 
             errorMessage={errors?.email?.message}
          />
          <DefaultInputText 
