@@ -10,8 +10,8 @@ export function SideBarLink({ link, children }) {
    return (
       <Link
          href={link}
-         className={`flex flex-row gap-2 text-sm h-10 rounded-md items-center pl-4 hover:text-[var(--primary-color)] transition-all 
-            ${ isActive && 'bg-[var(--button-primary-color)] text-white hover:text-white'}`}
+         className={`flex flex-row  gap-2 text-sm h-10 rounded-md items-center pl-4 bg-[var(--background)]  transition-all hover:brightness-90 
+            ${ isActive && 'bg-[var(--button-primary-color)] text-white hover:brightness-100'}`}
       >
          {children}
       </Link>

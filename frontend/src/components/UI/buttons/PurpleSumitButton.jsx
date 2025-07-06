@@ -1,5 +1,5 @@
 
-import { Spinner } from "./Loaders/Spinner"
+import { Spinner } from "./../Loaders/Spinner"
 export function PurpleSubmitButton({text, isLoading = false, ...props}){
    return(
       <button 

@@ -1,4 +1,4 @@
-import { HeaderNavLink } from "@/components/links/HeaderNavLink"
+import { HeaderNavLink } from "@/components/UI/links/HeaderNavLink"
 import Image from "next/image"
 export default function Header(){
 

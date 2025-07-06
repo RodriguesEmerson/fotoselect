@@ -4,9 +4,9 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod';
 import z from "zod";
 
-import { DefaultInputText } from "@/components/UI/DefaultInputText";
-import { PurpleSubmitButton } from "@/components/UI/PurpleSumitButton";
-import { WhiteLinkButton } from "@/components/UI/WhiteLinkButton";
+import { DefaultInputText } from "@/components/UI/textInputs/DefaultInputText";
+import { PurpleSubmitButton } from "@/components/UI/buttons/PurpleSumitButton";
+import { WhiteLinkButton } from "@/components/UI/buttons/WhiteLinkButton";
 import { useState } from "react";
 import { toast } from 'react-toastify';
 

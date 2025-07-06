@@ -1,4 +1,4 @@
-import { PurpleLinkButton } from "@/components/UI/PurpleLinkButton";
+import { PurpleLinkButton } from "@/components/UI/buttons/PurpleLinkButton";
 import Link from "next/link";
 //  bg-[url('/images/homebackgroundimg.jpg')]
 export default function Home() {

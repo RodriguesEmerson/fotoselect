@@ -1,9 +1,12 @@
-
+import { GreenButton } from "../UI/buttons/GreenButton";
 
 export function CreditsBox(){
+   const credits = 1000;
    return(
-      <section className="absolute bottom-2 left-2 bg-[var(--credits-box-background)] h-50 w-50 p-2 rounded-md">
-         
+      <section className="flex flex-col gap-1 items-center mt-5 bg-[var(--credits-box-background)] brightness-95 h-fit w-50 p-2 py-3 rounded-md">
+         <p className="text-sm">Créditos diponíveis</p>
+         <span className="font-bold text-xl">{new Intl.NumberFormat().format(credits)}</span>
+         <GreenButton text={'Comprar Créditos'} />
       </section>
    )
 }
