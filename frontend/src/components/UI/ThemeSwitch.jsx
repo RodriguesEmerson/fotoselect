@@ -8,7 +8,7 @@ export const ThemeSwitch = styled(Switch)(({ theme }) => ({
    '& .MuiSwitch-switchBase': {
       margin: 1,
       padding: 0,
-      paddingTop: 1,
+      paddingTop: 2,
       transform: 'translateX(6px)',
       '&.Mui-checked': {
          color: '#fff',
