@@ -12,17 +12,17 @@ import { toast } from 'react-toastify';
 
 export function RegisterForm() {
    const [isRegistering, setIsRegistering] = useState(false);
-   const noTags = (val) => /^[A-Za-zÀ-ÿ\s]+$/.test(val);
+   const noEspecialChar = (val) => /^[A-Za-zÀ-ÿ\s]+$/.test(val);
 
    const registerSchema = z.object({
         name: z.string()
          .min(3, 'O nome deve ter no mínimo 3 caracteres.')
          .max(50, 'O nome deve ter no máximo 50 caracteres.')
-         .refine(noTags, { message: 'Insira apenas letras enter A e Z.' }),
+         .refine(noEspecialChar, { message: 'Apenas caracteres de A a Z são válidos.' }),
       lastname: z.string()
          .min(3, 'O sobrenome deve ter no mínimo 3 caracteres.')
          .max(50, 'O sobrenome deve ter no máximo 50 caracteres.')
-         .refine(noTags, { message: 'Insira apenas letras enter A e Z.' }),
+         .refine(noEspecialChar, { message: 'Insira apenas letras enter A e Z.' }),
       email: z.string().email('Insira um email válido.'),
       password: z.string().min(8, 'A senha deve ter pelo menos 8 caracteres.'),
    });
