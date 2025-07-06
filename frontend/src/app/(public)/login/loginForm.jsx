@@ -1,12 +1,12 @@
 'use client';
 
-import { useForm } from "react-hook-form"
 import { DefaultInputText } from "@/components/UI//textInputs/DefaultInputText";
 import { PurpleSubmitButton } from "@/components/UI/buttons/PurpleSumitButton";
-import { WhiteLinkButton } from "@/components/UI/buttons/WhiteLinkButton";
-import { useState } from "react";
-import { toast } from 'react-toastify';
+import { WhiteLinkButton } from "@/components/UI/links/WhiteLinkButton";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from 'react-toastify';
 import z from "zod";
 
 export function LoginForm() {

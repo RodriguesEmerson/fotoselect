@@ -6,6 +6,7 @@ import InvertColorsIcon from '@mui/icons-material/InvertColors';
 import { SideBarLink } from "../UI/links/SideBarLink";
 import { CreditsBox } from './CreditsBox';
 import { LogoutButton } from '../UI/buttons/LogoutButton';
+import { SwitchThemeBox } from './SwitchThemeBox';
 
 export function SideBar() {
 
@@ -24,7 +25,7 @@ export function SideBar() {
       personalization: InvertColorsIcon
    }
    return (
-      <aside className="relative flex flex-col justify-between gap-3 w-54 min-w-54 h-full bg-[var(--background)] text-[var(--text-main-color)] shadow-[0_0_3_3px_var(--shadow)] rounded-xl p-2">
+      <aside className="relative  flex flex-col justify-between gap-3 w-54 min-w-54 h-full bg-[var(--background)] text-[var(--text-main-color)] shadow-[0_0_3_3px_var(--shadow)] rounded-xl p-2">
          <nav>
             <ul className='flex flex-col gap-2'>
                {sideBarLinks.map(link => {
@@ -44,6 +45,7 @@ export function SideBar() {
             <CreditsBox />
             <hr className='w-54 -ml-2 border-[var(--background)] brightness-80'/>
             <LogoutButton />
+            <SwitchThemeBox />
          </div>
 
       </aside>
