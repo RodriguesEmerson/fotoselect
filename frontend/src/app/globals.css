@@ -6,16 +6,17 @@
   --text-main-color: rgb(50, 50, 50);
   --primary-color: rgb(69, 1, 114);
   --secondary-color: rgb(69, 1, 114);
-  --button-primary-color: rgb(45, 2, 74);
+  --button-primary-color: rgb(55, 1, 92);
   --button-secondary-color: rgb(69, 1, 114);
+  --credits-box-background: rgb(228, 228, 228);
 }
 
-@theme inline {
+/* @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
+} */
 
 @media (prefers-color-scheme: dark) {
   :root {
