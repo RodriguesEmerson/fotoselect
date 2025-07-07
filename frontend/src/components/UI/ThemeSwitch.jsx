@@ -36,8 +36,8 @@ export const ThemeSwitch = styled(Switch)(({ theme }) => ({
          position: 'absolute',
          width: '100%',
          height: '100%',
-         left: 0,
-         top: 0,
+         left: -.5,
+         top: .5,
          backgroundRepeat: 'no-repeat',
          backgroundPosition: 'center',
          backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(

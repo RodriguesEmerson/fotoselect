@@ -1,27 +1,33 @@
 import { HeaderNavLink } from "@/components/UI/links/HeaderNavLink"
 import Image from "next/image"
-export default function Header(){
+export default function Header() {
 
    const navLinks = [
-      {link: '/', text: 'Home'},
-      {link: '/pricing', text: 'Preços'},
-      {link: '/register', text: 'Cadastre-se'},
-      {link: '/login', text: 'Acesse sua conta'}
+      { link: '/', text: 'Home' },
+      { link: '/pricing', text: 'Preços' },
+      { link: '/register', text: 'Cadastre-se' },
+      { link: '/login', text: 'Acesse sua conta' }
    ]
 
-   return(
-      <header className="flex flex-row items-center justify-around h-16 border-b border-b-gray-200">
+   return (
+      <header className="flex flex-row items-center justify-around h-16 border-b border-b-gray-200 bg-white">
          <div className="w-40 opacity-85">
-            <Image src={'/images/logo.png'} width={500} height={120} blurDataURL="/images/logo.png" alt="logo"/>
+            <Image
+               src={'/images/logo.png'} width={500} height={120}
+               blurDataURL="/images/logo.png"
+               alt="logo"
+               placeholder="blur"
+               priority
+            />
          </div>
          <nav>
             <ul className="flex flex-row gap-4 text-gray-600">
                {navLinks.map(link => (
-                 <HeaderNavLink key={link.link} link={link.link} text={link.text}/>
+                  <HeaderNavLink key={link.link} link={link.link} text={link.text} />
                ))
                }
             </ul>
-         </nav>   
+         </nav>
       </header>
    )
 }

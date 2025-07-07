@@ -4,6 +4,7 @@ import { DefaultInputText } from "@/components/UI//textInputs/DefaultInputText";
 import { PurpleSubmitButton } from "@/components/UI/buttons/PurpleSumitButton";
 import { WhiteLinkButton } from "@/components/UI/links/WhiteLinkButton";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Checkbox } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from 'react-toastify';
@@ -15,6 +16,7 @@ export function LoginForm() {
    const registerSchema = z.object({
       email: z.string().email('Insira um email válido.'),
       password: z.string(),
+      keeploged: z.boolean()
    });
 
    const { 
@@ -72,9 +74,11 @@ export function LoginForm() {
             type="password" 
          />
 
-         <div className="flex items-center justify-end pr-1 gap-1 -mt-3">
-            <input type="checkbox" id="checkbox-keeploged"/>
-            <label htmlFor="checkbox-keeploged" className="text-xs">Permanecer conectado</label>
+         <div className="flex items-center justify-end -mt-4 pr-1">
+            <Checkbox size="" {...register('keeploged')} sx={{color: '#450172', '&.Mui-checked': {color: '#450172' }}}id="checkbox-keeploged"/>
+            <label htmlFor="checkbox-keeploged" className="text-xs text-gray-600 -ml-1">
+               Permanecer conectado
+            </label>
          </div>
 
          <div></div>

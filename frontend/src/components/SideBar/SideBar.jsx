@@ -1,12 +1,12 @@
 import HomeIcon from '@mui/icons-material/Home';
+import InvertColorsIcon from '@mui/icons-material/InvertColors';
 import PersonIcon from '@mui/icons-material/Person';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
-import InvertColorsIcon from '@mui/icons-material/InvertColors';
+import { LogoutButton } from '../UI/buttons/LogoutButton';
+import { SwitchThemeBox } from '../UI/buttons/SwitchThemeButton';
 import { SideBarLink } from "../UI/links/SideBarLink";
 import { CreditsBox } from './CreditsBox';
-import { LogoutButton } from '../UI/buttons/LogoutButton';
-import { SwitchThemeBox } from './SwitchThemeBox';
 
 export function SideBar() {
 

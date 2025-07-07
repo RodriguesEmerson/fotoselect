@@ -42,13 +42,19 @@
     --background: #3a3a3a;
     --foreground: #171717;
     --text-main-color: rgb(237, 237, 237);
-    --primary-color: rgb(69, 1, 114);
+    --primary-color: #450172;
     --secondary-color: rgb(69, 1, 114);
     --button-primary-color: rgb(55, 1, 92);
     --button-secondary-color: rgb(69, 1, 114);
     --button-third-color: rgb(4, 117, 4);
     --credits-box-background: rgb(46, 46, 46);
   }
+}
+
+.light-autofill:-webkit-autofill {
+  -webkit-text-fill-color: #2d2d2d; 
+   box-shadow: 0 0 0 1000px white inset; /* muda o fundo para slate-800 */
+  transition: background-color 9999s ease-in-out 0s;
 }
 
 body {

@@ -12,10 +12,16 @@ export default function Header(){
    return(
       <header className="sticky top-0 z-10 flex flex-row items-center justify-between  px-3 ween h-16 bg-[var(--background)]">
          <div className="w-40 opacity-85">
-            <Image src={'/images/logo.png'} width={500} height={120} blurDataURL="/images/logo.png" alt="logo"/>
+            <Image 
+               src={'/images/logo.png'} width={500} height={120} 
+               blurDataURL="/images/logo.png" 
+               alt="logo" 
+               placeholder="blur"
+               priority
+            />
          </div>
          <nav>
-            <ul className="flex flex-row gap-4 text-gray-600">
+            <ul className="flex flex-row gap-4 text-white">
                {navLinks.map(link => (
                  <HeaderNavLink key={link.link} link={link.link} text={link.text}/>
                ))}
