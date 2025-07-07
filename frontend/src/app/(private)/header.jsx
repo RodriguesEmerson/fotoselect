@@ -1,13 +1,7 @@
-import { HeaderNavLink } from "@/components/UI/links/HeaderNavLink"
+import { NotificationBox } from "@/components/Notification/NotificationBox"
 import Image from "next/image"
-export default function Header(){
 
-   const navLinks = [
-      {link: '/', text: 'Home'},
-      {link: '/pricing', text: 'Preços'},
-      {link: '/register', text: 'Cadastre-se'},
-      {link: '/login', text: 'Acesse sua conta'}
-   ]
+export default function Header(){
 
    return(
       <header className="sticky top-0 z-10 flex flex-row items-center justify-between  px-3 ween h-16 bg-[var(--background)]">
@@ -20,13 +14,14 @@ export default function Header(){
                priority
             />
          </div>
-         <nav>
-            <ul className="flex flex-row gap-4 text-white">
-               {navLinks.map(link => (
-                 <HeaderNavLink key={link.link} link={link.link} text={link.text}/>
-               ))}
+         <div className="h-9">
+            <ul className="flex flex-row text-[var(--text-main-color)]">
+               <li className="relative w-fit">
+                  <NotificationBox />
+               </li>
             </ul>
-         </nav>   
+
+         </div>
       </header>
    )
 }

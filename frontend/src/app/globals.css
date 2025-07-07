@@ -1,11 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --shadow: #242424;
+  --shadow: #7171711d;
   --dashboard-background: #e6e6e6;
+  --border-color: #e6e6e6;
   --background: #ffffff;
   --foreground: #171717;
   --text-main-color: rgb(50, 50, 50);
+  --text-secondary-color: rgb(92, 92, 92);
   --primary-color: rgb(69, 1, 114);
   --secondary-color: rgb(69, 1, 114);
   --button-primary-color: rgb(55, 1, 92);
@@ -17,9 +19,11 @@
 .dark {
   --shadow: #242424;
   --dashboard-background: #202020;
-  --background: #3a3a3a;
+  --border-color: #202020;
+  --background: #282828;
   --foreground: #171717;
   --text-main-color: rgb(237, 237, 237);
+  --text-secondary-color: rgb(237, 237, 237);
   --primary-color: rgb(69, 1, 114);
   --secondary-color: rgb(69, 1, 114);
   --button-primary-color: rgb(55, 1, 92);
