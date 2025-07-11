@@ -13,12 +13,12 @@ export function Notifications({ isOpen, setIsOpen, notifications }) {
       <section
          ref={notificationsRef}
          modalref-id="notification-box"
-         className={`modal absolute scale-0 origin-top-right right-0 top-10 p-2 pt-0 w-80  overflow-x-hidden bg-[var(--background)] text-[var(--text-secondary-color)] text-sm shadow-[0_0_25px_5px_var(--shadow)] rounded-xl border border-[var(--border-color)] transition-all ${isOpen && 'scale-100'}`}
+         className={`modal absolute scale-0 origin-top-right right-0 top-10 p-2 overflow-hidden pt-0 w-80 bg-[var(--background)] text-[var(--text-secondary-color)] text-sm shadow-[0_0_25px_5px_var(--shadow)] rounded-xl border border-[var(--border-color)] transition-all ${isOpen && 'scale-100'}`}
       >
          {/** Notification top blur gradient  */}
-         <div className="absolute z-10 -top-3 -ml-3 left-0 w-80 h-10 bg-[linear-gradient(180deg,var(--background)_0%,var(--background)_18%,rgba(237,221,83,0)_100%)]  pointer-events-none" >
+         <div className="absolute z-10 left-0 w-80 h-10 bg-[linear-gradient(180deg,var(--background)_0%,var(--background)_18%,rgba(237,221,83,0)_100%)]  pointer-events-none" >
          </div>
-         <div className='h-full max-h-[calc(100vh-5rem)] overflow-y-scroll pb-5 pt-5'>
+         <div className='h-fit max-h-[calc(100vh-5rem)] bg-[var(--background)] overflow-y-scroll pb-5 pt-5'>
             {notifications?.length > 0
                ? notifications.map(notification => (
 
@@ -69,7 +69,7 @@ export function Notifications({ isOpen, setIsOpen, notifications }) {
             }
          </div>
          {/** Notification bottom blur gradient  */}
-         <div className="absolute z-10 -bottom-0 -ml-3 left-0 w-80 h-20 bg-[linear-gradient(0deg,var(--background)_0%,var(--background)_18%,rgba(237,221,83,0)_100%)]  pointer-events-none" >
+         <div className="absolute z-10 -bottom-0 left-0 w-80 h-16 bg-[linear-gradient(0deg,var(--background)_0%,var(--background)_18%,rgba(237,221,83,0)_100%)]  pointer-events-none" >
          </div>
       </section>
    )
