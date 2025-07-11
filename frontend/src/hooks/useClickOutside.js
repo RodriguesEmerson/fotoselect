@@ -19,7 +19,7 @@ export function useClickOutside(modalRef, setIsOpen) {
             if(modalId == buttonId) return;
          }
 
-         setIsOpen();
+         setIsOpen(); //set to false
       }
    }
 
