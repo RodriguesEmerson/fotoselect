@@ -74,7 +74,8 @@ class UserServices{
 
          if(!$userData) return ['error' => 'Email or password is incorrect.', 'status' => 400];
 
-         $token = JWT::generate($userData, 3600);
+         $tokenExpirationTime = $credentials['keeploged'] ? 2592000 : 3600;
+         $token = JWT::generate($userData, $tokenExpirationTime);
 
          if(!$token) return ['error' => 'It was not passoble complete login, try again.', 'status' => 500];
 

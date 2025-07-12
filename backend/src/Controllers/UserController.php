@@ -71,8 +71,6 @@ class UserController{
    public static function login(Request $request, Response $response):array{
       try{
          $body = $request::body();
-         Validators::checkEmptyField($body);
-
          $serviceResponse = UserServices::login($body);
 
          if(isset($serviceResponse['error'])){
