@@ -83,7 +83,7 @@ class UserController{
          }
 
 
-         return $response::json(['message' => 'Loged successfuly'], 200, 'success');
+         return $response::json(['message' => 'Loged successfuly', 'redirect' => $serviceResponse['redirect']], 200, 'success');
       }catch(InvalidArgumentException $e){
 
          $response::json(['message' => $e->getMessage()], 400, 'error');
