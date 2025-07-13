@@ -22,7 +22,7 @@ export function LoginForm() {
    const { 
       register, 
       handleSubmit, 
-      setError, watch, 
+      watch, 
       formState: { errors },
    } = useForm({
       resolver: zodResolver(registerSchema)
@@ -47,8 +47,7 @@ export function LoginForm() {
          if(res.error){
             return toast.error('Email ou senha inválidos.');
          }
-         //CRIAR REDIRECT
-         return toast.success('Logado.');
+         window.location.href = res?.content?.redirect;
          
       }catch(e){
          setIsLoging(false);
