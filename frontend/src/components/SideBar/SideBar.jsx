@@ -6,7 +6,7 @@ import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
 import { LogoutButton } from '../UI/buttons/LogoutButton';
 import { SwitchThemeBox } from '../UI/buttons/SwitchThemeButton';
 import { SideBarLink } from "../UI/links/SideBarLink";
-import { CreditsBox } from './CreditsBox';
+import { CreditsBox } from './CreditBox/CreditsBox';
 
 export function SideBar() {
 

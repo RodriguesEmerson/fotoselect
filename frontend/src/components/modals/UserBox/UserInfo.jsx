@@ -4,9 +4,10 @@ import { useRef } from "react";
 
 export function UserInfo({user, isOpen, setIsOpen}) {
    const userInfoRef = useRef(null);
-
    const clickOutside = useClickOutside(userInfoRef, () => setIsOpen(false));
-   isOpen && clickOutside.setClickOutSide()
+   isOpen && clickOutside.setClickOutSide();
+
+   if(!user.name) return;
 
    return (
       <section
