@@ -39,8 +39,12 @@ class UserRepository extends Database{
    public static function fetch(string $userId):bool|array{
       $pdo = self::getConection();
       $stmt = $pdo->prepare(
-         'SELECT `name`, `lastname`, `email` FROM `users` WHERE `id` = :id'
-      );
+         'SELECT u.name, u.lastname, u.email, ui.profile_image, ui.cdl_id, ui.credits 
+         FROM `users` AS u
+         INNER JOIN `userinfo` AS ui 
+            ON ui.user_foreign_key = u.id
+         WHERE u.id = :id'
+      ); 
       $stmt->bindValue(':id', $userId);
       $stmt->execute();
       return $stmt->fetch(PDO::FETCH_ASSOC);
