@@ -30,7 +30,7 @@ class Request{
       if (str_contains($contentType, 'multipart/form-data')) {
         //Put together the form data into an array.
         return array_merge($_POST, ['files' => $_FILES]);
-    }
+      }
 
       return [];
    }
@@ -43,6 +43,10 @@ class Request{
    public static function authorization():array{
       //Gets the corretly header regardelles of the server;
       $headers = array_change_key_case(getallheaders(), CASE_LOWER);
+
+      if(isset($_COOKIE['FSJWTToken'])){
+         return ['token' => $_COOKIE['FSJWTToken']];
+      }
 
       if(!isset($headers['authorization'])) return ['error' => 'Not authorization header provided.'];
       
