@@ -79,7 +79,7 @@ class UserServices{
 
          if(!$token) return ['error' => 'It was not passoble complete your login, try again.', 'status' => 500];
 
-         return ['token' => $token, 'redirect'=> 'http://localhost:3000/dashboard'];
+         return ['token' => $token, 'tokenExpirationTime' => $tokenExpirationTime, 'redirect'=> 'http://localhost:3000/dashboard'];
       
       }catch(InvalidArgumentException $e){
          

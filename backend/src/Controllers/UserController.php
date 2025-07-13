@@ -78,10 +78,9 @@ class UserController{
          }
 
          //Set the token
-         if(!Cookies::set('JWTToken', $serviceResponse['token'])){
+         if(!Cookies::set('FSJWTToken', $serviceResponse['token'], $serviceResponse['tokenExpirationTime'])){
             return $response::json(['message' => 'Internal server error'], 500, 'error');
          }
-
 
          return $response::json(['message' => 'Loged successfuly', 'redirect' => $serviceResponse['redirect']], 200, 'success');
       }catch(InvalidArgumentException $e){
@@ -104,7 +103,7 @@ class UserController{
    public static function logout(Request $request, Response $response):array{
       try{
 
-         $wasCookieDeleted = Cookies::delete('JWTToken');
+         $wasCookieDeleted = Cookies::delete('FSJWTToken');
          if(!$wasCookieDeleted){
             return $response::json(['message' => 'Somethig went wrong, try again.'], 500, 'error');
          }
