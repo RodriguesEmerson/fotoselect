@@ -4,18 +4,15 @@ import Image from "next/image"
 
 export default function Header() {
    const noti = [
-      { type: '1', gallery: 'João & Maria', client: 'João', data: '2025-07-07 19:30:17', id: 1, image: '' },
-      { type: '2', gallery: 'João & Maria', client: 'Maria', data: '2025-07-07 19:30:17', id: 2, image: '' },
-      { type: '3', gallery: 'João & Maria', client: 'Maria', data: '2025-07-07 19:30:17', id: 3, image: '' },
-      { type: '4', gallery: 'João & Maria', client: 'Maria', data: '2025-07-07 19:30:17', id: 4, image: '' },
-      { type: '1', gallery: 'João & Maria', client: 'João', data: '2025-07-07 19:30:17', id: 5, image: '' },
-      { type: '2', gallery: 'João & Maria', client: 'Maria', data: '2025-07-07 19:30:17', id: 6, image: '' },
-      { type: '3', gallery: 'João & Maria', client: 'Maria', data: '2025-07-07 19:30:17', id: 7, image: '' },
-      { type: '4', gallery: 'João & Maria', client: 'Maria', data: '2025-07-07 19:30:17', id: 8, image: '' },
-      { type: '1', gallery: 'João & Maria', client: 'João', data: '2025-07-07 19:30:17', id: 9, image: '' },
-      { type: '2', gallery: 'João & Maria', client: 'Maria', data: '2025-07-07 19:30:17', id: 10, image: '' },
-      { type: '3', gallery: 'João & Maria', client: 'Maria', data: '2025-07-07 19:30:17', id: 11, image: '' },
-      { type: '4', gallery: 'João & Maria', client: 'Maria', data: '2025-07-07 19:30:17', id: 12, image: '' },
+      { code: '1', gallery_name: 'João & Maria', client_name: 'João', created_at: '2025-07-07 19:30:17', id: 1, image: '' },
+      { code: '2', gallery_name: 'João & Maria', client_name: 'Maria', created_at: '2025-07-07 19:30:17', id: 2, image: '' },
+      { code: '3', gallery_name: 'João & Maria', client_name: 'Maria', created_at: '2025-07-07 19:30:17', id: 3, image: '' },
+      { code: '4', gallery_name: 'João & Maria', client_name: 'Maria', created_at: '2025-07-07 19:30:17', id: 4, image: '' },
+      { code: '1', gallery_name: 'João & Maria', client_name: 'João', created_at: '2025-07-07 19:30:17', id: 5, image: '' },
+      { code: '2', gallery_name: 'João & Maria', client_name: 'Maria', created_at: '2025-07-07 19:30:17', id: 6, image: '' },
+      { code: '3', gallery_name: 'João & Maria', client_name: 'Maria', created_at: '2025-07-07 19:30:17', id: 7, image: '' },
+      { code: '4', gallery_name: 'João & Maria', client_name: 'Maria', created_at: '2025-07-07 19:30:17', id: 8, image: '' },
+
    ]
    const user = { name: 'Emerson', email: 'emersonrodrigues@teste.com', image: '' }
 

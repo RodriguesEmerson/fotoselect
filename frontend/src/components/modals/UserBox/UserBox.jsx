@@ -12,6 +12,7 @@ export function UserBox() {
    const setUserInfo = userInfoStore(state => state.setUserInfo);
    
    useEffect(() => {
+      if(user.name) return;
       const handleGetUserData = async () => {
          await fetch('http://localhost/fotoselect/backend/user/fetch', 
             {

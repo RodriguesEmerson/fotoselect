@@ -7,7 +7,7 @@ export function NotificationIcon({notifications, onClick}) {
          className='open-modal-button relative flex items-center justify-center h-9 w-9 rounded-xl bg-[var(--background)] border-2 border-[var(--border-color)] cursor-pointer hover:brightness-95 transition-all'
          onClick={() => { onClick() }}
       >
-         {(notifications?.length > 0) &&
+         {notifications?.some(notification => !notification?.read_at) &&
             <span className='absolute top-1 right-1 w-[10px] h-[10px] bg-red-800 leading-4 rounded-full'></span>
          }
          <NotificationsIcon />
