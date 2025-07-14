@@ -44,8 +44,8 @@ class UserServices{
     */
    public static function fetch(){
       try{
-         $userId = JWT::getUserId();
-         $user = UserRepository::fetch($userId['user_id']);
+         $userId = (int) JWT::getUserId();
+         $user = UserRepository::fetch($userId);
 
          if(!$user) return ['error' => 'User not found.', 'status' => 404];
 

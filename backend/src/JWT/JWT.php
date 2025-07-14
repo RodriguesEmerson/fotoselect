@@ -52,12 +52,13 @@ class JWT{
     * Gets the loged user ID if the token is valid.
     * @return null|array{userId: string}
     */
-   public static function getUserId(): ?array{
+   public static function getUserId(): ?int{
       $token = Request::authorization()['token'] ?? null;
       $decoded = self::verify($token);
 
       if (!$decoded) return null;
 
-      return ['user_id' => $decoded->sub ?? $decoded->user_id ?? null];
+      $userId = ['user_id' => $decoded->sub ?? $decoded->user_id ?? null];
+      return $userId['user_id'];
    }
 }

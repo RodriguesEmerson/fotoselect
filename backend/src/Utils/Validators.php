@@ -29,9 +29,17 @@ class Validators{
     * @param string $date The date to check.
     * @return bool True if is valid or False if is a invalid date.
     */
-   public static function validateDateYMD(string $fieldName, string $date):bool{
+   public static function validateDateYMD(string $fieldName, string $date, bool $returnBoll = false):bool{
       $formatedDate = DateTime::createFromFormat('Y-m-d', $date);
-      return $formatedDate && $formatedDate->format('Y-m-d') === $date;
+      $isValidDate = $formatedDate && $formatedDate->format('Y-m-d') === $date;
+
+      
+      if(!$isValidDate){
+         if($returnBoll) return false;
+         throw new InvalidArgumentException("The field ($fieldName), is not a valid date.");
+      }
+
+      return true;
    }
 
    /**
