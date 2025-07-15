@@ -88,11 +88,10 @@ export function Notifications({ isOpen, setIsOpen, notifications, setNotificatio
 
                            {/** Notification date */}
                            <p className='text-xs opacity-70 text-end'>
-                              {new Date(notification.created_at.replace(' ', 'T'))
+                              {new Date(notification.created_at)
                                  .toLocaleDateString('pt-br',
                                     { day: '2-digit', month: 'long', year: 'numeric', hour: 'numeric', minute: '2-digit' }
                                  )
-
                               }
                               <span> h</span>
                            </p>

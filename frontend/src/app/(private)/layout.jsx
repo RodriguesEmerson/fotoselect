@@ -12,10 +12,10 @@ export default function PrivateLayout({ children }) {
    return (
       <>
          <Header />
-            <div className="layout flex flex-row h-[calc(100vh-4rem)] gap-2 p-2 bg-[var(--dashboard-background)]">
-               <SideBar />
-               {children}
-            </div>
+         <div className="layout flex flex-row h-[calc(100vh-4rem)] gap-2 p-2 bg-[var(--dashboard-background)]">
+            <SideBar />
+            {children}
+         </div>
          <ToastContainer position="bottom-right" />
       </>
    );

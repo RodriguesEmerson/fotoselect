@@ -2,15 +2,15 @@
 
 :root {
   --shadow: #7171711d;
-  --dashboard-background: #e6e6e6;
+  --dashboard-background: #ffffff;
   --border-color: #e6e6e6;
   --background: #ffffff;
   --foreground: #171717;
   --text-main-color: rgb(50, 50, 50);
   --text-secondary-color: rgb(92, 92, 92);
-  --primary-color: rgb(69, 1, 114);
+  --primary-color: rgb(94, 1, 155);
   --secondary-color: rgb(69, 1, 114);
-  --button-primary-color: rgb(55, 1, 92);
+  --button-primary-color: rgb(80, 0, 134);
   --button-secondary-color: rgb(69, 1, 114);
   --button-third-color: rgb(4, 117, 4);
   --credits-box-background: rgb(239, 239, 239);
@@ -24,8 +24,8 @@
   --foreground: #171717;
   --text-main-color: rgb(237, 237, 237);
   --text-secondary-color: rgb(237, 237, 237);
-  --primary-color: rgb(69, 1, 114);
-  --secondary-color: rgb(69, 1, 114);
+  --primary-color: #9117e3;
+  --secondary-color: #450172;
   --button-primary-color: rgb(55, 1, 92);
   --button-secondary-color: rgb(69, 1, 114);
   --button-third-color: rgb(4, 117, 4);

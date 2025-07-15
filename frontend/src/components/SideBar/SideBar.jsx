@@ -25,7 +25,7 @@ export function SideBar() {
       personalization: InvertColorsIcon
    }
    return (
-      <aside className="relative  flex flex-col justify-between gap-3 w-54 min-w-54 h-full bg-[var(--background)] text-[var(--text-main-color)] shadow-[0_0_3_3px_var(--shadow)] rounded-xl p-2">
+      <aside className="relative flex flex-col justify-between gap-3 w-54 min-w-54 h-full shadow-[0_0_10px_5px_var(--shadow)] bg-[var(--background)] text-[var(--text-main-color)] rounded-xl p-2">
          <nav>
             <ul className='flex flex-col gap-2'>
                {sideBarLinks.map(link => {
