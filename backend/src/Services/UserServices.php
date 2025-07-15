@@ -61,6 +61,29 @@ class UserServices{
    }
 
    /**
+    * Fetch the initial dashboard data.
+    * @return array{error: string, status: int} on failure.
+    * @return array{galleries: int, clients: int, peddingGalleries: int} on success.
+    */
+   public static function fetchDashData(){
+      try{
+         $userId = (int) JWT::getUserId();
+         $dashData = UserRepository::fetchDashData($userId);
+
+         if(!$dashData) return ['error' => 'User not not found.', 'status' => 404];
+
+         return $dashData;
+
+      }catch(PDOException $e){
+         //TODO
+         //Build a class with ERROR MESSAGE based on PDO code error;
+         return['error' => 'Internal server error | Serverce fetch-user PDO', 'status' => 500];
+      }catch(Throwable $e){
+        return ['error' => 'Internal server error | Serverce fetch-user SERVER', 'status' => 500];
+      }
+   }
+
+   /**
     * Log in the user.
     * @param array $data An array containing the crendentials.
     * @return array{error: string, status: int} on failure.

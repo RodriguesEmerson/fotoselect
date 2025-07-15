@@ -9,6 +9,7 @@ use App\Http\Route;
  * Route::method('route', 'Controller@function)
  */
 Route::get('/user/fetch', 'UserController@fetch');
+Route::get('/user/dashdata', 'UserController@fetchDashData');
 Route::post('/user/login', 'UserController@login');
 Route::post('/user/logout', 'UserController@logout');
 Route::post('/user/register', 'UserController@register');

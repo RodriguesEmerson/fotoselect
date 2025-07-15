@@ -36,7 +36,7 @@ class UserRepository extends Database{
     * @return array|bool Returns an associative array with keys `name`, `lastname`, and `email`,
     *                    or false if the user is not found.
     */
-   public static function fetch(string $userId):bool|array{
+   public static function fetch(int $userId):bool|array{
       $pdo = self::getConection();
       $stmt = $pdo->prepare(
          'SELECT u.name, u.lastname, u.email, ui.profile_image, ui.cdl_id, ui.credits 
@@ -44,6 +44,26 @@ class UserRepository extends Database{
          INNER JOIN `userinfo` AS ui 
             ON ui.user_foreign_key = u.id
          WHERE u.id = :id'
+      ); 
+      $stmt->bindValue(':id', $userId);
+      $stmt->execute();
+      return $stmt->fetch(PDO::FETCH_ASSOC);
+   }
+
+   /**
+    * Fetches basic user information by user ID.
+    *
+    * @param string $userId The ID of the user.
+    * @return array|bool Returns an associative array with keys `name`, `lastname`, and `email`,
+    *                    or false if the user is not found.
+    */
+   public static function fetchDashData(int $userId):bool|array{
+      $pdo = self::getConection();
+      $stmt = $pdo->prepare(
+         "SELECT 
+            (SELECT COUNT(*) FROM `clients` WHERE `user_foreign_key` = :id) AS clients,
+            (SELECT COUNT(*) FROM `galeries` WHERE `user_foreign_key` = :id) AS galleries,
+            (SELECT COUNT(*) FROM `galeries` WHERE `user_foreign_key` = :id AND `status` = 'pending') AS pendingGalleries"
       ); 
       $stmt->bindValue(':id', $userId);
       $stmt->execute();

@@ -59,6 +59,27 @@ class UserController{
          $response::json(['message' => 'Internal server error | Controller fetch-user'], 500, 'error');
       }
    }
+
+   /**
+    * @param Request $request Object representing the HTTP request.
+    * @param Response $response Object used to return the HTTP response.
+    *
+    * @return array Returns a array containing the user data on success,
+    *               or an error message on failure with the appropriate HTTP status code.
+    */
+   public static function fetchDashData(Request $request, Response $response):array{
+      try{
+         $dashData = UserServices::fetchDashData();
+
+         if(isset($dashData['error'])){
+            return $response::json(['message' => $dashData['error']], $dashData['status'], 'error');
+         }
+
+         return $response::json($dashData, 200, 'success');       
+      }catch(Exception $e){
+         $response::json(['message' => 'Internal server error | Controller fetch-dashdata'], 500, 'error');
+      }
+   }
    
 
    /**
