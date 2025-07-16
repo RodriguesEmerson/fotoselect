@@ -8,6 +8,7 @@ use App\DTOs\GaleryDTOs\CreateGaleryDTO;
 use App\DTOs\GaleryDTOs\DeleteImageGaleryDTO;
 use App\DTOs\GaleryDTOs\FetchGaleryDTO;
 use App\DTOs\GaleryDTOs\FetchImagesGaleryDTO;
+use App\DTOs\GaleryDTOs\FetchLotGaleryDTO;
 use App\DTOs\GaleryDTOs\UploadGaleryDTO;
 use App\Exceptions\UnauthorizedException;
 use App\JWT\JWT;
@@ -86,6 +87,34 @@ class GaleryServices{
          if(!$galeryImages) return['error' => 'Error trying to get galery images.', 'status' => 400];
 
          return ['galery' =>$galery, 'images' => $galeryImages];
+      } catch (InvalidArgumentException $e) {
+
+         return ['error' => $e->getMessage(), 'status' => 400]; 
+      }catch (\PDOException $e) {
+         
+         return ['error' => $e->getMessage(), 'status' => 400]; 
+      }catch(Exception $e){
+
+         return ['error' => $e->getMessage(), 'status' => $e->getCode()];
+      }
+   }
+
+   /**
+    * Fetch lots of galleries based on the url params.
+    * @param array $data Containing the number of galeries and the offset.
+    * @return array{error: string, status: int} on Failure.
+    * @return array{galery: array} on Success.
+    */
+   public function fetchlot(array $data):array{
+      try {
+         $data['user_id'] = $this->userId;
+         $data = FetchLotGaleryDTO::toArray($data);
+         $galeries = $this->galeryRepository->fetchlot($data);
+
+         echo json_decode($galeries);exit;
+         if(!$galeries) return ['error' => 'Galeries not found.', 'status' => 400];
+         
+         return ['galeries' =>$galeries];
       } catch (InvalidArgumentException $e) {
 
          return ['error' => $e->getMessage(), 'status' => 400]; 

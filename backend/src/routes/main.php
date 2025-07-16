@@ -17,6 +17,7 @@ Route::put('/user/update', 'UserController@update');
 Route::delete('/user/delete', 'UserController@delete'); 
 
 Route::get('/galery/fetch/{id}', 'GaleryController@fetch');
+Route::get('/galery/fetchlot/{limit}/{offset}', 'GaleryController@fetchlot');
 Route::post('/galery/create', 'GaleryController@create');
 Route::post('/galery/upload', 'GaleryController@upload');
 Route::post('/galery/createaccess', 'GaleryController@createAccess');

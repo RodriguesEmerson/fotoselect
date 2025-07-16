@@ -171,6 +171,33 @@ class GaleryRepository extends Database{
    }
 
    /**
+    * Retrieves the galleries by its ID and the user who owns it.
+    *
+    * @param array $data Associative array containing:
+    *                    - user_id (int)
+    *                    - limit (int)
+    *                    - offset (int)
+    * @return object|false Returns a FetchGaleryDataModel object or false if not found.
+    */
+   public function fetchlot(array $data){
+      $pdo = self::getConection();
+      $stmt = $pdo->prepare(
+         'SELECT * FROM `galeries`
+         WHERE `user_foreign_key` = :user_id
+         ORDER BY `created_at` DESC 
+         LIMIT :limit
+         OFFSET :offset'
+      );
+      
+      $stmt->bindValue(':user_id', $data['user_id']);
+      $stmt->bindValue(':limit', $data['limit'], PDO::PARAM_INT);
+      $stmt->bindValue(':offset', $data['offset'], PDO::PARAM_INT);
+      $stmt->execute();
+      $stmt->setFetchMode(\PDO::FETCH_CLASS, FetchGaleryDataModel::class);
+      echo json_encode($stmt->fetch());
+   }
+
+   /**
     * Retrieves all images belonging to a gallery.
     *
     * @param array $data Associative array containing:
