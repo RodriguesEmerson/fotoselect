@@ -4,6 +4,7 @@ import Link from "next/link";
 
 
 export function DashboardGalleries({galleries}) {
+
    return (
       <div className="flex-1 shadow-[0_0_10px_5px_var(--shadow)] border border-[var(--border-color)] bg-[var(--background)] rounded-xl overflow-hidden">
 
@@ -26,7 +27,7 @@ export function DashboardGalleries({galleries}) {
                   </div>
                   <div className="flex flex-col justify-between p-1">
                      <div>
-                        <p className="font-semibold transition-all text-sm tracking-widest">{gallery.gallery_name.toUpperCase()}</p>
+                        <p className="font-semibold transition-all text-sm tracking-widest">{gallery.galery_name.toUpperCase()}</p>
                         <p className="text-xs text-[var(--text-main-color)] opacity-60">
                            {new Date(gallery.created_at)
                               .toLocaleDateString('pt-br',
