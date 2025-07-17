@@ -49,7 +49,8 @@ class GaleryServices{
             return ['error' => 'Error uploading the galery cover, try again.', 'status' => 500];
          }
 
-         $data['galery_cover'] = $wasImageUploaded['url'];
+         $imgURL = str_replace('http://', 'https://', $wasImageUploaded['url']);
+         $data['galery_cover'] = $imgURL;
 
          $wasDataSaved = $this->galeryRepository->create($data);
          if(!$wasDataSaved){
@@ -111,10 +112,9 @@ class GaleryServices{
          $data = FetchLotGaleryDTO::toArray($data);
          $galeries = $this->galeryRepository->fetchlot($data);
 
-         echo json_decode($galeries);exit;
          if(!$galeries) return ['error' => 'Galeries not found.', 'status' => 400];
          
-         return ['galeries' =>$galeries];
+         return ['galleries' =>$galeries];
       } catch (InvalidArgumentException $e) {
 
          return ['error' => $e->getMessage(), 'status' => 400]; 

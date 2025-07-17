@@ -63,7 +63,8 @@ class CloudinaryHandleImage{
             $wasImageUploaded = self::upload($image['tmp_name'], $image['cdl_id']);
 
             if(!isset($wasImageUploaded['error'])){
-               $image['src'] = $wasImageUploaded['url']; //Set the Cloudinary url into the image.
+               $imgURL = str_replace('http://', 'https://', $wasImageUploaded['url']);
+               $image['src'] = $imgURL; //Set the Cloudinary url into the image.
                $seccesfulyUpdloadedImages[] = $image;
                continue;
             }

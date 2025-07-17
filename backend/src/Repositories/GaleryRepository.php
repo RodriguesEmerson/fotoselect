@@ -193,8 +193,7 @@ class GaleryRepository extends Database{
       $stmt->bindValue(':limit', $data['limit'], PDO::PARAM_INT);
       $stmt->bindValue(':offset', $data['offset'], PDO::PARAM_INT);
       $stmt->execute();
-      $stmt->setFetchMode(\PDO::FETCH_CLASS, FetchGaleryDataModel::class);
-      echo json_encode($stmt->fetch());
+      return  $stmt->fetchAll(\PDO::FETCH_CLASS, FetchGaleryDataModel::class);
    }
 
    /**

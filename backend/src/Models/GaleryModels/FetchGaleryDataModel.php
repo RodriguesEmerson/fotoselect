@@ -11,7 +11,7 @@ class FetchGaleryDataModel{
    public bool $watermark;
    public string $status;
    public string $cdl_id;
+   public string $created_at;
    private int $user_foreign_key;
    private string $password;
-   private string $created_at;
 }
