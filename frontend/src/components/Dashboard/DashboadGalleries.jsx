@@ -1,10 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 
-
-
 export function DashboardGalleries({galleries}) {
 
+   if(!galleries) return(
+      <div>
+         Não foi possível carregar suas galerias. Atualize a página.
+      </div>
+   )
    return (
       <div className="flex-1 shadow-[0_0_10px_5px_var(--shadow)] border border-[var(--border-color)] bg-[var(--background)] rounded-xl overflow-hidden">
 
