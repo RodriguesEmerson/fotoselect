@@ -7,21 +7,19 @@ import { useGalleries } from '@/Zustand/useGalleries';
 
 export function GalleriesHeader({ serverGalleries }) {
    const setStoreGalleries = useGalleries(state => state.setStoreGalleries);
-   const setSortOrder = useGalleries(state => state.setSortOrder);
-   const setStatusFilter = useGalleries(state => state.setStatusFilter);
-   const setSearchFilter = useGalleries(state => state.setSearchFilter);
+   const setFilter = useGalleries(state => state.setFilter);
    setStoreGalleries(serverGalleries);
 
    function handleFilter(status) {
-      setStatusFilter(serverGalleries, status);
+      setFilter(serverGalleries, {status: status});
    }
    
    function handleSort(order) {
-      setSortOrder(serverGalleries, order)
+      setFilter(serverGalleries, { order: order});
    }
 
-   function handleSearch(chars){
-      setSearchFilter(serverGalleries, chars)
+   function handleSearch(chars) {
+      setFilter(serverGalleries, { searchChars: chars});
    }  
 
    return (

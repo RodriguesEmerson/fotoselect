@@ -10,9 +10,12 @@ export const useGalleries = create(set => ({
       storeGalleries: [...serverGalleries]
    })),
 
-   setSortOrder: (serverGalleries, order) => set((state) => {
-      const { status, searchChars } = state.filters;
-      const { sort, utils } = state;
+   setFilter: ( serverGalleries, newFiltres ) => set(state => {
+      
+      const { filters, sort, utils } = state;
+
+      const updatedFilters = {...filters, ...newFiltres};
+      const { status, order, searchChars } = updatedFilters;
 
       const filteredByStatus = serverGalleries.filter(gallery => 
          status === 'all' ? true : gallery.status === status
@@ -24,47 +27,10 @@ export const useGalleries = create(set => ({
       )
 
       return {
-         filters: { ...state.filters, order: order },
+         filters: updatedFilters,
          storeGalleries: filteredBySerach
       }
-   }),
 
-   setStatusFilter: (serverGalleries, status) => set((state) => {
-      const { order, searchChars } = state.filters;
-      const { sort, utils } = state;
-
-      const filteredByStatus = serverGalleries.filter(gallery => 
-         status === 'all' ? true : gallery.status === status
-      )
-      const sorted = sort[order](filteredByStatus);
-
-      const filteredBySerach = sorted.filter(gallery => 
-         !searchChars ? true : utils.sanitizedString(gallery.galery_name).includes(utils.sanitizedString(searchChars))
-      )
-
-      return{
-         filters: { ...state.filters, status: status },
-         storeGalleries: filteredBySerach
-      }
-   }),
-
-   setSearchFilter: (serverGalleries, chars) => set(state => {
-      const {status, order} = state.filters;
-      const { sort, utils } = state;
-
-      const filteredByStatus = serverGalleries.filter(gallery => 
-         status === 'all' ? true : gallery.status === status
-      )
-      const sorted = sort[order](filteredByStatus);
-
-      const filteredBySerach = sorted.filter(gallery => 
-         !chars ? true : utils.sanitizedString(gallery.galery_name).includes(utils.sanitizedString(chars))
-      )
-
-      return {
-         filters: { ...state.filters, searchChars: chars },
-         storeGalleries: filteredBySerach
-      }
    }),
 
    sort: {
