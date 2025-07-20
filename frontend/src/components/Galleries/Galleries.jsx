@@ -1,16 +1,20 @@
+'use client';
+import { useGalleries } from "@/Zustand/useGalleries"
 import Image from "next/image"
 import Link from "next/link"
 
 
-export function Galleries({ galleries }) {
+export function Galleries() {
+
+   const storeGalleries = useGalleries(state => state.storeGalleries);
 
    const status = {
-      pending: {txt: 'Pendente', color: '#ca8a04'},
-      finished: {txt :'Finalizada', color: '#4d7c0f'},
-      expired: {txt: 'Expirada', colors: '#991b1b'}
+      pending: { txt: 'Pendente', color: '#ca8a04' },
+      finished: { txt: 'Finalizada', color: '#4d7c0f' },
+      expired: { txt: 'Expirada', color: '#991b1b' }
    }
 
-   if (!galleries) return (
+   if (!storeGalleries) return (
       <div>
          Não foi possível carregar suas galerias. Atualize a página.
       </div>
@@ -18,15 +22,15 @@ export function Galleries({ galleries }) {
 
    return (
       <div className="flex flex-col gap-2">
-         {galleries.map(gallery => (
+          {storeGalleries.map(gallery => (
             <Link href={''}
                key={gallery.id}
                className="flex flex-row gap-2 p-2 text-[var(--text-main-color)] hover:text-[var(--primary-color)] rounded-xl border border-[var(--border-color)] overflow-hidden h-32"
             >
                <div className="w-52 h-32 -mt-2 -ml-2 rounded-l-md overflow-hidden">
                   <Image
-                     src={gallery.galery_cover} height={200} width={400} alt="gallery cover"
-                     className="h-full" style={{objectFit: "cover"}}
+                     src={gallery.galery_cover} height={200} width={400} alt="gallery cover" priority
+                     className="h-full" style={{ objectFit: "cover" }}
                   />
                </div>
                <div className="flex flex-col justify-between p-1">
@@ -53,11 +57,11 @@ export function Galleries({ galleries }) {
                         </span>
                      </div>
                   </div>
-                  <div 
+                  <div
                      className={`flex flex-row gap-1 items-center text-xs text-[var(--text-main-color)]`}
                   >
-                     <span>Situação:</span> 
-                     <span style={{color: status[gallery.status].color}}>
+                     <span>Situação:</span>
+                     <span style={{ color: status[gallery.status].color }}>
                         {status[gallery.status].txt}
                      </span>
                   </div>

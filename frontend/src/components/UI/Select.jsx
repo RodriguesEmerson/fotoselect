@@ -20,9 +20,9 @@ import { useState } from 'react'
  * @example
  * <Select options={['Option 1', 'Option 2', 'Option 3']} width="large" />
  */
-export function Select({ options, width = 'mid' }) {
+export function Select({ options, width = 'mid', handleClick }) {
    const [isOpen, setIsOpen] = useState(false)
-   const [currentt, setCurrent] = useState(options[0])
+   const [currentt, setCurrent] = useState(options[0].text)
 
    const sizes = {
       small: 'min-w-16 w-16',
@@ -43,13 +43,13 @@ export function Select({ options, width = 'mid' }) {
          >
             {options.map((option) => (
                <li
-                  key={option}
+                  key={option.text}
                   className={`flex items-center justify-between h-7 hover:text-[var(--primary-color)] ${option === currentt && 'text-[var(--primary-color)]'
                      }`}
-                  onClick={() => setCurrent(option)}
+                  onClick={() => {setCurrent(option.text); handleClick(option.value)}}
                >
-                  <span>{option}</span>
-                  {option === currentt && <DoneIcon className="!text-base" />}
+                  <span>{option.text}</span>
+                  {option.text === currentt && <DoneIcon className="!text-base" />}
                </li>
             ))}
          </ul>

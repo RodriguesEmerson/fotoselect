@@ -28,6 +28,8 @@ export default async function Dasjboard() {
    const data = responses.map(res => res.status === "fulfilled" ? res.value.json() : null)
    const [gal, dash] =  data;
 
+   if(!gal || !dash) return <></>;
+
    const dashInfo = await dash;
    const galeries = await gal;
 

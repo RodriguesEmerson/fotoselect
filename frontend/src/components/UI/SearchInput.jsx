@@ -1,6 +1,6 @@
 import SearchIcon from '@mui/icons-material/Search';
 
-export function SearchInput({ width = 'xlarge' }){
+export function SearchInput({ width = 'xlarge', onChange }){
 
    const sizes = {
       small: 'min-w-16 w-16',
@@ -16,9 +16,10 @@ export function SearchInput({ width = 'xlarge' }){
             type="text" 
             className={`h-10 border pl-2 text-sm border-[var(--border-color)]  rounded-md placeholder:text-gray-400 focus-within:border-[var(--primary-color)] outline-none pr-7 ${sizes[width]}`}
             placeholder="Buscar"
+            onChange={(e) => {onChange(e.target.value)}}
          />
          <SearchIcon 
-            className='-ml-7 text-gray-400'
+            className='-ml-7 text-gray-400 pointer-events-none'
          />
       </div>
    )
