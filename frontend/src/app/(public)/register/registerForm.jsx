@@ -5,8 +5,8 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 
 import { PurpleSubmitButton } from "@/components/UI/buttons/PurpleSumitButton";
+import { DefaultInputText } from "@/components/UI/inputs/DefaultInputText";
 import { WhiteLinkButton } from "@/components/UI/links/WhiteLinkButton";
-import { DefaultInputText } from "@/components/UI/textInputs/DefaultInputText";
 import { useState } from "react";
 import { toast } from 'react-toastify';
 

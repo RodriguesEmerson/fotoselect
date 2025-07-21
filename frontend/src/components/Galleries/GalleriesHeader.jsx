@@ -1,13 +1,16 @@
 'use client'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { PurpleButton } from "../UI/buttons/PurpleButton";
-import { SearchInput } from "../UI/SearchInput";
+import { SearchInput } from "../UI/inputs/SearchInput";
 import { Select } from "../UI/Select";
 import { useGalleries } from '@/Zustand/useGalleries';
+import { useModalVisibility } from '@/Zustand/useModalVisibility';
+import { NewGalleryModal } from '../modals/NewGallery/NewGalleryModal';
 
 export function GalleriesHeader({ serverGalleries }) {
    const setStoreGalleries = useGalleries(state => state.setStoreGalleries);
    const setFilter = useGalleries(state => state.setFilter);
+   const setIsNewGalleryModalVisible = useModalVisibility(state => state.setIsNewGalleryModalVisible) 
    setStoreGalleries(serverGalleries);
 
    function handleFilter(status) {
@@ -48,12 +51,12 @@ export function GalleriesHeader({ serverGalleries }) {
 
             </nav>
 
-            <PurpleButton width="fit">
+            <PurpleButton width="fit" onClick={() => setIsNewGalleryModalVisible(true)}>
                <AddCircleOutlineIcon />
                <span>Criar Galeria</span>
-            </PurpleButton>
+            </PurpleButton> 
          </div>
-
+         <NewGalleryModal />
       </div>
    )
 }

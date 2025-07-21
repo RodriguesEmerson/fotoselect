@@ -1,11 +1,12 @@
+import { useModalVisibility } from "@/Zustand/useModalVisibility";
 
 
-export function ModalBackground({ isOpen, setIsOpen, children}){
-   console.log('aqui')
+export function ModalBackground({ children }){
+   const setIsNewGalleryModalVisible = useModalVisibility(state => state.setIsNewGalleryModalVisible);
    return(
       <div 
-         className={`z-10 fixed left-0 top-0 scale-0 origin-top-right h-[100vh] w-[100vw] bg-transparent ${isOpen && 'scale-100'}`}
-         onMouseDown={() => setIsOpen(false)}
+         className={`fixed flex justify-center items-center z-10 left-0 top-0 h-[100vh] w-[100vw] bg-[#00000050]`}
+         onMouseDown={() => setIsNewGalleryModalVisible(false)}
       >
          {children}
       </div>

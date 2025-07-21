@@ -1,7 +1,7 @@
 'use client';
 
-import { DefaultInputText } from "@/components/UI//textInputs/DefaultInputText";
 import { PurpleSubmitButton } from "@/components/UI/buttons/PurpleSumitButton";
+import { DefaultInputText } from "@/components/UI/inputs/DefaultInputText";
 import { WhiteLinkButton } from "@/components/UI/links/WhiteLinkButton";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Checkbox } from "@mui/material";
