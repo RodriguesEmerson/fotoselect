@@ -41,7 +41,7 @@ export function GalleriesHeader({ serverGalleries }) {
                />
                <Select
                   options={[
-                     { text: 'Ordenar', value: 'expire' },
+                     { text: 'Mais recente', value: 'default' },
                      { text: 'Crescente A-Z', value: 'asc' },
                      { text: 'Decrescente Z-A', value: 'desc' },
                      { text: 'Data de Expiração', value: 'expire' }

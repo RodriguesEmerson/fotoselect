@@ -40,6 +40,13 @@ export const useGalleries = create(set => ({
       getTime: (date) => {
          return new Date(date).getTime();
       },
+      default: function (galleries) {
+         return galleries.sort((prev, curr) => {
+            if (this.getTime(prev.created_at) < this.getTime(curr.created_at)) return 1;
+            if (this.getTime(prev.created_at) > this.getTime(curr.created_at)) return -1;
+            return 0;
+         });
+      },
       asc: function (galleries) {
          return galleries.sort((prev, curr) => this.getFName(prev.galery_name).localeCompare(this.getFName(curr.galery_name)));
       },
