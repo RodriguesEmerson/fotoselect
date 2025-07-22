@@ -3,6 +3,7 @@
 namespace App\DTOs\GaleryDTOs;
 
 use App\DTOs\DTOsInterface;
+use App\Utils\Utilitaries;
 use App\Utils\Validators;
 use InvalidArgumentException;
 
@@ -42,17 +43,22 @@ class CreateGaleryDTO implements DTOsInterface{
 
       Validators::validateString('galery_name' ,$data['galery_name'], 1, 100);
       Validators::validateString('cdl_id' ,$this->cdl_id, 1, 50);
-      Validators::validateDateYMD('deadline',$data['deadline']);
+      Validators::validateNumeric('deadline',$data['deadline'], 3);
       $data['private'] = Validators::validateAndConvertToBool('private', $data['private']);
       $data['watermark'] = Validators::validateAndConvertToBool('watermark', $data['watermark']);
       Validators::validateString('password' ,$data['password'], 4, 100);
+
+      if((int) $data['deadline'] > 365){
+         throw new InvalidArgumentException("The selection deadline must to be less than 365 days.");
+      }
+
       if(!in_array($data['status'], $this->validsStatus)){
          throw new InvalidArgumentException("The field status does not meets the requirements.");
       }
 
       $this->user_id = trim($data['user_id']);
       $this->galery_name = strip_tags(trim($data['galery_name']));
-      $this->deadline = $data['deadline'];
+      $this->deadline = Utilitaries::increaseDate($data['deadline']);
       $this->private = $data['private'];
       $this->watermark = $data['watermark'];
       $this->status = $data['status'];
