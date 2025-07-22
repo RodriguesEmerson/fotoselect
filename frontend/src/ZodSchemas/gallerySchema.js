@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 
 export function gallerySchema() {
-   const noEspecialChar = (val) => /^[A-Za-zÀ-ÿ\s]+$/.test(val);
+   const noEspecialChar = (val) => /^[A-Za-zÀ-ÿ\s&]+$/.test(val);
    const noLetters = (val) => /^\d+$/.test(val);
    const ACCEPTED_MIME_TYPES = ["image/jpeg", "image/png"];
 
@@ -20,7 +20,7 @@ export function gallerySchema() {
       deadline: z.string()
          .min(1, 'Informe quantos dias a galeria ficará disponível.')
          .max(3, 'Insira apenas três números.')
-         .refine(noLetters, { message: 'Insira apenas números'})
+         .refine(noLetters, { message: 'Insira apenas números' })
          .refine(value => value <= 365, 'Período máximo: 365 dias'),
       private: z.boolean(),
       watermark: z.boolean(),
@@ -31,17 +31,18 @@ export function gallerySchema() {
          .refine(noLetters, { message: 'Insira apenas números.' })
    });
 
-    const {
-         register,
-         handleSubmit,
-         setError, watch,
-         formState: { errors },
-      } = useForm({
-         resolver: zodResolver(gallerySchema),
-         defaultValues: {
-            status: 'Pendente'
-         }
-      })
+   const {
+      register,
+      handleSubmit,
+      reset,
+      setError, watch,
+      formState: { errors },
+   } = useForm({
+      resolver: zodResolver(gallerySchema),
+      defaultValues: {
+         status: 'Pendente'
+      }
+   })
 
-   return { register, handleSubmit, errors, watch }
+   return { register, handleSubmit, reset, errors, watch }
 }
