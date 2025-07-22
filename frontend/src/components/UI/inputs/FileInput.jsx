@@ -1,6 +1,6 @@
 import CloudSyncIcon from '@mui/icons-material/CloudSync';
-export function FileInput({ register, registerName, id, preview, errorMessage }) {
-
+import { memo } from 'react';
+export const FileInput = memo(({ register, registerName, id, preview, errorMessage }) => {
    return (
       <div className="">
          <label htmlFor={id}
@@ -42,4 +42,4 @@ export function FileInput({ register, registerName, id, preview, errorMessage })
          />
       </div >
    )
-}
+})
