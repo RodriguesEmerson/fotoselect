@@ -33,7 +33,7 @@ class GaleryController{
             return $response::json(['message' => $serviceResponse['error']], $serviceResponse['status'], 'error');
          } 
 
-         $response::json($serviceResponse, 200, 'success');
+         $response::json($serviceResponse, 201, 'success');
       } catch (UnauthorizedException $e) {
          return $response::json(['message' => $e->getMessage()], 401, 'error');
 
