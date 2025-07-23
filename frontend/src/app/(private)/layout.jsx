@@ -1,6 +1,7 @@
 import { SideBar } from "@/components/SideBar/SideBar";
 import Header from "./header";
 import { ToastContainer } from 'react-toastify';
+import { ConfirmModal } from "@/components/modals/ConfirmDecision/ConfirmModal";
 
 
 export const metadata = {
@@ -15,6 +16,7 @@ export default function PrivateLayout({ children }) {
          <div className="layout flex flex-row h-[calc(100vh-4rem)] gap-2 p-2 bg-[var(--dashboard-background)]">
             <SideBar />
             {children}
+            <ConfirmModal />
          </div>
          <ToastContainer position="bottom-right" />
       </>
