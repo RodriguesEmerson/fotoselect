@@ -13,15 +13,33 @@ type CreateGalleryParams = {
 }
 
 function delay() {
-   return new Promise(resolve => setTimeout(resolve, 1000));
+   return new Promise(resolve => setTimeout(resolve, 2000));
 }
 
 export class GalleryServices {
 
    private baseUrl = 'http://localhost/fotoselect/backend';
 
+   public async fetchGalleries(){
+      try {
+         const req = await fetch(`${this.baseUrl}/galery/fetchlot/99/0`,
+            {
+               method: 'GET',
+               credentials: 'include',
+            }
+         )
+
+         const galleries = await req.json();
+         if(req.status === 200) return  galleries.content.galleries;
+         return false;
+
+      } catch (e) {
+         console.log(e);
+         return false;
+      }
+   }
+
    public async create(galleryData: CreateGalleryParams) {
-      
       try {
          const formData = new FormData();
          formData.append('galery_cover', galleryData.galery_cover[0]);
@@ -41,7 +59,28 @@ export class GalleryServices {
          )
 
          const res = await req.json();
-         if(req.status === 201) return {galery_name: galleryData.galery_name};
+         if(req.status === 201) return{ gallery_name: galleryData.galery_name};
+         return false;
+
+      } catch (e) {
+         console.log(e);
+         return false;
+      }
+   }
+
+   public async delete(galleryID: number){
+      try {
+         const req = await fetch(`${this.baseUrl}/galery/delete`,
+            {
+               method: 'DELETE',
+               credentials: 'include',
+               headers: {'Content-Type': 'application/json'},
+               body: JSON.stringify({galery_id: galleryID})
+            }
+         )
+
+         const res = await req.json();
+         if(req.status === 200) return true;
          return false;
 
       } catch (e) {

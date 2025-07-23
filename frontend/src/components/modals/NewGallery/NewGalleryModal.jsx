@@ -10,6 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { GalleryServices } from "@/Services/galleryServices";
 import { toast } from "react-toastify";
 import { useMemo, useState } from "react";
+import { useGalleries } from "@/Zustand/useGalleries";
 
 export function NewGalleryModal() {
    const isNewGalleryModalVisible = useModalVisibility(state => state.isNewGalleryModalVisible);
@@ -21,6 +22,7 @@ export function NewGalleryModal() {
 
 function NewGalleryModalBody() {
    const setIsNewGalleryModalVisible = useModalVisibility(state => state.setIsNewGalleryModalVisible);
+   const updateGalleries = useGalleries(state => state.updateGalleries)
    const [isLoading, setIsLoading] = useState(false);
    const handleCloseModal = () => {
       URL.revokeObjectURL(preview?.src);
@@ -29,7 +31,7 @@ function NewGalleryModalBody() {
 
    const galleryServices = new GalleryServices();
 
-   const { register, handleSubmit, reset, errors, watch } = gallerySchema();
+   const { register, handleSubmit, resetForm, errors, watch } = gallerySchema();
    const gallery_cover = watch('galery_cover');
 
    //Avoid to re-render the image in the modal
@@ -51,28 +53,25 @@ function NewGalleryModalBody() {
       setIsLoading(true);
       const result = await galleryServices.create(data);
       setIsLoading(false);
+
       if (result) {
          toast.success(t => (
-            <p>A galeria <span className="font-semibold">{result.galery_name}</span> foi criada!</p>
+            <p>A galeria <span className="font-semibold">{result.gallery_name}</span> foi criada!</p>
          ));
+         
+         URL.revokeObjectURL(preview.src);
+         resetForm();
+         
+         const galleries = await galleryServices.fetchGalleries();
+         if(galleries){
+            toast.info('Galerias atualizadas.');
+            return updateGalleries(galleries);
+         }
 
-         return setTimeout(() => {
-            URL.revokeObjectURL(preview.src);
-            reset({
-               galery_cover: '',
-               galery_name: '',
-               deadline: '',
-               password: '',
-               private: true,
-               watermark: false,
-               status: 'Pendente'
-            });
-         }, 2000);
+         return toast.error('Não foi possível atualizar as galerias. Atualize a página.');
       }
       return toast.error('Algo deu errado, tente novamente.')
    }
-
-
 
    return (
       <ModalBackground

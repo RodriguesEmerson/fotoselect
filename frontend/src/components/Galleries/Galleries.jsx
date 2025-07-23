@@ -1,31 +1,30 @@
 'use client';
-import { useGalleries } from "@/Zustand/useGalleries"
-import Image from "next/image"
-import Link from "next/link"
-
+import { useGalleries } from "@/Zustand/useGalleries";
+import Image from "next/image";
+import Link from "next/link";
+import { GalleryOptions } from "./GalleryOptions";
 
 export function Galleries() {
 
    const storeGalleries = useGalleries(state => state.storeGalleries);
-
-   const status = {
+   const status = { 
       pending: { txt: 'Pendente', color: '#ca8a04' },
       finished: { txt: 'Finalizada', color: '#4d7c0f' },
       expired: { txt: 'Expirada', color: '#991b1b' }
    }
-
+   
    if (!storeGalleries) return (
       <div>
          Não foi possível carregar suas galerias. Atualize a página.
       </div>
    )
-
+   
    return (
       <div className="flex flex-col gap-2">
           {storeGalleries.map(gallery => (
             <Link href={''}
                key={gallery.id}
-               className="flex flex-row gap-2 p-2 text-[var(--text-main-color)] hover:text-[var(--primary-color)] rounded-xl border border-[var(--border-color)] overflow-hidden h-32"
+               className="relative flex flex-row gap-2 p-2 text-[var(--text-main-color)] hover:text-[var(--primary-color)] rounded-xl border border-[var(--border-color)] overflow-hidden h-32"
             >
                <div className="w-52 h-32 -mt-2 -ml-2 rounded-l-md overflow-hidden">
                   <Image
@@ -61,10 +60,14 @@ export function Galleries() {
                      className={`flex flex-row gap-1 items-center text-xs text-[var(--text-main-color)]`}
                   >
                      <span>Situação:</span>
-                     <span style={{ color: status[gallery.status].color }}>
-                        {status[gallery.status].txt}
+                     <span style={{ color: status[gallery.status]?.color }}>
+                        {status[gallery.status]?.txt}
                      </span>
                   </div>
+               </div>
+
+               <div className="absolute right-3 bottom-3" onClick={(e) => e.preventDefault()}>
+                  <GalleryOptions gallery={gallery}/>
                </div>
             </Link>
          ))}

@@ -1,11 +1,11 @@
 'use client'
+import { useGalleries } from '@/Zustand/useGalleries';
+import { useModalVisibility } from '@/Zustand/useModalVisibility';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { NewGalleryModal } from '../modals/NewGallery/NewGalleryModal';
 import { PurpleButton } from "../UI/buttons/PurpleButton";
 import { SearchInput } from "../UI/inputs/SearchInput";
 import { Select } from "../UI/Select";
-import { useGalleries } from '@/Zustand/useGalleries';
-import { useModalVisibility } from '@/Zustand/useModalVisibility';
-import { NewGalleryModal } from '../modals/NewGallery/NewGalleryModal';
 
 export function GalleriesHeader({ serverGalleries }) {
    const setStoreGalleries = useGalleries(state => state.setStoreGalleries);

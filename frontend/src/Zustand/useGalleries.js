@@ -4,14 +4,16 @@ import { create } from "zustand";
 
 export const useGalleries = create(set => ({
    storeGalleries: false,
-   filters: { status: 'all', order: 'expire', searchChars: '' },
+   filters: { status: 'all', order: 'default', searchChars: '' },
 
-   setStoreGalleries: (serverGalleries => set({
-      storeGalleries: [...serverGalleries]
-   })),
+   setStoreGalleries: (serverGalleries) => set(state => {
+      if(state.storeGalleries) return {};
+      return{
+         storeGalleries: [...serverGalleries]
+      }
+   }),
 
    setFilter: ( serverGalleries, newFiltres ) => set(state => {
-      
       const { filters, sort, utils } = state;
 
       const updatedFilters = {...filters, ...newFiltres};
@@ -31,6 +33,34 @@ export const useGalleries = create(set => ({
          storeGalleries: filteredBySerach
       }
 
+   }),
+
+   delteStoredGallery: (galleryID) => set( state => {
+      const { storeGalleries } = state;
+
+      const filtered = storeGalleries.filter(gallery => gallery.id !== galleryID);
+
+      return {
+         storeGalleries: filtered
+      }
+   }),
+
+   updateGalleries: (updatedGalleries) => set(state => {
+      const { filters, sort, utils } = state;
+      const { status, order, searchChars } = filters;
+
+      const filteredByStatus = updatedGalleries.filter(gallery => 
+         status === 'all' ? true : gallery.status === status
+      )
+      const sorted = sort[order](filteredByStatus);
+
+      const filteredBySerach = sorted.filter(gallery => 
+         !searchChars ? true : utils.sanitizedString(gallery.galery_name).includes(utils.sanitizedString(searchChars))
+      )
+
+      return {
+         storeGalleries: filteredBySerach
+      }
    }),
 
    sort: {

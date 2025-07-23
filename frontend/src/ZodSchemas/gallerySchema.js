@@ -43,6 +43,17 @@ export function gallerySchema() {
          status: 'Pendente'
       }
    })
+   const resetForm = () => {
+      reset({
+         galery_cover: '',
+         galery_name: '',
+         deadline: '',
+         password: '',
+         private: true,
+         watermark: false,
+         status: 'Pendente'
+      });
+   }
 
-   return { register, handleSubmit, reset, errors, watch }
+   return { register, handleSubmit, resetForm, errors, watch }
 }
