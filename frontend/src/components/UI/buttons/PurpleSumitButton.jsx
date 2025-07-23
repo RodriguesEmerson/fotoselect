@@ -8,7 +8,7 @@ export function PurpleSubmitButton({text, isLoading = false, ...props}){
          {...props}
       >{!isLoading 
          ? text
-         : <Spinner size={8}/>
+         : <Spinner size={'mid'}/>
       }
         
       </button>

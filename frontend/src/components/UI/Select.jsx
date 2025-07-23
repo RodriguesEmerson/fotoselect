@@ -44,7 +44,7 @@ export function Select({ options, width = 'mid', handleClick }) {
             {options.map((option) => (
                <li
                   key={option.text}
-                  className={`flex items-center justify-between h-7 hover:text-[var(--primary-color)] ${option === currentt && 'text-[var(--primary-color)]'
+                  className={`flex items-center justify-between h-7 hover:text-[var(--primary-color)] ${option.text === currentt && 'text-[var(--primary-color)]'
                      }`}
                   onClick={() => {setCurrent(option.text); handleClick(option.value)}}
                >

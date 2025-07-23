@@ -19,7 +19,7 @@
  */
 export function PurpleButton({ width = 'mid', children, ...props }) {
    const sizes = {
-      small: 'min-w-16 w-16',
+      small: 'min-w-20 w-20',
       mid: 'min-w-48 w-48',
       large: 'min-w-62 w-62',
       full: 'w-full',

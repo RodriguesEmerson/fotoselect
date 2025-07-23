@@ -9,7 +9,7 @@ export function DefaultInputText({ name, label, id, type = 'text', errorMessage,
             type={type} 
             name={name} 
             id={id} 
-            className={`w-full h-8 pl-2 text-sm border bg-transparent border-gray-300 rounded-md outline-gray-600 light-autofill ${disabled && 'brightness-90'}`} autoComplete="on"
+            className={`w-full h-8 pl-2 text-sm border bg-[var(--background)] light-autofill border-[var(--border-color)]  rounded-md placeholder:text-gray-400 focus-within:border-[var(--primary-color)] outline-none ${disabled && 'brightness-90'}`} autoComplete="on"
             defaultValue={defaultValue}
             disabled = {disabled}
             {...props} 
