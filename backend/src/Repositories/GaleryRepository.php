@@ -256,15 +256,33 @@ class GaleryRepository extends Database{
    public function deleteGalery(array $data){
       $pdo = self::getConection();
      
-      $stmt = $pdo->prepare(
+      $stmtGalleryAccess = $pdo->prepare(
+         'DELETE FROM `galery_access`
+         WHERE `user_foreign_key` = :user_id
+         AND `galery_foreign_key` = :galery_id'
+      );
+      $stmtGalleryAccess->bindValue(':user_id', $data['user_id'], PDO::PARAM_INT);
+      $stmtGalleryAccess->bindValue(':galery_id', $data['galery_id'], PDO::PARAM_INT);
+
+      $stmtGallery = $pdo->prepare(
          'DELETE FROM `galeries`
          WHERE `user_foreign_key` = :user_id
          AND `id` = :galery_id'
       );
-      $stmt->bindValue(':user_id', $data['user_id'], PDO::PARAM_INT);
-      $stmt->bindValue(':galery_id', $data['galery_id'], PDO::PARAM_INT);
-     
-      return $stmt->execute();
+      $stmtGallery->bindValue(':user_id', $data['user_id'], PDO::PARAM_INT);
+      $stmtGallery->bindValue(':galery_id', $data['galery_id'], PDO::PARAM_INT);
+
+
+      try{
+         $pdo->beginTransaction();
+            $stmtGalleryAccess->execute();
+            $stmtGallery->execute();
+         $pdo->commit();
+         return true;
+      }catch(PDOException $e){
+         $pdo->rollBack();
+         throw new PDOException($e->getMessage(), $e->getCode());
+      }
    }
 
    /**
