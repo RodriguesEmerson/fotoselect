@@ -283,10 +283,10 @@ class GaleryServices{
          }
          
          //Delete galery cover from Cloudinary and Database.
-         $wasGaleryCoverDeleted = CloudinaryHandleImage::delete($galery[0]->cdl_id);
+         $wasGaleryCoverDeleted = CloudinaryHandleImage::delete($galery->cdl_id);
          $wasGaleryDeleted = $this->galeryRepository->deleteGalery($data);
          if(isset($wasGaleryCoverDeleted['error']) || !$wasGaleryDeleted){
-            return ['error' => 'It was not possible complete the galery exclusion.', 'status' => 500];
+            return ['error' => 'It was not possible complete the galery exclusion.', 'status' => 400];
          }
 
          return ['message' => 'Galery successfuly deleted.'];
