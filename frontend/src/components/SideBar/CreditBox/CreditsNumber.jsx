@@ -1,9 +1,9 @@
 'use client';
 
-import { userInfoStore } from "@/Zustand/userInfoStore";
+import { userStoredInfo } from "@/Zustand/userStoredInfo";
 
 export function CreditsNumber(){
-   const credits = userInfoStore(state => state.credits);
+   const credits = userStoredInfo(state => state.credits);
 
    return(
       <span className="font-bold text-xl">{new Intl.NumberFormat().format(credits)}</span>

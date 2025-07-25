@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export const userInfoStore = create((set) => ({
+export const userStoredInfo = create((set) => ({
    user: { name: false, lastname: false, email: false, image: false },
    credits: 0,
    setUserInfo: (data) => set({

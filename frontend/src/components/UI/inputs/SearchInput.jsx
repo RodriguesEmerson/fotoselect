@@ -14,7 +14,7 @@ export function SearchInput({ width = 'xlarge', onChange }){
       <div className='text-[var(--text-main-color)]'>
          <input 
             type="text" 
-            className={`h-10 border pl-2 text-sm border-[var(--border-color)]  rounded-md placeholder:text-gray-400 focus-within:border-[var(--primary-color)] outline-none pr-7 ${sizes[width]}`}
+            className={`h-10 border pl-2 text-sm border-[var(--border-color)]  rounded-md placeholder:text-gray-400 focus-within:border-[var(--primary-color)] outline-none pr-7 ${sizes[width]} bg-[var(--background)]`}
             placeholder="Buscar"
             onChange={(e) => {onChange(e.target.value)}}
          />

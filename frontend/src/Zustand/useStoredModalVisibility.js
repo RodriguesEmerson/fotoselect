@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export const useModalVisibility = create(set => ({
+export const useStoredModalVisibility = create(set => ({
    isNewGalleryModalVisible: false,
    isConfirmDecisionModalVisible: false,
    setIsNewGalleryModalVisible: (visibility) => set(() => ({

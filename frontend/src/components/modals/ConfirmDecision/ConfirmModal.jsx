@@ -1,17 +1,17 @@
 'use client'
-import { useModalVisibility } from "@/Zustand/useModalVisibility";
-import { ModalBackground } from "../ModalBackground";
-import { useConfirmModal_ZUS } from "@/Zustand/useConfirmModal_ZUS";
-import CloseIcon from '@mui/icons-material/Close';
 import { PurpleButton } from "@/components/UI/buttons/PurpleButton";
 import { TransparentInRedButton } from "@/components/UI/buttons/TransparentInRedButton";
+import { useStoredConfirmModal } from "@/Zustand/useStoredConfirmModal";
+import { useStoredModalVisibility } from "@/Zustand/useStoredModalVisibility";
 import AnnouncementIcon from '@mui/icons-material/Announcement';
+import CloseIcon from '@mui/icons-material/Close';
+import { ModalBackground } from "../ModalBackground";
 
 export function ConfirmModal() {
-   const isConfirmDecisionModalVisible = useModalVisibility(state => state.isConfirmDecisionModalVisible);
-   const setIsConfirmDecisionModalVisible = useModalVisibility(state => state.setIsConfirmDecisionModalVisible)
-   const confirmModalData = useConfirmModal_ZUS(state => state.confirmModalData);
-   const resetConfirmModalData = useConfirmModal_ZUS(state => state.resetConfirmModalData);
+   const isConfirmDecisionModalVisible = useStoredModalVisibility(state => state.isConfirmDecisionModalVisible);
+   const setIsConfirmDecisionModalVisible = useStoredModalVisibility(state => state.setIsConfirmDecisionModalVisible)
+   const confirmModalData = useStoredConfirmModal(state => state.confirmModalData);
+   const resetConfirmModalData = useStoredConfirmModal(state => state.resetConfirmModalData);
    if (!isConfirmDecisionModalVisible) return;
 
    function handleCloseModal(){

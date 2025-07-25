@@ -39,6 +39,25 @@ export class GalleryServices {
       }
    }
 
+   public async fetchGalleryById(galleryID: number){
+      try {
+         const req = await fetch(`${this.baseUrl}/galery/fetch`,
+            {
+               method: 'GET',
+               credentials: 'include',
+            }
+         )
+
+         const gallery = await req.json();
+         if(req.status === 200) return  gallery.content.galleries;
+         return false;
+
+      } catch (e) {
+         console.log(e);
+         return false;
+      }
+   }
+
    public async create(galleryData: CreateGalleryParams) {
       try {
          const formData = new FormData();

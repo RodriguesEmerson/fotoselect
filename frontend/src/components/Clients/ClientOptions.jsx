@@ -9,9 +9,9 @@ import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Spinner } from '../UI/Loaders/Spinner';
 
-export function GalleryOptions({ gallery }) {
+export function ClientOptions({ client }) {
    const [isOpen, setIsOpen] = useState(false);
-   const [isFetching, setIsFetching] = useState(false);
+   const [isDeleting, setIsDeleting] = useState(false);
    const galleryServices = new GalleryServices();
    const setIsConfirmDecisionModalVisible = useStoredModalVisibility(state => state.setIsConfirmDecisionModalVisible);
    const setConfirmModalData = useStoredConfirmModal(state => state.setConfirmModalData);
@@ -23,31 +23,32 @@ export function GalleryOptions({ gallery }) {
 
    const handleClick = async () => {
 
-      setIsFetching(true);
+      setIsDeleting(true);
       setIsConfirmDecisionModalVisible(false);
-      const result = await galleryServices.delete(gallery.id);
-      setIsFetching(false);
+      const result = await galleryServices.delete(client.id);
+      setIsDeleting(false);
       if(result){
          toast.success(t => (
-            <p>A galeria <span className="font-semibold">{gallery.galery_name}</span> foi excluída permanentemente!</p>
+            <p>A galeria <span className="font-semibold">{client.galery_name}</span> foi excluída permanentemente!</p>
          ));
-         return delteStoredGallery(gallery.id);
+         return delteStoredGallery(client.id);
       }
       return toast.error('Algo deu errado, tente novamente.');
    }
 
    return (
       <div
-         className='open-modal-button relative w-9 h-fit'
+         className='open-modal-button relative w-9 h-fit cursor-pointer'
          onClick={() => setIsOpen(!isOpen)}
          ref={optionsRef}
-         modalref-id={`g-options-${gallery.id}`}
+         modalref-id={`g-options-${client.id}`}
       >
          <span className='flex items-center justify-center h-9 border bg-[var(--background)] text-[var(--text-main-color)] border-[var(--border-color)] rounded-md hover:brightness-95 transition-all'>
-            {!isFetching
+            {!isDeleting
                ? <MoreHorizIcon />
                : <Spinner size='small' />
             }
+
          </span>
 
          <ul className={`modal absolute scale-0 origin-bottom-right w-32 text-sm flex flex-col gap-1 bottom-10 right-0 border bg-[var(--background)] text-[var(--text-main-color)] border-[var(--border-color)] rounded-md shadow-[0_0_25px_5px_var(--shadow)] overflow-hidden transition-all ${isOpen && 'scale-100'}`}>
@@ -57,15 +58,15 @@ export function GalleryOptions({ gallery }) {
                   e.preventDefault();
                   e.stopPropagation();
                   setConfirmModalData(
-                     'Deseja relamente excluir a galeria ',
-                     `${gallery.galery_name}`,
+                     'Deseja relamente excluir as informações do(a) clinte ',
+                     `${client.name}`,
                      false,
                      handleClick
                   );
                   setIsConfirmDecisionModalVisible(true);
                }}
             >
-               Excluir galeria
+               Excluir cliente
             </li>
          </ul>
       </div>

@@ -1,6 +1,6 @@
 'use client'
-import { useGalleries } from '@/Zustand/useGalleries';
-import { useModalVisibility } from '@/Zustand/useModalVisibility';
+import { useStoredGalleries } from '@/Zustand/useStoredGalleries';
+import { useStoredModalVisibility } from '@/Zustand/useStoredModalVisibility';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { NewGalleryModal } from '../modals/NewGallery/NewGalleryModal';
 import { PurpleButton } from "../UI/buttons/PurpleButton";
@@ -8,9 +8,9 @@ import { SearchInput } from "../UI/inputs/SearchInput";
 import { Select } from "../UI/Select";
 
 export function GalleriesHeader({ serverGalleries }) {
-   const setStoreGalleries = useGalleries(state => state.setStoreGalleries);
-   const setFilter = useGalleries(state => state.setFilter);
-   const setIsNewGalleryModalVisible = useModalVisibility(state => state.setIsNewGalleryModalVisible) 
+   const setStoreGalleries = useStoredGalleries(state => state.setStoreGalleries);
+   const setFilter = useStoredGalleries(state => state.setFilter);
+   const setIsNewGalleryModalVisible = useStoredModalVisibility(state => state.setIsNewGalleryModalVisible) 
    setStoreGalleries(serverGalleries);
 
    function handleFilter(status) {

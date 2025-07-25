@@ -33,7 +33,7 @@ export function Select({ options, width = 'mid', handleClick }) {
 
    return (
       <div
-         className={`relative flex items-center justify-between h-10 border pl-2 text-sm text-[var(--text-secondary-color)] border-[var(--border-color)] rounded-md cursor-pointer min-w-16 ${sizes[width]} ${isOpen && 'border-[var(--primary-color)]'}`}
+         className={`relative flex items-center justify-between h-10 border pl-2 text-sm text-[var(--text-secondary-color)] border-[var(--border-color)] rounded-md cursor-pointer min-w-16 ${sizes[width]} ${isOpen && 'border-[var(--primary-color)]'} bg-[var(--background)]`}
          onClick={() => setIsOpen(!isOpen)}
       >
          <p>{currentt}</p>

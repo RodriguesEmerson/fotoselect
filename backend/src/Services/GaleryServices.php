@@ -83,11 +83,10 @@ class GaleryServices{
 
          $galery = $this->galeryRepository->getGaleryData($data);
          if(!$galery) return ['error' => 'Galery not found.', 'status' => 400];
-         
-         $galeryImages = $this->galeryRepository->getGaleryImages($data);
-         if(!$galeryImages) return['error' => 'Error trying to get galery images.', 'status' => 400];
 
-         return ['galery' =>$galery, 'images' => $galeryImages];
+         $clients = $this->galeryRepository->getGaleryClients($data);
+
+         return ['galery' =>$galery, 'clients' => $clients];
       } catch (InvalidArgumentException $e) {
 
          return ['error' => $e->getMessage(), 'status' => 400]; 

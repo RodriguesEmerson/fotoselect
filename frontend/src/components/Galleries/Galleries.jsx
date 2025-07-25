@@ -1,12 +1,12 @@
 'use client';
-import { useGalleries } from "@/Zustand/useGalleries";
+import { useStoredGalleries } from "@/Zustand/useStoredGalleries";
 import Image from "next/image";
 import Link from "next/link";
 import { GalleryOptions } from "./GalleryOptions";
 
 export function Galleries() {
 
-   const storeGalleries = useGalleries(state => state.storeGalleries);
+   const storeGalleries = useStoredGalleries(state => state.storeGalleries);
    const status = { 
       pending: { txt: 'Pendente', color: '#ca8a04' },
       finished: { txt: 'Finalizada', color: '#4d7c0f' },
@@ -22,9 +22,9 @@ export function Galleries() {
    return (
       <div className="flex flex-col gap-2">
           {storeGalleries.map(gallery => (
-            <Link href={''}
+            <Link href={`http://localhost:3000/galleries/${gallery.id}`}
                key={gallery.id}
-               className="relative flex flex-row gap-2 p-2 text-[var(--text-main-color)] hover:text-[var(--primary-color)] rounded-xl border border-[var(--border-color)] overflow-hidden h-32"
+               className="relative flex flex-row gap-2 p-2 text-[var(--text-main-color)] hover:text-[var(--primary-color)] rounded-xl border border-[var(--border-color)] overflow-hidden h-32 bg-[var(--background)]"
             >
                <div className="w-52 h-32 -mt-2 -ml-2 rounded-l-md overflow-hidden">
                   <Image

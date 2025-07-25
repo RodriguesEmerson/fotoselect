@@ -2,18 +2,18 @@
 import { PurpleSubmitButton } from "@/components/UI/buttons/PurpleSumitButton";
 import { CheckboxDefault } from "@/components/UI/inputs/CheckboxDefault";
 import { DefaultInputText } from "@/components/UI/inputs/DefaultInputText";
-import { gallerySchema } from "@/ZodSchemas/gallerySchema";
-import { useModalVisibility } from "@/Zustand/useModalVisibility";
-import { ModalBackground } from "../ModalBackground";
 import { FileInput } from "@/components/UI/inputs/FileInput";
-import CloseIcon from '@mui/icons-material/Close';
 import { GalleryServices } from "@/Services/galleryServices";
-import { toast } from "react-toastify";
+import { gallerySchema } from "@/ZodSchemas/gallerySchema";
+import { useGalleries } from "@/Zustand/useStoredGalleries";
+import { useStoredModalVisibility } from "@/Zustand/useStoredModalVisibility";
+import CloseIcon from '@mui/icons-material/Close';
 import { useMemo, useState } from "react";
-import { useGalleries } from "@/Zustand/useGalleries";
+import { toast } from "react-toastify";
+import { ModalBackground } from "../ModalBackground";
 
 export function NewGalleryModal() {
-   const isNewGalleryModalVisible = useModalVisibility(state => state.isNewGalleryModalVisible);
+   const isNewGalleryModalVisible = useStoredModalVisibility(state => state.isNewGalleryModalVisible);
    if (!isNewGalleryModalVisible) return;
    return (
       <NewGalleryModalBody />
@@ -21,7 +21,7 @@ export function NewGalleryModal() {
 }
 
 function NewGalleryModalBody() {
-   const setIsNewGalleryModalVisible = useModalVisibility(state => state.setIsNewGalleryModalVisible);
+   const setIsNewGalleryModalVisible = useStoredModalVisibility(state => state.setIsNewGalleryModalVisible);
    const updateGalleries = useGalleries(state => state.updateGalleries)
    const [isLoading, setIsLoading] = useState(false);
    const handleCloseModal = () => {

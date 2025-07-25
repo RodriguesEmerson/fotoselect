@@ -169,6 +169,22 @@ class GaleryRepository extends Database{
       $stmt->setFetchMode(\PDO::FETCH_CLASS, FetchGaleryDataModel::class);
       return $stmt->fetch();
    }
+   public function getGaleryClients(array $data){
+      $pdo = self::getConection();
+      $stmt = $pdo->prepare(
+         'SELECT c.id, c.name, c.email, c.profile_image 
+         FROM `clients` AS c
+         INNER JOIN `galery_access` AS ga
+            ON ga.client_foreign_key = c.id
+         WHERE ga.galery_foreign_key = :gallery_id
+         AND ga.user_foreign_key = :user_id'
+      );
+      
+      $stmt->bindValue(':user_id', $data['user_id']);
+      $stmt->bindValue(':gallery_id', $data['galery_id']);
+      $stmt->execute();
+      return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+   }
 
    /**
     * Retrieves the galleries by its ID and the user who owns it.

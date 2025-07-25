@@ -1,15 +1,14 @@
 'use client';
 
+import { userStoredInfo } from "@/Zustand/userStoredInfo";
 import { useEffect, useState } from "react";
 import { UserIcon } from "./UserIcon";
 import { UserInfo } from "./UserInfo";
-import { userInfoStore } from "@/Zustand/userInfoStore";
-import { handleClientScriptLoad } from "next/script";
 
 export function UserBox() {
    const [isOpen, setIsOpen] = useState(false);
-   const user = userInfoStore(state => state.user);
-   const setUserInfo = userInfoStore(state => state.setUserInfo);
+   const user = userStoredInfo(state => state.user);
+   const setUserInfo = userStoredInfo(state => state.setUserInfo);
    
    useEffect(() => {
       if(user.name) return;

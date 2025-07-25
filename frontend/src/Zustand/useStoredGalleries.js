@@ -2,7 +2,7 @@
 
 import { create } from "zustand";
 
-export const useGalleries = create(set => ({
+export const useStoredGalleries = create(set => ({
    storeGalleries: false,
    filters: { status: 'all', order: 'default', searchChars: '' },
 
