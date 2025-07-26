@@ -36,7 +36,7 @@ export default async function Dasjboard() {
    //CRIAR PROMISE.ALL
 
    return (
-      <section className="flex flex-col items-center gap-3 h-[calc(100vh-4rem)] -mt-2 w-full bg-[var(--dashboard-background)] shadow-[0_0_3_3px_var(--shadow)] rounded-xl pt-3 px-10 overflow-y-auto">
+      <>
          <Banner />
          <DashboardNav dashInfo={dashInfo?.content} />
 
@@ -47,6 +47,6 @@ export default async function Dasjboard() {
             <div className="flex flex-1">
             </div>
          </div>
-      </section>
+      </>
    )
 }

@@ -28,11 +28,11 @@ export function ClientsInGalleryOptions({ client, handleRemoveClient, isFetching
          <ul className={`modal absolute scale-0 origin-bottom-right min-w-46 w-fit text-sm flex flex-col gap-1 bottom-10 right-0 border bg-[var(--background)] text-[var(--text-main-color)] border-[var(--border-color)] rounded-md shadow-[0_0_25px_5px_var(--shadow)] overflow-hidden transition-all ${isOpen && 'scale-100'}`}>
             <li
                className='w-full bg-[var(--background)] text-center hover:brightness-95 transition-all p-2'
-               onClick={(e) => {
+               onClick={() => {
                   handleRemoveClient(client)
                }}
             >
-               Remover acesso a galeria
+               Remover acesso à galeria
             </li>
          </ul>
       </div>

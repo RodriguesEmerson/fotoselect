@@ -13,11 +13,13 @@ export default function PrivateLayout({ children }) {
    return (
       <>
          <Header />
-         <div className="layout flex flex-row h-[calc(100vh-4rem)] gap-2 p-2 bg-[var(--dashboard-background)]">
+         <main className="layout flex flex-row h-[calc(100vh-4rem)] gap-2 p-2 bg-[var(--dashboard-background)]">
             <SideBar />
-            {children}
+            <section className="flex flex-col items-center gap-3 h-[calc(100vh-4rem)] -mt-2 w-full bg-[var(--dashboard-background)] shadow-[0_0_3_3px_var(--shadow)] rounded-xl pt-3 px-10 overflow-y-auto">
+               {children}
+            </section>
             <ConfirmModal />
-         </div>
+         </main>
          <ToastContainer position="bottom-right" />
       </>
    );

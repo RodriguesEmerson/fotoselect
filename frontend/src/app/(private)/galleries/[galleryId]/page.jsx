@@ -30,7 +30,7 @@ export default async function GalleryPage({ params }) {
 
 
    return (
-      <section className="flex flex-col items-center gap-5 h-[calc(100vh-4rem)] -mt-2 w-full bg-[var(--dashboard-background)] shadow-[0_0_3_3px_var(--shadow)] rounded-xl pt-3 px-10 overflow-y-auto">
+      <>
          <div className="w-full">
             <PreviousPageButton />
          </div>
@@ -92,7 +92,7 @@ export default async function GalleryPage({ params }) {
             </div>
          </div>
          <ClientsInGallery gallery={gallery} serverClients={serverClients} status={status} />
-      </section>
+      </>
    )
 }
 
