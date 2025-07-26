@@ -153,7 +153,7 @@ class GaleryRepository extends Database{
     * @param array $data Associative array containing:
     *                    - user_id (int)
     *                    - galery_id (int)
-    * @return object|false Returns a FetchGaleryDataModel object or false if not found.
+    * @return array.
     */
    public function getGaleryData(array $data){
       $pdo = self::getConection();
@@ -169,6 +169,15 @@ class GaleryRepository extends Database{
       $stmt->setFetchMode(\PDO::FETCH_CLASS, FetchGaleryDataModel::class);
       return $stmt->fetch();
    }
+
+   /**
+    * Retrieves the clients in a certaing gallery by the gallery ID and the user who owns it.
+    *
+    * @param array $data Associative array containing:
+    *                    - user_id (int)
+    *                    - galery_id (int)
+    * @return array.
+    */
    public function getGaleryClients(array $data){
       $pdo = self::getConection();
       $stmt = $pdo->prepare(
