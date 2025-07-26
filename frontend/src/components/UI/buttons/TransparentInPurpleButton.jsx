@@ -29,7 +29,7 @@ export function TransparentInPurpleButton({ size = 'mid', children, ...props }) 
    return (
       <button
          type="button"
-         className={`flex items-center justify-center gap-2 h-10 px-4 rounded-md text-[var(--primary-color)] bg-[var(--background)] border border-[var(--primary-color)] cursor-pointer hover:bg-purple-50 transition-all ${sizes[size]} `}
+         className={`flex items-center justify-center gap-2 h-10 px-4 rounded-md text-[var(--primary-color)] bg-[var(--background)] border border-[var(--primary-color)] cursor-pointer hover:bg-[#5e019b05] transition-all ${sizes[size]} `}
          {...props}
       >
          {children}

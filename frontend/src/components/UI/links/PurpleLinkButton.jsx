@@ -12,7 +12,7 @@ export function PurpleLinkButton({ href, text, size = 'mid', children }) {
    return (
       <Link
          href={href}
-         className={`flex flex-row  items-center justify-center gap-2 bg-[var(--button-secondary-color)] h-12 leading-12 rounded-md hover:bg-[var(--button-primary-color)] hover:outline transition-all text-white ${sizes[size]}`}
+         className={`flex flex-row  items-center justify-center gap-2 px-2 bg-[var(--button-secondary-color)] h-10 leading-12 rounded-md hover:bg-[var(--button-primary-color)] hover:outline transition-all text-white ${sizes[size]}`}
       >
          {children
             ? children

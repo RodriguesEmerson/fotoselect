@@ -5,7 +5,7 @@ import { DefaultInputText } from "@/components/UI/inputs/DefaultInputText";
 import { FileInput } from "@/components/UI/inputs/FileInput";
 import { GalleryServices } from "@/Services/galleryServices";
 import { gallerySchema } from "@/ZodSchemas/gallerySchema";
-import { useGalleries } from "@/Zustand/useStoredGalleries";
+import { useStoredGalleries } from "@/Zustand/useStoredGalleries";
 import { useStoredModalVisibility } from "@/Zustand/useStoredModalVisibility";
 import CloseIcon from '@mui/icons-material/Close';
 import { useMemo, useState } from "react";
@@ -22,7 +22,7 @@ export function NewGalleryModal() {
 
 function NewGalleryModalBody() {
    const setIsNewGalleryModalVisible = useStoredModalVisibility(state => state.setIsNewGalleryModalVisible);
-   const updateGalleries = useGalleries(state => state.updateGalleries)
+   const updateGalleries = useStoredGalleries(state => state.updateGalleries)
    const [isLoading, setIsLoading] = useState(false);
    const handleCloseModal = () => {
       URL.revokeObjectURL(preview?.src);

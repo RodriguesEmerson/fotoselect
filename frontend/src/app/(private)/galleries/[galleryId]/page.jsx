@@ -1,10 +1,10 @@
+import { ClientsInGallery } from "@/components/Clients/InGallery/ClientsInGallery";
 import { GalleryOptions } from "@/components/Galleries/GalleryOptions";
-import { PurpleLinkButton } from "@/components/UI/links/PurpleLinkButton";
-import { cookies } from "next/headers";
-import EditIcon from '@mui/icons-material/Edit';
-import Image from "next/image";
 import { PreviousPageButton } from "@/components/UI/buttons/PreviousPageButton";
-import { ClientsInGallery } from "@/components/Clients/ClientsInGallery";
+import { PurpleLinkButton } from "@/components/UI/links/PurpleLinkButton";
+import EditIcon from '@mui/icons-material/Edit';
+import { cookies } from "next/headers";
+import Image from "next/image";
 
 
 export default async function GalleryPage({ params }) {
@@ -26,7 +26,7 @@ export default async function GalleryPage({ params }) {
    const res = await req.json();
    if (req.status !== 200) return <></>
    const gallery = res.content.galery;
-   const clients = res.content.clients;
+   const serverClients = res.content.clients;
 
 
    return (
@@ -91,7 +91,7 @@ export default async function GalleryPage({ params }) {
                <GalleryOptions gallery={gallery} />
             </div>
          </div>
-         <ClientsInGallery gallery={gallery} clients={clients} status={status} />
+         <ClientsInGallery gallery={gallery} serverClients={serverClients} status={status} />
       </section>
    )
 }

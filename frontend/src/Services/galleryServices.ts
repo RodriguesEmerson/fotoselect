@@ -20,7 +20,7 @@ export class GalleryServices {
 
    private baseUrl = 'http://localhost/fotoselect/backend';
 
-   public async fetchGalleries(){
+   public async fetchGalleries() {
       try {
          const req = await fetch(`${this.baseUrl}/galery/fetchlot/99/0`,
             {
@@ -30,7 +30,7 @@ export class GalleryServices {
          )
 
          const galleries = await req.json();
-         if(req.status === 200) return  galleries.content.galleries;
+         if (req.status === 200) return galleries.content.galleries;
          return false;
 
       } catch (e) {
@@ -39,9 +39,9 @@ export class GalleryServices {
       }
    }
 
-   public async fetchGalleryById(galleryID: number){
+   public async fetchGalleryById(galleryID: number) {
       try {
-         const req = await fetch(`${this.baseUrl}/galery/fetch`,
+         const req = await fetch(`${this.baseUrl}/galery/fetch/${galleryID}`,
             {
                method: 'GET',
                credentials: 'include',
@@ -49,7 +49,7 @@ export class GalleryServices {
          )
 
          const gallery = await req.json();
-         if(req.status === 200) return  gallery.content.galleries;
+         if (req.status === 200) return gallery.content.gallery;
          return false;
 
       } catch (e) {
@@ -64,9 +64,9 @@ export class GalleryServices {
          formData.append('galery_cover', galleryData.galery_cover[0]);
          formData.append('galery_name', galleryData.galery_name);
          formData.append('deadline', galleryData.deadline);
-         formData.append('private', String(galleryData.private)); 
+         formData.append('private', String(galleryData.private));
          formData.append('watermark', String(galleryData.watermark));
-         formData.append('status',StatusRole[galleryData.status]); 
+         formData.append('status', StatusRole[galleryData.status]);
          formData.append('password', galleryData.password);
 
          const req = await fetch(`${this.baseUrl}/galery/create`,
@@ -78,7 +78,7 @@ export class GalleryServices {
          )
 
          const res = await req.json();
-         if(req.status === 201) return{ gallery_name: galleryData.galery_name};
+         if (req.status === 201) return { gallery_name: galleryData.galery_name };
          return false;
 
       } catch (e) {
@@ -87,19 +87,65 @@ export class GalleryServices {
       }
    }
 
-   public async delete(galleryID: number){
+   public async delete(galleryID: number) {
       try {
          const req = await fetch(`${this.baseUrl}/galery/delete`,
             {
                method: 'DELETE',
                credentials: 'include',
-               headers: {'Content-Type': 'application/json'},
-               body: JSON.stringify({galery_id: galleryID})
+               headers: { 'Content-Type': 'application/json' },
+               body: JSON.stringify({ galery_id: galleryID })
             }
          )
 
          const res = await req.json();
-         if(req.status === 200) return true;
+         if (req.status === 200) return true;
+         return false;
+
+      } catch (e) {
+         console.log(e);
+         return false;
+      }
+   }
+
+   public async addClientInGallery(galleryID: number, clientEmail: string) {
+      try {
+         const req = await fetch(`${this.baseUrl}/galery/createaccess`,
+            {
+               method: 'POST',
+               credentials: 'include',
+               headers: {'Content-Type': 'application/json'},
+               body: JSON.stringify(
+                  {galery_id: galleryID, email: clientEmail}
+               )
+            }
+         )
+
+         const res = await req.json();
+         if (req.status === 201) return true;
+         return false;
+
+      } catch (e) {
+         console.log(e);
+         return false;
+      }
+   }
+
+   public async removeClientFromGallery(galleryID: number, clientEmail: string) {
+      try {
+         const req = await fetch(`${this.baseUrl}/galery/deleteaccess`,
+            {
+               method: 'DELETE',
+               credentials: 'include',
+               headers: {'Content-Type': 'application/json'},
+               body: JSON.stringify(
+                  {galery_id: galleryID, email: clientEmail}
+               )
+            }
+         )
+
+         const res = await req.json();
+         if (req.status === 200) return true;
          return false;
 
       } catch (e) {

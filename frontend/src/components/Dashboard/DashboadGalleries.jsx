@@ -18,7 +18,7 @@ export function DashboardGalleries({galleries}) {
 
          <div className="flex flex-col gap-1 p-1 w-full bg-[var(--background)] overflow-hidden overflow-y-auto max-h-[55vh]">
             {galleries.map(gallery => (
-               <Link href={''}
+               <Link href={`http://localhost:3000/galleries/${gallery.id}`}
                   key={gallery.id}
                   className="flex flex-row gap-2 p-2 text-[var(--text-main-color)] hover:text-[var(--primary-color)] not-last:border-b border-[var(--border-color)]"
                >
