@@ -11,6 +11,8 @@ import { toast } from "react-toastify";
 export function ClientsHeader() {
    const setIsRegisterNewClientModal = useStoredModalVisibility(state => state.setIsRegisterNewClientModal);
    const setStoredClients = useStoredClients(state => state.setStoredClients);
+   const setClientsSearch = useStoredClients(state => state.setClientsSearch);
+   const [clients, setClients] = useState(false);
    const [isFetching, setIsFetching] = useState(false);
    const clientServies = new ClientServices();
 
@@ -20,18 +22,23 @@ export function ClientsHeader() {
          const response = await clientServies.getClients();
          setIsFetching(false);
          if (response) {
+            setClients(response.clients);
             return setStoredClients(response.clients);
          }
          return toast.error('Erro ao buscar os dados dos seus clientes.')
       }
       handleGetClients();
-   },[])
+   }, [])
+
+   function handleSerchClients(chars) {
+      clients && setClientsSearch(chars, clients);
+   }
 
    return (
       <>
          <div className="flex flex-row justify-between py-2">
             <div className="flex flex-row gap-3">
-               <SearchInput onChange={() => { console.log('aqui') }} />
+               <SearchInput onChange={handleSerchClients} />
             </div>
             <div>
                <PurpleButton width="fit" onClick={() => setIsRegisterNewClientModal(true)}>
