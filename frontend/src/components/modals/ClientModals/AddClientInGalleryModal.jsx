@@ -11,6 +11,7 @@ import { Spinner } from "@/components/UI/Loaders/Spinner";
 import { PurpleLinkButton } from "@/components/UI/links/PurpleLinkButton";
 import LaunchIcon from '@mui/icons-material/Launch';
 import { GalleryServices } from "@/Services/galleryServices";
+import { ProfileLetterIcon } from "@/components/UI/ProfileLetterIcon";
 
 export function AddClientInGalleryModal({ clients, setClients, gallery }) {
    const isAddClientInGalleryModal = useStoredModalVisibility(state => state.isAddClientInGalleryModal);
@@ -117,15 +118,9 @@ function LiClient({ client, clients, setClients, gallery }) {
    return (
       <li className="flex flex-row gap-3 items-center justify-between h-12 not-last:border-b border-[var(--border-color)] px-2">
          <div className="flex flex-row gap-3 items-center">
-            <div
-               className={`flex items-center justify-center h-9 w-9 min-w-9 rounded-full overflow-hidden text-white`}
-               style={{ backgroundColor: letterColors[clientNameInitialLeter] }}
-            >
-               {client.profile_image
-                  ? <Image src={client.profile_image} width={36} height={36} alt='client image' />
-                  : <span className='text-xl -mt-[0.10rem]'>{clientNameInitialLeter}</span>
-               }
-            </div>
+
+            <ProfileLetterIcon name={client.name} image={client.profile_image}/>
+
             <p className="font-semibold text-base">{client.name}</p>
             <p>{client.email}</p>
          </div>

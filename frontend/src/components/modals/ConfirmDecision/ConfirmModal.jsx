@@ -22,7 +22,7 @@ export function ConfirmModal() {
    return (
       <ModalBackground onMouseDown={() => handleCloseModal}>
          <section
-            className="flex items-center flex-col gap-1 px-3 w-96 min-h-48 bg-[var(--background)] text-[var(--text-secondary-color)] text-sm shadow-[0_0_25px_5px_var(--shadow)] rounded-xl border border-[var(--border-color)] transition-all"
+            className="flex items-center flex-col gap-1 px-3 w-110 min-h-48 bg-[var(--background)] text-[var(--text-secondary-color)] text-sm shadow-[0_0_25px_5px_var(--shadow)] rounded-xl border border-[var(--border-color)] transition-all"
             onMouseDown={(e) => { e.stopPropagation() }}
          >
             <div className="flex flex-row w-full items-center justify-between border-b border-[var(--border-color)] py-2">
@@ -36,15 +36,12 @@ export function ConfirmModal() {
 
             <div className="flex flex-1 items-center justify-center flex-col gap-5 py-2">
                <div>
-                  <p className="text-base">
-                     {confirmModalData?.text}
-                     <span className="font-semibold">
-                        {confirmModalData?.hltext}
-                     </span>?
+                  <p className="text-base text-center mb-2">
+                     {confirmModalData?.text} <span className="font-semibold">{confirmModalData?.hltext}</span>?
                   </p>
-                  <div className="flex flex-row gap-3 items-start justify-center text-red-800">
-                     <AnnouncementIcon className="!text-xl text-red-800"/>
-                     <p className="text-sm">
+                  <div className="flex flex-row gap-3 items-center justify-center text-red-900">
+                     <AnnouncementIcon className="!text-xl text-red-900"/>
+                     <p className="text-sm text-center">
                         {confirmModalData?.warnning
                            ? confirmModalData.warnning
                            : 'Esta ação não poderá ser desfeita!'

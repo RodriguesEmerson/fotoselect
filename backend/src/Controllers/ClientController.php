@@ -20,7 +20,7 @@ class ClientController{
    public function register(Request $request, Response $response){
       try {
          $body = $request::body();
-         Validators::checkEmptyField($body, ['phone', 'profile_image']);
+         Validators::checkEmptyField($body, ['phone', 'files']);
 
          $clientServices = new ClientServices();
          $serviceResponse = $clientServices->register($body);
@@ -29,7 +29,7 @@ class ClientController{
             return $response::json(['message' => $serviceResponse['error']], $serviceResponse['status'], 'error');
          }
 
-         $response::json($serviceResponse, 200, 'success');
+         $response::json($serviceResponse, 201, 'success');
       } catch (UnauthorizedException $e) {
          return $response::json(['message' => $e->getMessage()], 401, 'error');
 

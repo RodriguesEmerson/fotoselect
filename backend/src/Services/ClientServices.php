@@ -34,16 +34,15 @@ class ClientServices{
       try{
          $data['user_id'] = $this->userId;
          $data = ClientDTO::toArray($data);
-
          if($data['profile_image']){
             $wasImageUploaded = CloudinaryHandleImage::upload($data['tmp_profile_image'], $data['profile_image']);
             if(isset($wasImageUploaded['error'])){
                return ['error' => 'We could not upload the client image.', 'status' => 500];
             }
-            $data['cdl_id'] = $data['profile_image'];
-            $data['profile_image'] = $wasImageUploaded['url'];
+            $imgURL = str_replace('http://', 'https://', $wasImageUploaded['url']);
+            $data['profile_image'] = $imgURL;
          }
-
+         
          $wasClientRegistered = $this->clientRepository->register($data);
          if(!$wasClientRegistered){
             return ['error' => 'We could not complete the client registration.', 'status' => 500];
@@ -208,13 +207,15 @@ class ClientServices{
 
          $client = $this->clientRepository->getClientById($data);
          if(!$client) return ['error' => 'Client not found.', 'status' => 400];
-
+         
          //Try to delete the old client image.
-         $wasImageDeleted = CloudinaryHandleImage::delete($client->cdl_id);
-         if(isset($wasImageDeleted['error'])){
-            return ['error' => 'It was not possible delete the client image.', 'status' => 500];
+         if($client->cdl_id){
+            $wasImageDeleted = CloudinaryHandleImage::delete($client->cdl_id);
+            if(isset($wasImageDeleted['error'])){
+               return ['error' => 'It was not possible delete the client image.', 'status' => 500];
+            }
          }
-
+         
          $wasClinetDeleted = $this->clientRepository->delete($data);
          if(!$wasClinetDeleted){
             return ['error' => 'Error trying to delete client in bd.', 'status' => 500];

@@ -14,6 +14,7 @@ class ClientDTO implements DTOsInterface{
    private ?string $phone = null;
    private ?string $profile_image = null;
    private ?string $tmp_profile_image = null;
+   private ?string $cdl_id = null;
    private string $password;
 
    private $requiredFields = ['name', 'email', 'password'];
@@ -29,9 +30,11 @@ class ClientDTO implements DTOsInterface{
       Validators::validateEmail($data['email']);
       Validators::validatePasswordFormat($data['password']);
 
-      if(isset($data['phone'])){
+      if(isset($data['phone']) && strlen($data['phone']) > 0){
          Validators::validatePhone($data['phone']);
          $this->phone = $data['phone'];
+      }else{
+         $this->phone = null;
       }
       if(isset($data['files']['profile_image'])){
          Validators::validateImage(['png', 'jpg', 'jpeg'], $data['files']['profile_image']);
@@ -43,6 +46,7 @@ class ClientDTO implements DTOsInterface{
       $this->name = $data['name'];
       $this->email = $data['email'];
       $this->password = $data['password'];
+      $this->cdl_id = $this->profile_image;
       // $this->password = password_hash($data['password'], PASSWORD_DEFAULT);
 
    }
@@ -56,6 +60,7 @@ class ClientDTO implements DTOsInterface{
          'email' => $instace->email,
          'phone' => $instace->phone,
          'profile_image' => $instace->profile_image,
+         'cdl_id' => $instace->cdl_id,
          'password' => $instace->password,
          'tmp_profile_image' => $instace->tmp_profile_image
       ];

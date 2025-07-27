@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { AddClientInGalleryModal } from "../../modals/ClientModals/AddClientInGalleryModal";
+import { ProfileLetterIcon } from "@/components/UI/ProfileLetterIcon";
 
 export function ClientsInGallery({ gallery, serverClients }) {
    const setIsAddClientInGalleryModal = useStoredModalVisibility(state => state.setIsAddClientInGalleryModal);
@@ -100,15 +101,9 @@ function TableTrClient({ gallery, client, clients, setClients }) {
    return (
       <tr className="h-16 not-last:border-b border-[var(--border-color)]">
          <td className="h-16 flex flex-row gap-4 px-2 items-center ">
-            <div
-               className={`flex items-center justify-center h-9 w-9 min-w-9 rounded-full overflow-hidden text-white`}
-               style={{ backgroundColor: letterColors[clientNameInitialLeter] }}
-            >
-               {client.profile_image
-                  ? <Image src={client.profile_image} width={36} height={36} alt='client image' />
-                  : <span className='text-xl -mt-[0.10rem]'>{clientNameInitialLeter}</span>
-               }
-            </div>
+
+            <ProfileLetterIcon name={client.name} image={client.profile_image}/>
+            
             <div className="flex flex-col justify-center gap-3">
                <p className="font-semibold text-base">{client.name}</p>
                <span className="text-[0.80rem] -mt-4 opacity-90">{client.email}</span>

@@ -94,10 +94,11 @@ function NewGalleryModalBody() {
                <div className="flex flex-row items-center gap-3">
                   <FileInput
                      register={register}
-                     registerName={'galery_cover'}
+                     registerName={'galery_cover'} 
                      id={'galery_cover'}
                      errorMessage={errors?.galery_cover?.message}
                      preview={preview}
+                     message={"cara da galeria"}
                   />
                   <p>{errors?.private?.message}</p>
                   <p>{errors?.watermark?.message}</p>

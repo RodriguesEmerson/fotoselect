@@ -1,6 +1,7 @@
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { useRef } from "react";
 import Image from "next/image";
+import { ProfileLetterIcon } from "@/components/UI/ProfileLetterIcon";
 
 export function Notifications({ isOpen, setIsOpen, notifications, setNotifications }) {
 
@@ -60,16 +61,8 @@ export function Notifications({ isOpen, setIsOpen, notifications, setNotificatio
                         key={notification.id}
                         className={`flex flex-row items-center gap-3 py-2  border-[var(--border-color)] not-last:border-b `}
                      >
-                        {/** Client image */}
-                        <div
-                           className={`flex items-center justify-center h-9 w-9 min-w-9 rounded-full overflow-hidden text-white`}
-                           style={{backgroundColor: letterColors[clientNameInitialLeter]}}
-                        >
-                           {notification.client_image
-                              ? <Image src={notification.image} width={36} height={36} alt='client image' />
-                              : <span className='text-xl'>{clientNameInitialLeter}</span>
-                           }
-                        </div>
+                        
+                        <ProfileLetterIcon name={notification.client_name} image={notification.client_image}/>
 
                         {/** Notification message */}
                         <div className={`flex flex-col gap-3  ${notification.read_at && 'opacity-60'}`}>
