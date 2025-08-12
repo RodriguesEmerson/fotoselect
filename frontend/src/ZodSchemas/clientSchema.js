@@ -1,13 +1,16 @@
+import { useStoredClients } from "@/Zustand/useStoredClients";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
-export function registerClientSchema() {
+export function clientSchema() {
+   const editingClient = useStoredClients(state => state.editingClient);
    const noEspecialChar = (val) => /^[A-Za-zÀ-ÿ\s&]+$/.test(val);
    const noLetters = (val) => /^\d+$/.test(val);
    const ACCEPTED_MIME_TYPES = ["image/jpeg", "image/png"];
 
-   const registerClientSchema = z.object({
+   const clientSchema = z.object({
       profile_image: z.any().optional()
          .superRefine((file, ctx) => {
             if (!file || file.length === 0) return;
@@ -64,7 +67,7 @@ export function registerClientSchema() {
       setError, watch,
       formState: { errors },
    } = useForm({
-      resolver: zodResolver(registerClientSchema),
+      resolver: zodResolver(clientSchema),
       defaultValues: {
          status: 'Pendente'
       }
@@ -79,5 +82,21 @@ export function registerClientSchema() {
       });
    }
 
-   return { register, handleSubmit, resetForm, errors, watch }
+   const fillEditingClientData = () => {
+      reset({
+         profile_image: editingClient.profile_image,
+         name: editingClient.name,
+         email: editingClient.email,
+         phone: editingClient.phone,
+         password: ''
+      });
+   }
+
+   //TERMINAR DE CRIAR FUNÕES PARA ATUALIZAR CLIENTES
+
+   useEffect(() => {
+      if(editingClient){fillEditingClientData()}
+   },[])
+
+   return { register, handleSubmit, resetForm, errors, watch, fillEditingClientData }
 }

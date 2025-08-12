@@ -4,7 +4,7 @@ export const useStoredModalVisibility = create(set => ({
    isNewGalleryModalVisible: false,
    isConfirmDecisionModalVisible: false,
    isAddClientInGalleryModal: false,
-   isRegisterNewClientModal: false,
+   isHandleClientModal: false,
    setIsNewGalleryModalVisible: (visibility) => set(() => ({
       isNewGalleryModalVisible: visibility
    })),
@@ -14,7 +14,7 @@ export const useStoredModalVisibility = create(set => ({
    setIsAddClientInGalleryModal: (visibility) => set(() => ({
       isAddClientInGalleryModal: visibility
    })),
-   setIsRegisterNewClientModal: (visibility) => set(() => ({
-      isRegisterNewClientModal: visibility
+   setIsHandleClientModal: (visibility) => set(() => ({
+      isHandleClientModal: visibility
    }))
 }))

@@ -6,32 +6,34 @@ import CloseIcon from '@mui/icons-material/Close';
 import { FileInput } from "@/components/UI/inputs/FileInput";
 import { DefaultInputText } from "@/components/UI/inputs/DefaultInputText";
 import { PurpleSubmitButton } from "@/components/UI/buttons/PurpleSumitButton";
-import { registerClientSchema } from "@/ZodSchemas/registerClientSchema";
+import { clientSchema } from "@/ZodSchemas/clientSchema";
 import { useMemo, useState } from "react";
 import { ClientServices } from "@/Services/clientServices";
 import { toast } from "react-toastify";
 import { useStoredClients } from "@/Zustand/useStoredClients";
 
-export function RegisterNewClientModal() {
-   const isRegisterNewClientModal = useStoredModalVisibility(state => state.isRegisterNewClientModal);
-   if (!isRegisterNewClientModal) return;
+export function HandleClientModal() {
+   const isHandleClientModal = useStoredModalVisibility(state => state.isHandleClientModal);
+   if (!isHandleClientModal) return;
    return (
-      <RegisterNewClientModalBody />
+      <HandleClientModalBody />
    )
 }
 
-function RegisterNewClientModalBody() {
-   const setIsRegisterNewClientModal = useStoredModalVisibility(state => state.setIsRegisterNewClientModal);
+function HandleClientModalBody() {
+   const setIsHandleClientModal = useStoredModalVisibility(state => state.setIsHandleClientModal);
    const setStoredClients = useStoredClients(state => state.setStoredClients);
+   const setEditingClient = useStoredClients(state => state.setEditingClient);
    const [isFetching, setIsFetching] = useState(false);
-   const { register, handleSubmit, resetForm, errors, watch } = registerClientSchema();
+   const { register, handleSubmit, resetForm, errors, watch } = clientSchema();
    const profile_image = watch('profile_image');
+
 
    //Avoid to re-render the image in the modal
    const preview = useMemo(() => {
       if (!profile_image || profile_image.length === 0) return null;
       const file = profile_image[0];
-      const tempUrl = URL.createObjectURL(file);
+      const tempUrl = file.name ? URL.createObjectURL(file) : watch('profile_image');
 
       return {
          name: file.name,
@@ -67,7 +69,8 @@ function RegisterNewClientModalBody() {
 
    const handleCloseModal = () => {
       URL.revokeObjectURL(preview?.src);
-      setIsRegisterNewClientModal(false);
+      setIsHandleClientModal(false);
+      setEditingClient(false);
    }
 
    return (

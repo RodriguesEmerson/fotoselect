@@ -10,12 +10,15 @@ import { useStoredConfirmModal } from '@/Zustand/useStoredConfirmModal';
 import { useStoredModalVisibility } from '@/Zustand/useStoredModalVisibility';
 
 export function ClientsInPageOptions({ client }) {
-   const setStoredClients = useStoredClients(state => state.setStoredClients);
-   const setConfirmModalData = useStoredConfirmModal(state => state.setConfirmModalData);
-   const setIsConfirmDecisionModalVisible = useStoredModalVisibility(state => state.setIsConfirmDecisionModalVisible);
    const [isOpen, setIsOpen] = useState(false);
    const [isFetching, setIsFetching] = useState(false);
    const optionsRef = useRef(null);
+
+   const setStoredClients = useStoredClients(state => state.setStoredClients);
+   const setEditingClient = useStoredClients(state => state.setEditingClient);
+   const setIsHandleClientModal = useStoredModalVisibility(state => state.setIsHandleClientModal);
+   const setConfirmModalData = useStoredConfirmModal(state => state.setConfirmModalData);
+   const setIsConfirmDecisionModalVisible = useStoredModalVisibility(state => state.setIsConfirmDecisionModalVisible);
 
    const clickOutside = useClickOutside(optionsRef, () => setIsOpen(false));
    isOpen && clickOutside.setClickOutSide();
@@ -58,6 +61,8 @@ export function ClientsInPageOptions({ client }) {
             <li
                className='w-full bg-[var(--background)] text-center hover:brightness-95 transition-all p-2'
                onClick={() => {
+                  setEditingClient(client);
+                  setIsHandleClientModal(true)
                }}
             >
                Editar cliente

@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export function ClientsHeader() {
-   const setIsRegisterNewClientModal = useStoredModalVisibility(state => state.setIsRegisterNewClientModal);
+   const setIsHandleClientModal = useStoredModalVisibility(state => state.setIsHandleClientModal);
    const setStoredClients = useStoredClients(state => state.setStoredClients);
    const setClientsSearch = useStoredClients(state => state.setClientsSearch);
    const [clients, setClients] = useState(false);
@@ -41,7 +41,7 @@ export function ClientsHeader() {
                <SearchInput onChange={handleSerchClients} />
             </div>
             <div>
-               <PurpleButton width="fit" onClick={() => setIsRegisterNewClientModal(true)}>
+               <PurpleButton width="fit" onClick={() => setIsHandleClientModal(true)}>
                   <PersonAddIcon />
                   <span>Cadastrar cliente</span>
                </PurpleButton>

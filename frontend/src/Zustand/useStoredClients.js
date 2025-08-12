@@ -2,6 +2,7 @@ import { create } from "zustand";
 
 export const useStoredClients = create(set => ({
    storedClients: false,
+   editingClient: false,
 
    setStoredClients: clients => set((state) => {
       const { utils } = state;
@@ -11,6 +12,10 @@ export const useStoredClients = create(set => ({
          storedClients: orndenedClients
       }
    }),
+
+   setEditingClient: client => set(() => ({
+      editingClient: client,
+   })),
 
    setClientsSearch: (chars, clients) => set(state => {
       const { utils } = state;
