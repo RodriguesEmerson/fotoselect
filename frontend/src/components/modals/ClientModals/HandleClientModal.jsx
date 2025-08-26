@@ -44,26 +44,26 @@ function HandleClientModalBody() {
 
    const onSubmit = (data) => handleRegisterClient(data);
 
-   const handleRegisterClient = async (data) =>{
+   const handleRegisterClient = async (data) => {
       const clientServices = new ClientServices();
       setIsFetching(true);
       const respose = await clientServices.registerClient(data);
-      
-      if(respose){
+
+      if (respose) {
          toast.success('Cliente cadastrado com sucesso.');
          URL.revokeObjectURL(preview?.src);
          resetForm();
-         
-         toast.info('Aguarde. Atualizando a os clientes em sua tela.');
+
+         // toast.info('Aguarde. Atualizando a os clientes em sua tela.');
          const clients = await clientServices.getClients();
          setIsFetching(false);
-         if(clients){
+         if (clients) {
             setStoredClients(clients.clients);
             return toast.info('Página atualizada.');
          }
          return toast.error('Não foi possível atualizar os clientes em sua tela. Por favor, atualize a página.')
       }
-
+      setIsFetching(false);
       return toast.error('Algo deu errado, tente novamente.');
    }
 

@@ -50,6 +50,7 @@ export class ClientServices {
             }
          )
          const res = await req.json();
+         console.log(res)
          if (req.status === 201) return true;
          return false;
 
