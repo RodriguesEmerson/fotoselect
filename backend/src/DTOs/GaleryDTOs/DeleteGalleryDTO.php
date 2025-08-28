@@ -6,7 +6,7 @@ use App\DTOs\DTOsInterface;
 use App\Utils\Validators;
 use InvalidArgumentException;
 
-class FetchImagesGaleryDTO implements DTOsInterface{
+class DeleteGalleryDTO implements DTOsInterface{
 
    private int $user_id;
    private int $galery_id;

@@ -154,4 +154,23 @@ export class GalleryServices {
       }
    }
 
+   public async fetchGalleryImages(galleryID: number){
+      try {
+         const req = await fetch(`${this.baseUrl}/galery/fetch/${galleryID}/images`,
+            {
+               method: 'GET',
+               credentials: 'include',
+            }
+         )
+
+         const res = await req.json();
+         if (req.status === 200) return res.images;
+         return false;
+
+      } catch (e) {
+         console.log(e);
+         return false;
+      }
+   }
+
 }

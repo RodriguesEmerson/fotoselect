@@ -81,7 +81,7 @@ export default async function GalleryPage({ params }) {
                      <span className="">to do </span>
                   </div>
                </div>
-               <PurpleLinkButton href={''} size="small">
+               <PurpleLinkButton href={`http://localhost:3000/galleries/${galleryId}/edit`} size="small">
                   <EditIcon />
                   <span>Editar galeria</span>
                </PurpleLinkButton>
