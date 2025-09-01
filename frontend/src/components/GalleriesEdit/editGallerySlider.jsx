@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { EditGalleryForm } from "./editGalleryForm";
 import { useState } from "react";
-import { EditGallerySettings } from "./editGallerySettings";
+import { EditGallerySettings, GalleryUploadImages } from "./galleryUploadImages";
 
 
 export function EditGallerySlider({ gallery }) {
@@ -29,12 +29,12 @@ export function EditGallerySlider({ gallery }) {
          </div>
 
          <div className="flex flex-row w-[200%] transition-all" style={{marginLeft: slide === 0 ? '0px' : '-100%'}}>
-            <div className="flex flex-row justify-around w-[50%]">
+            <div className="flex flex-row justify-around w-[50%] p-2">
                <EditGalleryForm galleryData={gallery} />
-               <Image src={'/edit-gallery.svg'} className="-scale-x-100" width={300} height={300} alt="edit gallery image" />
+               <Image src={'/edit-gallery.svg'} className="-scale-x-100 hidden 2xl:block" width={300} height={300} alt="edit gallery image" />
             </div>
-            <div className="flex flex-col items-center gap-3 w-[50%]">
-               <EditGallerySettings galleryData={gallery} />
+            <div className="flex flex-col items-center gap-3 w-[50%] p-2">
+               <GalleryUploadImages galleryData={gallery} />
             </div>
          </div>
 

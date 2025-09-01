@@ -213,6 +213,7 @@ class GaleryController{
          Validators::checkEmptyField($body);
 
          $images = ImagesHandle::getValidAndInvalidImages($body['files'], 'images');
+         echo json_encode($images);exit;
 
          //Remove 'files' from body.
          unset($body['files']);

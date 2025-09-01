@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
-export function useHanldeGalleryForm() {
+export function useHandleGalleryForm() {
    const [isLoading, setIsLoading] = useState(false);
    const {
       register,

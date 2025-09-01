@@ -3,11 +3,11 @@ import { PurpleSubmitButton } from "@/components/UI/buttons/PurpleSumitButton";
 import { CheckboxDefault } from "@/components/UI/inputs/CheckboxDefault";
 import { DefaultInputText } from "@/components/UI/inputs/DefaultInputText";
 import { FileInput } from "@/components/UI/inputs/FileInput";
-import { useHanldeGalleryForm } from "./hooks/useHandleEditGalleryForm";
+import { useHandleGalleryForm } from "./hooks/useHandleEditGalleryForm";
 
 export function EditGalleryForm({ galleryData }) {
    
-   const { register, handleSubmit, isLoading, errors, preview, handleCreateGallery } = useHanldeGalleryForm();
+   const { register, handleSubmit, isLoading, errors, preview, handleCreateGallery } = useHandleGalleryForm();
    const galleryCoverPreview = preview ?? {src: galleryData.galery_cover}
    
    const deadline = Math.max(

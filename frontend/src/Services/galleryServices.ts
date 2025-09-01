@@ -173,4 +173,29 @@ export class GalleryServices {
       }
    }
 
+   public async uploadImages(galleryID: number, images: File[]){
+      const formData = new FormData();
+      images.forEach(image => {
+         formData.append('files[]', image);
+      })
+      try {
+         const req = await fetch(`${this.baseUrl}/galery/fetch/${galleryID}/images`,
+            {
+               method: 'POST',
+               credentials: 'include',
+               body: formData
+            }
+         )
+
+         const res = await req.json();
+         console.log(res)
+         // if (req.status === 200) return res.images;
+         return false;
+
+      } catch (e) {
+         console.log(e);
+         return false;
+      }
+   }
+
 }
